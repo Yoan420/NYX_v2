@@ -1,0 +1,17 @@
+{
+  "protocol": "nyx_isolated_research_tools_v1",
+  "sha256": {
+    "replay.py": "282c575f2731c152d1f09253e3eb01d1c18f8bc128dd9f5c0665db84ae4eca4a",
+    "calibration.py": "088b6030be967f987d6a133263033ee71ecb621ad40e20c184ddcba5b6d7f865",
+    "reference_pilot.py": "8c4cca412411efc1de8438d1cee8d5e233b12e38fb19b0dee4bb14adab8709ec",
+    "final_study.py": "8fe227d50f214558033a6c381c97e04beb781f756f4c897f2ff1797fa2281dc6",
+    "Run-NyxTests.ps1": "544726271eeb8420bbf8edabe4e0bd3302a16c6834a04fee6cb25f826447bd60",
+    "test_replay.py": "874be67c1c87ebda0833d235c17b2c09152d73f52bb4a9c13970db4c4a79c9bd",
+    "test_calibration.py": "809f199c71c0f44a4349da34093cdf5fb2f10d84e7c77542919a05461b83668f",
+    "test_reference_pilot.py": "d4bd7aa2f7390d310d9780ccaed5e980c0350c73a9bb03ef9593724237931592",
+    "test_reference_reporting.py": "91ac5903d1b2cef5d76b59c2fe55d99878c1e914376b81b9a08af44c6608e06d",
+    "test_final_study.py": "dd25bc43be410aebdc542401a15b47f5705782fb6df77ff0ae79ac0d9af00585",
+    "annual_extension/nyx_daily_refit_reference.py": "62858d063c91768bdc59d2e4226648b41e6d23f7694f52ef2a6cd51963ac59ea"
+  },
+  "production_modified": false
+}

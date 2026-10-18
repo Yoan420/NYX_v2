@@ -1,0 +1,28 @@
+{
+  "protocol": "nyx_improvement_campaign_delivery_v1",
+  "sha256": {
+    "Run-NyxCampaign.ps1": "3833ed98faf24dd40100cb733469a2219b74a97bcb4710bdf8d971f2311bb076",
+    "annual_extension/nyx_daily_refit_reference.py": "62858d063c91768bdc59d2e4226648b41e6d23f7694f52ef2a6cd51963ac59ea",
+    "calibration.py": "088b6030be967f987d6a133263033ee71ecb621ad40e20c184ddcba5b6d7f865",
+    "campaign.py": "f6e6ccd04e319bc5688817263cf824b9306ff7f93b281ca75fb85358c4059cfb",
+    "challengers.py": "30886ea59532d5c7aa730fb8b173fbd7ee7061b3c1c568bfd1eb2eb4622a053b",
+    "final_study.py": "8fe227d50f214558033a6c381c97e04beb781f756f4c897f2ff1797fa2281dc6",
+    "intervals.py": "95bdfbdd5d9ab85b8bc34fc8dc5c69e2a55a8a6c03502770825aa13c9685c8b1",
+    "reference_pilot.py": "8c4cca412411efc1de8438d1cee8d5e233b12e38fb19b0dee4bb14adab8709ec",
+    "replay.py": "282c575f2731c152d1f09253e3eb01d1c18f8bc128dd9f5c0665db84ae4eca4a",
+    "source_audit.py": "85e30ffb9b26d985a4a76abfec86df0eb0cca48d941b2501c6d54b7993ec0590",
+    "stability.py": "a63316bfd786de0376d59668a7779863e1274c8e0ecfed86646cabf5f85d6db1",
+    "study.py": "58f7bbb5ddf567b454c4d41ad5738975a9fdecb1027ddcf967c5f69e6e67ad71",
+    "test_calibration.py": "809f199c71c0f44a4349da34093cdf5fb2f10d84e7c77542919a05461b83668f",
+    "test_campaign.py": "df56c7494c9d089346cc6955d129799bf755ed81ff7f37b54497a908da84511d",
+    "test_challengers.py": "bce2cdfaaf49652c094389e650940ac22e3eb23a18be42b9c39a82f00fe85c71",
+    "test_final_study.py": "dd25bc43be410aebdc542401a15b47f5705782fb6df77ff0ae79ac0d9af00585",
+    "test_intervals.py": "ea710be4dfd5af6c3d3d72cd03ef364e401d8a4c65d0034f273b37f9ae74bed4",
+    "test_reference_pilot.py": "d4bd7aa2f7390d310d9780ccaed5e980c0350c73a9bb03ef9593724237931592",
+    "test_reference_reporting.py": "91ac5903d1b2cef5d76b59c2fe55d99878c1e914376b81b9a08af44c6608e06d",
+    "test_replay.py": "874be67c1c87ebda0833d235c17b2c09152d73f52bb4a9c13970db4c4a79c9bd",
+    "test_stability.py": "1d0a0d00ec48a6a62bcccbf635053b6941a0e24a28a3f811f2c6d2fff8d10177",
+    "test_study.py": "724694bf0861db85263bb6e228c8e9a9252ac1382ceef6a5dfe3bb6023bfa8c3"
+  },
+  "production_modified": false
+}
