@@ -1,0 +1,5 @@
+{
+  "input_root": "./snapshot",
+  "output_root": "./output",
+  "collect_reporting_sources": true
+}

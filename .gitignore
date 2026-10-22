@@ -1,61 +1,40 @@
+# Environnements et caches Python
+.venv*/
+venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.venv/
-.venv-annual/
-venv/
-.cache/
-huggingface/
-models/
-!chronos2_hourly/models/
-!chronos2_hourly/models/*.py
-data/
-runs/
-.parquet
-.csv
-.csv.gz
-.html
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
-*.backup
-*.bak
-!data/
-!data/**
 
-# Immutable daily source captures stay on the host and are never committed.
-data/pit/nyx_annual_exchange_captures/
-data/pit/nyx_annual_jao_initial_live/
-data/pit/nyx_annual_saturn/
-data/pit/nyx_annual_hydro_captures/
-data/pit/nyx_annual_cpu_live_fuel/
-data/pit/nyx_annual_thermal/
-data/pit/nyx_annual_jao_history/
-data/pit/nyx_annual_public_history/
-
-# Local runs, generated reports and desktop shortcuts are rebuilt on each host.
-tmp/
-deliverables/
-output/
-research/
-.codex_presentation*/
-*.lnk
-
-# Cloud inputs, local training state and private deployment configuration.
-production/runtime/runs/
+# Données, modèles et résultats : séparés du code
+/data/
+/runs/
+/models/
+/snapshot/
+/snapshots/
+/output/
+/outputs/
 production/runtime/data/
-!production/runtime/chronos2_hourly/models/
-!production/runtime/chronos2_hourly/models/*.py
-production/outputs/
-snapshot/
-snapshots/
+production/runtime/runs/
+*.parquet
+*.joblib
+*.pkl
+*.cbm
+*.safetensors
+
+# Configuration et paquets privés
 config.local.json
+*.local.json
 requirements_private.txt
 *.whl
 .env
 .env.*
-!.env.example
+
+# Fichiers de poste
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.lnk
 

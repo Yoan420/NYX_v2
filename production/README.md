@@ -1,16 +1,25 @@
-# Runtime retenu pour les rapports NYX
+# Noyau scientifique retenu
 
-`runtime/` contient les 86 scripts et six configurations sélectionnés dans
-`SOURCE_MANIFEST.json`, recopiés sans modification depuis la révision indiquée.
-L'extension quotidienne est exposée sous ses namespaces Python historiques :
-les objets sérialisés et les empreintes scientifiques gardent leur identité.
+`runtime/` contient les **86 fichiers Python et 6 configurations** nécessaires
+à la recette CPU J+1/J+2 ou à ses contrats d’empreintes.
 
-`nyx_production/` reprend l'adaptateur de calcul et de restitution du dossier
-de production préexistant du 22 octobre 2026. Le rendu peut également embarquer
-le JavaScript de la distribution Plotly installée dans l'image ; aucune donnée
-des rapports privés ne figure ici.
+Le lancement se fait depuis la racine du projet :
 
-Le lanceur Linux est `python -m nyx_runtime`. Voir
-[le guide AWS](../docs/aws_forecasts.md) pour les seeds, les états, les poids
-et les dépendances nécessaires. La recette conserve son statut non qualifié
-et ses enveloppes indicatives non calibrées.
+```bash
+python -m nyx_runtime forecast --config config.local.json
+```
+
+L’orchestration, les contrôles d’entrée et la restitution se trouvent dans
+`nyx_runtime/`. Ce dossier ne contient aucun deuxième lanceur d’application.
+
+`SOURCE_MANIFEST.json` décrit la provenance, la raison de conservation et
+l’empreinte de chaque source. Douze fichiers qui ne sont pas sur le chemin
+d’appel actif restent requis par les empreintes ou la reprise des états.
+Les namespaces historiques des objets sérialisés restent conservés.
+
+Pour relire la recette, commencer par `runtime/annual_extension/nyx_daily_refit.py`,
+puis les modules `nyx_daily_refit_experts`, `nyx_daily_refit_reference` et
+`nyx_daily_refit_history`. Les modules de sources réalisent les collectes datées.
+
+Une modification scientifique demande de nouveaux artefacts compatibles :
+voir [le guide de développement](../docs/development.md).

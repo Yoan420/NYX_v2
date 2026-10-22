@@ -15,7 +15,7 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-from production.nyx_production import cli, live
+from nyx_runtime import cli, engine, forecast as live, preflight, runtime, snapshot
 
 
 FIRST_DAY = "2026-03-28"
@@ -26,7 +26,7 @@ def forecasts():
     index = pd.date_range(FIRST_DAY, "2026-03-30", freq="h", inclusive="left",
                           tz="Europe/Paris").tz_convert("UTC")
     output = {}
-    for zi, zone in enumerate(live.ZONES):
+    for zi, zone in enumerate(engine.ZONES):
         point = np.arange(len(index)) / 7 + zi
         output[zone] = pd.DataFrame({
             "price_eur_mwh": point, "p_negative": .1, "p_negative_raw": .2,
@@ -67,42 +67,42 @@ class ProductionLiveTests(unittest.TestCase):
     def test_two_day_canonical_output_keeps_native_quantiles_origin_and_dst_grid(self):
         frames = forecasts()
         original = {zone: frame.copy(deep=True) for zone, frame in frames.items()}
-        result = live._canonical_forecasts(frames, FIRST_DAY, CUTOFF)
+        result = live.canonical_forecasts(frames, FIRST_DAY, CUTOFF)
         self.assertEqual(len(result), 4 * 47)
         self.assertEqual(set(result.forecast_origin_utc), {CUTOFF})
         self.assertTrue(result.observed_eur_mwh.isna().all())
         self.assertFalse(result.interval_calibrated.any())
         self.assertEqual(result.groupby("horizon_day").size().to_dict(), {1: 4 * 24, 2: 4 * 23})
-        for zone in live.ZONES:
+        for zone in engine.ZONES:
             pd.testing.assert_frame_equal(frames[zone], original[zone])
 
     def test_future_actual_labels_are_rejected(self):
         frames = forecasts()
         frames["FR"]["actual"] = 2.0
         with self.assertRaisesRegex(ValueError, "labels observés interdits"):
-            live._canonical_forecasts(frames, FIRST_DAY, CUTOFF)
+            live.canonical_forecasts(frames, FIRST_DAY, CUTOFF)
 
     def test_origins_cannot_drift_for_j2(self):
         frames = forecasts()
         frames["NL"].loc[frames["NL"].horizon_day.eq(2), "forecast_origin_utc"] = "2026-03-28T07:00:00+00:00"
         with self.assertRaisesRegex(ValueError, "origine différente"):
-            live._canonical_forecasts(frames, FIRST_DAY, CUTOFF)
+            live.canonical_forecasts(frames, FIRST_DAY, CUTOFF)
 
     def test_missing_hour_or_crossed_quantiles_are_rejected(self):
         frames = forecasts()
         frames["BE"] = frames["BE"].iloc[:-1]
         with self.assertRaisesRegex(ValueError, "grille physique"):
-            live._canonical_forecasts(frames, FIRST_DAY, CUTOFF)
+            live.canonical_forecasts(frames, FIRST_DAY, CUTOFF)
         frames = forecasts()
         frames["DE"].iloc[0, frames["DE"].columns.get_loc("nyx__q10")] = 10
         with self.assertRaisesRegex(ValueError, "quantiles natifs croisés"):
-            live._canonical_forecasts(frames, FIRST_DAY, CUTOFF)
+            live.canonical_forecasts(frames, FIRST_DAY, CUTOFF)
 
     def test_request_requires_exact_shared_08h_paris_cutoff(self):
         with self.assertRaisesRegex(ValueError, "exactement"):
-            live._request(FIRST_DAY, "2026-03-27T08:00:00+00:00")
+            engine.validate_request(FIRST_DAY, "2026-03-27T08:00:00+00:00")
         with self.assertRaisesRegex(ValueError, "fuseau explicite"):
-            live._request(FIRST_DAY, "2026-03-27T08:00:00")
+            engine.validate_request(FIRST_DAY, "2026-03-27T08:00:00")
 
     def test_refit_wrapper_publishes_only_validated_new_forecasts(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -116,14 +116,14 @@ class ProductionLiveTests(unittest.TestCase):
             def import_module(name, *args, **kwargs):
                 return module if name == "chronos2_hourly.nyx_daily_refit" else original_import(name, *args, **kwargs)
             with patch.object(live, "inspect_live", return_value={"ready": True}), \
-                 patch.object(live, "_activate_runtime"), \
+                 patch.object(live, "activate_runtime"), \
                  patch.object(live.importlib, "import_module", side_effect=import_module):
                 result = live.run_live(config, FIRST_DAY, CUTOFF, root / "new-run")
             self.assertEqual(result["status"], "CSV_COMPLETE")
             self.assertEqual(result["rows"], 4 * 47)
             self.assertFalse(result["qualified_for_production"])
             self.assertTrue(Path(result["predictions_csv"]).is_file())
-            self.assertEqual(set(result["forecasts_csv"]), set(live.ZONES))
+            self.assertEqual(set(result["forecasts_csv"]), set(engine.ZONES))
             audit = json.loads(Path(result["audit_path"]).read_text())
             self.assertEqual(audit["reporting_audit"]["status"], "not_requested")
 
@@ -143,7 +143,7 @@ class ProductionLiveTests(unittest.TestCase):
             def import_module(name, *args, **kwargs):
                 return module if name == "chronos2_hourly.nyx_daily_refit" else original_import(name, *args, **kwargs)
             with patch.object(live, "inspect_live", return_value={"ready": True}), \
-                 patch.object(live, "_activate_runtime"), \
+                 patch.object(live, "activate_runtime"), \
                  patch.object(live.importlib, "import_module", side_effect=import_module), \
                  self.assertRaisesRegex(ValueError, "réentraînement quotidien complet"):
                 live.run_live(config, FIRST_DAY, CUTOFF, root / "new-run")
@@ -152,19 +152,29 @@ class ProductionLiveTests(unittest.TestCase):
     def test_keyboard_interrupt_preserves_success_pointer_and_records_interrupted(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
+            inputs, outputs = root / "inputs", root / "outputs"
+            inputs.mkdir()
+            outputs.mkdir()
+            (inputs / "snapshot.json").write_text("{}")
             config = root / "config.json"
-            config.write_text("{}")
-            latest = root / "latest.json"
+            config.write_text(json.dumps({"input_root": "inputs", "output_root": "outputs"}))
+            latest = outputs / "latest.json"
             latest.write_text('{"run_id":"previous-success"}')
-            with patch.object(live, "inspect_live", return_value={"ready": True}), \
+            with patch.object(preflight, "inspect_live", return_value={"ready": True}), \
                  patch.object(live, "run_live", side_effect=KeyboardInterrupt), \
+                 patch.object(runtime, "runtime_lock", return_value=contextlib.nullcontext()), \
+                 patch.object(runtime, "RUNTIME", root / "runtime"), \
+                 patch.object(runtime, "verify_runtime"), \
+                 patch.object(runtime, "copy_state"), \
+                 patch.object(snapshot, "validate_snapshot", return_value={"protocol": snapshot.PROTOCOL}), \
+                 patch.dict("os.environ"), \
+                 contextlib.redirect_stdout(io.StringIO()), \
                  contextlib.redirect_stderr(io.StringIO()):
-                code = cli.main(["--action", "forecast", "--config", str(config),
-                                 "--first-day", FIRST_DAY, "--cutoff-utc", CUTOFF,
-                                 "--output-root", str(root)])
+                code = cli.main(["forecast", "--config", str(config),
+                                 "--first-day", FIRST_DAY, "--as-of", CUTOFF])
             self.assertEqual(code, 130)
             self.assertEqual(latest.read_text(), '{"run_id":"previous-success"}')
-            statuses = list(root.glob("*/status.json"))
+            statuses = list(outputs.glob("*/status.json"))
             self.assertEqual(len(statuses), 1)
             self.assertEqual(json.loads(statuses[0].read_text())["state"], "INTERRUPTED")
 

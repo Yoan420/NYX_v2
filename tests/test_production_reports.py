@@ -11,7 +11,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from production.nyx_production import cli, report_io
+from nyx_runtime import cli, reporting as report_io
+from tests import report_helpers as report_import
 
 
 def synthetic_rows(first_day="2026-03-28"):
@@ -53,18 +54,18 @@ class ProductionReportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             csv_path = root / "predictions.csv"
-            report_io._write_csv(csv_path, rows)
+            report_io.write_predictions(csv_path, rows)
             # A tiny synthetic asset exercises embedding without a browser or CDN.
             asset = "/* plotly.js v0.test Licensed under the MIT license */"
             with patch.object(report_io, "_find_plotly", return_value=asset):
                 rendered = report_io.render_reports(csv_path, root / "rendered")
             self.assertEqual(rendered["row_count"], 4 * 47)
             self.assertEqual(len(rendered["html_files"]), 3)
-            imported = report_io.import_reports(rendered["html_files"], root / "imported")
+            imported = report_import.import_reports(rendered["html_files"], root / "imported")
             self.assertFalse(imported["new_prediction_computed"])
             self.assertEqual(imported["overlapping_rows_verified"], 4 * 47)
-            actual = report_io._read_csv(Path(imported["predictions_csv"]))
-            expected = sorted(rows, key=report_io._row_key)
+            actual = report_io.read_predictions(Path(imported["predictions_csv"]))
+            expected = sorted(rows, key=report_io.row_key)
             self.assertEqual(len(actual), len(expected))
             for observed, original in zip(actual, expected):
                 for column in report_io.VALUE_COLUMNS:
@@ -80,37 +81,37 @@ class ProductionReportTests(unittest.TestCase):
         rows = synthetic_rows()
         rows.append(dict(rows[0]))
         with self.assertRaisesRegex(report_io.ReportFormatError, "dupliqu"):
-            report_io._validate_rows(rows)
+            report_io.validate_rows(rows)
 
     def test_missing_country_or_hour_is_rejected(self):
         for rows in ([r for r in synthetic_rows() if r["zone"] != "BE"], synthetic_rows()[1:]):
             with self.subTest(rows=len(rows)):
                 with self.assertRaisesRegex(report_io.ReportFormatError, "incomplète"):
-                    report_io._validate_rows(rows)
+                    report_io.validate_rows(rows)
 
     def test_common_origin_and_correct_horizon_are_required(self):
         rows = synthetic_rows()
         rows[-1]["forecast_origin_utc"] = "2026-03-28T07:00:00+00:00"
         rows[-1]["horizon_day"] = 1
         with self.assertRaisesRegex(report_io.ReportFormatError, "cutoff commun"):
-            report_io._validate_rows(rows)
+            report_io.validate_rows(rows)
         rows = synthetic_rows()
         rows[-1]["horizon_day"] = 1
         with self.assertRaisesRegex(report_io.ReportFormatError, "horizon_day incohérent"):
-            report_io._validate_rows(rows)
+            report_io.validate_rows(rows)
 
     def test_calibrated_label_and_missing_forecast_are_rejected(self):
         for column, value in (("interval_calibrated", True), ("prediction_eur_mwh", None)):
             rows = synthetic_rows()
             rows[0][column] = value
             with self.subTest(column=column), self.assertRaises(report_io.ReportFormatError):
-                report_io._validate_rows(rows)
+                report_io.validate_rows(rows)
 
     def test_existing_html_destination_is_immutable(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             source = root / "predictions.csv"
-            report_io._write_csv(source, synthetic_rows())
+            report_io.write_predictions(source, synthetic_rows())
             with patch.object(report_io, "_find_plotly", return_value="synthetic asset"):
                 first = report_io.render_reports(source, root / "rendered")
                 saved = {p: Path(p).read_bytes() for p in first["html_files"]}
@@ -126,17 +127,36 @@ class ProductionReportTests(unittest.TestCase):
             source = root / "broken.csv"
             source.write_text("zone,prediction_eur_mwh\nFR,2\n")
             with contextlib.redirect_stderr(io.StringIO()):
-                code = cli.main(["--action", "reports", "--csv", str(source), "--output-root", str(root)])
+                code = cli.main(["reports", "--csv", str(source), "--output-root", str(root)])
             self.assertEqual(code, 2)
             self.assertEqual(latest.read_text(), '{"run_id":"prior-success"}\n')
             statuses = list(root.glob("*/status.json"))
             self.assertEqual(len(statuses), 1)
             self.assertEqual(json.loads(statuses[0].read_text())["state"], "FAILED")
 
+    def test_cli_reports_renders_three_html_and_tracks_the_original_csv(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source, output = root / "predictions.csv", root / "reports-output"
+            report_io.write_predictions(source, synthetic_rows())
+            with patch.object(report_io, "_find_plotly", return_value="synthetic asset"), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                code = cli.main(["reports", "--csv", str(source), "--output-root", str(output)])
+            self.assertEqual(code, 0)
+            pointer = json.loads((output / "latest.json").read_text())
+            self.assertEqual(pointer["action"], "reports")
+            self.assertEqual((output / pointer["predictions_csv"]).resolve(), source)
+            status = json.loads((output / pointer["status_file"]).read_text())
+            self.assertEqual(status["state"], "COMPLETE")
+            self.assertFalse(status["new_predictions_computed"])
+            html_files = status["result"]["html_files"]
+            self.assertEqual(len(html_files), 3)
+            self.assertTrue(all(Path(path).is_file() for path in html_files))
+
     def test_json_duplicate_keys_and_javascript_input_are_rejected_without_execution(self):
         for raw in ('{"data":[],"data":[]}', '{"x":NaN}', 'alert("no execution")'):
             with self.subTest(raw=raw), self.assertRaises(report_io.ReportFormatError):
-                report_io._strict_json(raw)
+                report_import._strict_json(raw)
 
 
 if __name__ == "__main__":

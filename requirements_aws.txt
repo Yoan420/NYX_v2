@@ -1,5 +1,3 @@
-# Keep the retained daily-refit recipe's scientific versions. State-cache identity
-# includes installed distribution versions; review the seed's recorded versions
-# before migrating a saved state from Windows to a Linux image.
--r requirements_nyx_annual_cpu.txt
-boto3>=1.35,<2
+# Exécution AWS : même environnement scientifique que l'exécution locale.
+-r requirements.txt
+boto3==1.43.117

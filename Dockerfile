@@ -31,7 +31,7 @@ ENTRYPOINT ["python", "-m", "nyx_runtime"]
 CMD ["--help"]
 
 FROM base AS runtime
-COPY requirements_console.txt requirements_nyx_annual_cpu.txt requirements_aws.txt ./
+COPY requirements.txt requirements_aws.txt ./
 # proxy_ca is optional on a normal workstation; managed cloud builds should pass
 # --secret id=proxy_ca,src=/etc/ssl/certs/ca-certificates.crt (combined CA bundle).
 # The CA and any private package requirements never become image layers.
@@ -59,6 +59,6 @@ RUN --mount=type=secret,id=proxy_ca \
 COPY --from=smoke --chown=nyx:nyx /app/production/ /app/production/
 COPY --from=smoke --chown=nyx:nyx /app/nyx_runtime/ /app/nyx_runtime/
 USER 10001:10001
-RUN python -c 'from nyx_runtime.cli import verify_runtime; verify_runtime()'
+RUN python -c 'from nyx_runtime.runtime import verify_runtime; verify_runtime()'
 ENTRYPOINT ["python", "-m", "nyx_runtime"]
 CMD ["forecast", "--input-root", "/work/input", "--output-root", "/work/output"]

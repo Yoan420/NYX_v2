@@ -1,1 +1,1 @@
-"""Portable orchestration for the retained NYX daily CPU forecast recipe."""
+"""Prévisions NYX J+1/J+2 : configuration, calcul, rapports et stockage."""

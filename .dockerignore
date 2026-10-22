@@ -2,8 +2,7 @@
 **
 !Dockerfile
 !requirements_aws.txt
-!requirements_nyx_annual_cpu.txt
-!requirements_console.txt
+!requirements.txt
 !nyx_runtime/
 !nyx_runtime/**
 !production/
