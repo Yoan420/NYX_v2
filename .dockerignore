@@ -1,0 +1,21 @@
+# Keep historical code, model artifacts, data, runs and credentials out of images.
+**
+!Dockerfile
+!requirements_aws.txt
+!requirements_nyx_annual_cpu.txt
+!requirements_console.txt
+!nyx_runtime/
+!nyx_runtime/**
+!production/
+!production/**
+production/outputs/
+production/config.local.json
+production/runtime/data/
+production/runtime/runs/
+**/__pycache__/
+**/*.pyc
+**/.env*
+**/*credentials*
+**/*secret*
+**/*.pem
+**/*.key

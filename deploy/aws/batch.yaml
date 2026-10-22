@@ -1,0 +1,354 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: NYX hourly forecasts on AWS Batch EC2 with immutable S3 inputs and outputs.
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC with outbound HTTPS access to AWS APIs and any selected data provider.
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnets in VpcId; private need NAT/endpoints, public need auto-assign public IPv4.
+  ImageTag:
+    Type: String
+    Default: bootstrap
+    AllowedPattern: '[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}'
+  InstanceTypes:
+    Type: CommaDelimitedList
+    Default: m6i.xlarge,m6a.xlarge
+    Description: x86_64 CPU instances; the supplied image is CPU only.
+  MaxVcpus:
+    Type: Number
+    Default: 16
+    MinValue: 4
+  JobVcpus:
+    Type: Number
+    Default: 4
+    MinValue: 1
+  JobMemoryMiB:
+    Type: Number
+    Default: 12288
+    MinValue: 1024
+    Description: Leave RAM for ECS/OS (12288 MiB fits a 16 GiB instance).
+  JobTimeoutSeconds:
+    Type: Number
+    Default: 21600
+    MinValue: 60
+  RootVolumeGiB:
+    Type: Number
+    Default: 100
+    MinValue: 30
+    Description: gp3 root disk for the image, seed inputs, model cache and resumable state.
+  InputPrefix:
+    Type: String
+    Default: snapshots/current
+    AllowedPattern: '[A-Za-z0-9][A-Za-z0-9_./-]*'
+    Description: S3 prefix containing seed_bundle/, seed_output/ and huggingface/hub/.
+  OutputPrefix:
+    Type: String
+    Default: results
+    AllowedPattern: '[A-Za-z0-9][A-Za-z0-9_./-]*'
+  ScheduleState:
+    Type: String
+    Default: DISABLED
+    AllowedValues: [ENABLED, DISABLED]
+    Description: Enable only after the image and a valid input snapshot have been uploaded.
+  ScheduleExpression:
+    Type: String
+    Default: cron(15 8 * * ? *)
+  ScheduleTimezone:
+    Type: String
+    Default: Europe/Paris
+
+Resources:
+  ImageRepository:
+    Type: AWS::ECR::Repository
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ImageTagMutability: IMMUTABLE
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      EncryptionConfiguration:
+        EncryptionType: AES256
+
+  ArtifactsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  ArtifactsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ArtifactsBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Deny
+            Principal: '*'
+            Action: s3:*
+            Resource:
+              - !GetAtt ArtifactsBucket.Arn
+              - !Sub '${ArtifactsBucket.Arn}/*'
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+  Logs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 30
+
+  ComputeSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: NYX Batch outbound HTTPS, no inbound traffic
+      VpcId: !Ref VpcId
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+
+  BatchServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: batch.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSBatchServiceRole'
+
+  ComputeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role'
+
+  ComputeInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles: [!Ref ComputeRole]
+
+  ComputeLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateData:
+        BlockDeviceMappings:
+          - DeviceName: /dev/xvda
+            Ebs:
+              VolumeType: gp3
+              VolumeSize: !Ref RootVolumeGiB
+              Encrypted: true
+              DeleteOnTermination: true
+
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: PullImageAndWriteLogs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: ecr:GetAuthorizationToken
+                Resource: '*'
+              - Effect: Allow
+                Action: [ecr:BatchCheckLayerAvailability, ecr:GetDownloadUrlForLayer, ecr:BatchGetImage]
+                Resource: !GetAtt ImageRepository.Arn
+              - Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !GetAtt Logs.Arn
+
+  JobRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ReadSnapshotPublishForecasts
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: s3:ListBucket
+                Resource: !GetAtt ArtifactsBucket.Arn
+                Condition:
+                  StringLike:
+                    s3:prefix:
+                      - !Sub '${InputPrefix}/*'
+                      - !Ref InputPrefix
+                      - !Sub '${OutputPrefix}/*'
+                      - !Ref OutputPrefix
+              - Effect: Allow
+                Action: [s3:GetObject, s3:GetObjectVersion]
+                Resource: !Sub '${ArtifactsBucket.Arn}/${InputPrefix}/*'
+              - Effect: Allow
+                Action: [s3:GetObject, s3:PutObject]
+                Resource: !Sub '${ArtifactsBucket.Arn}/${OutputPrefix}/*'
+              - Effect: Allow
+                Action: s3:DeleteObject
+                Resource: !Sub '${ArtifactsBucket.Arn}/${OutputPrefix}/locks/forecast.json'
+
+  ComputeEnvironment:
+    Type: AWS::Batch::ComputeEnvironment
+    Properties:
+      Type: MANAGED
+      State: ENABLED
+      ServiceRole: !GetAtt BatchServiceRole.Arn
+      ComputeResources:
+        Type: EC2
+        AllocationStrategy: BEST_FIT_PROGRESSIVE
+        MinvCpus: 0
+        DesiredvCpus: 0
+        MaxvCpus: !Ref MaxVcpus
+        InstanceTypes: !Ref InstanceTypes
+        InstanceRole: !GetAtt ComputeInstanceProfile.Arn
+        Subnets: !Ref SubnetIds
+        SecurityGroupIds: [!Ref ComputeSecurityGroup]
+        LaunchTemplate:
+          LaunchTemplateId: !Ref ComputeLaunchTemplate
+          Version: !GetAtt ComputeLaunchTemplate.LatestVersionNumber
+        Ec2Configuration:
+          - ImageType: ECS_AL2023
+      UpdatePolicy:
+        TerminateJobsOnUpdate: false
+        JobExecutionTimeoutMinutes: 360
+
+  JobQueue:
+    Type: AWS::Batch::JobQueue
+    Properties:
+      State: ENABLED
+      Priority: 1
+      ComputeEnvironmentOrder:
+        - Order: 1
+          ComputeEnvironment: !Ref ComputeEnvironment
+
+  JobDefinition:
+    Type: AWS::Batch::JobDefinition
+    Properties:
+      Type: container
+      PlatformCapabilities: [EC2]
+      RetryStrategy:
+        Attempts: 1
+      Timeout:
+        AttemptDurationSeconds: !Ref JobTimeoutSeconds
+      ContainerProperties:
+        Image: !Sub '${ImageRepository.RepositoryUri}:${ImageTag}'
+        JobRoleArn: !GetAtt JobRole.Arn
+        ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
+        User: '10001:10001'
+        ResourceRequirements:
+          - Type: VCPU
+            Value: !Sub '${JobVcpus}'
+          - Type: MEMORY
+            Value: !Sub '${JobMemoryMiB}'
+        Command:
+          - forecast
+          - --input-root
+          - /work/input
+          - --output-root
+          - /work/output
+        Environment:
+          - Name: NYX_INPUT_S3_URI
+            Value: !Sub 's3://${ArtifactsBucket}/${InputPrefix}/'
+          - Name: NYX_OUTPUT_S3_URI
+            Value: !Sub 's3://${ArtifactsBucket}/${OutputPrefix}/'
+          - Name: OMP_NUM_THREADS
+            Value: !Sub '${JobVcpus}'
+          - Name: MKL_NUM_THREADS
+            Value: !Sub '${JobVcpus}'
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref Logs
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: forecast
+
+  SchedulerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: scheduler.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: SubmitForecastJob
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: batch:SubmitJob
+                Resource: [!Ref JobQueue, !Ref JobDefinition]
+
+  DailySchedule:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      Description: NYX J+1/J+2 run; enable after validating a snapshot and a manual job.
+      State: !Ref ScheduleState
+      ScheduleExpression: !Ref ScheduleExpression
+      ScheduleExpressionTimezone: !Ref ScheduleTimezone
+      FlexibleTimeWindow:
+        Mode: 'OFF'
+      Target:
+        Arn: !Sub 'arn:${AWS::Partition}:scheduler:::aws-sdk:batch:submitJob'
+        RoleArn: !GetAtt SchedulerRole.Arn
+        Input: !Sub '{"JobName":"nyx-daily-forecast","JobQueue":"${JobQueue}","JobDefinition":"${JobDefinition}"}'
+        RetryPolicy:
+          MaximumRetryAttempts: 0
+          MaximumEventAgeInSeconds: 3600
+
+Outputs:
+  RepositoryUri:
+    Value: !GetAtt ImageRepository.RepositoryUri
+  ArtifactsBucketName:
+    Value: !Ref ArtifactsBucket
+  InputS3Uri:
+    Value: !Sub 's3://${ArtifactsBucket}/${InputPrefix}/'
+  OutputS3Uri:
+    Value: !Sub 's3://${ArtifactsBucket}/${OutputPrefix}/'
+  JobQueueArn:
+    Value: !Ref JobQueue
+  JobDefinitionArn:
+    Value: !Ref JobDefinition
+  LogGroup:
+    Value: !Ref Logs
+  ScheduleName:
+    Value: !Ref DailySchedule

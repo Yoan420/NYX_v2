@@ -1,5 +1,29 @@
 # Forecast day-ahead multi-pays
 
+## Exécution Linux / AWS : J+1 et J+2
+
+Le runtime `nyx_runtime/` regroupe l'exécution cloud du refit quotidien CPU
+FR/DE/BE/NL à J+1 et J+2, depuis la même coupure de 08 h à Paris. Il reprend le
+paquet de production retenu et sa restitution CSV/HTML. Les scripts historiques
+restent à leur emplacement pour conserver les imports, recettes scellées et
+empreintes des chaînes existantes.
+
+L'image Docker et `deploy/aws/` préparent l'exécution dans AWS Batch, avec
+snapshots d'entrée et résultats dans S3. Les entrées PIT, les archives nécessaires
+à la recette retenue et les poids du modèle doivent être fournis séparément.
+Les variantes historiques ci-dessous gardent leurs contrats et qualifications.
+
+```bash
+python -m nyx_runtime plan --as-of 2026-10-22T08:00:00+02:00
+```
+
+`export-input` prépare le snapshot depuis le poste équipé ; `preflight` vérifie
+les entrées avant `forecast`. La recette conserve son statut non qualifié pour
+la production ; le portage AWS ne change ni ses scores ni ses limites.
+
+- [Guide d'exécution locale et AWS](docs/aws_forecasts.md)
+- [Catalogue et organisation des scripts](docs/scripts.md)
+
 ## Modèles annuels CWE sur CPU
 
 La branche `codex/nyx-regional-rmse-production` contient la chaîne annuelle

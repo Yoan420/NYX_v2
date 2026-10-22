@@ -44,3 +44,18 @@ research/
 .codex_presentation*/
 *.lnk
 
+# Cloud inputs, local training state and private deployment configuration.
+production/runtime/runs/
+production/runtime/data/
+!production/runtime/chronos2_hourly/models/
+!production/runtime/chronos2_hourly/models/*.py
+production/outputs/
+snapshot/
+snapshots/
+config.local.json
+requirements_private.txt
+*.whl
+.env
+.env.*
+!.env.example
+

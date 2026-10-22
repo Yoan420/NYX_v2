@@ -1,0 +1,946 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/Yoan420/NYX_v2",
+  "revision": "b0fa97f4d690c52a73d5716c16b152b0124c3882",
+  "selection": {
+    "source_ref": "b0fa97f4d690c52a73d5716c16b152b0124c3882",
+    "canonical_python_files": 76,
+    "extension_python_files": 10,
+    "config_files": 6,
+    "method": "Approximation interprocedurale statique depuis produce_refit_horizon: imports eager des modules charges, appels directs, callbacks explicites, imports des fonctions atteintes. Pas une trace executee: dispatch dynamique et alias locaux peuvent exiger verification import-smoke.",
+    "entrypoints": [
+      "chronos2_hourly.nyx_daily_refit.produce_refit_horizon",
+      "chronos2_hourly.nyx_saved_horizon_reporting_sources.collect_horizon_reporting_sources"
+    ],
+    "overlay": "live.py ajoute runtime/annual_extension au chronos2_hourly.__path__. Sources et bytes conserves, noms de modules historiques des objets serialises preserves.",
+    "excluded_modules": [
+      "chronos2_exogenous",
+      "chronos2_exogenous.activation_contract",
+      "chronos2_exogenous.evaluation",
+      "chronos2_exogenous.final_pipeline",
+      "chronos2_exogenous.governance",
+      "chronos2_exogenous.lora_finetune",
+      "chronos2_exogenous.production",
+      "chronos2_exogenous.shadow_epoch",
+      "chronos2_exogenous.training_snapshot_recovery",
+      "chronos2_exogenous.zone_artifacts",
+      "chronos2_hourly.app_service",
+      "chronos2_hourly.atomic_directory",
+      "chronos2_hourly.chronos_residual_load",
+      "chronos2_hourly.fundamental_features",
+      "chronos2_hourly.kalman_configuration",
+      "chronos2_hourly.live_history",
+      "chronos2_hourly.live_target_context",
+      "chronos2_hourly.multizone_contract",
+      "chronos2_hourly.multizone_live",
+      "chronos2_hourly.nuclear_attribution",
+      "chronos2_hourly.nuclear_cwe_kalman",
+      "chronos2_hourly.nuclear_cwe_reporting",
+      "chronos2_hourly.nuclear_cwe_sources",
+      "chronos2_hourly.nuclear_daily_cache",
+      "chronos2_hourly.nuclear_exports",
+      "chronos2_hourly.nuclear_incremental",
+      "chronos2_hourly.nuclear_preparation",
+      "chronos2_hourly.nuclear_report_benchmark",
+      "chronos2_hourly.nuclear_reporting",
+      "chronos2_hourly.nuclear_reporting_refresh",
+      "chronos2_hourly.nuclear_residual_cache",
+      "chronos2_hourly.nuclear_residual_inputs",
+      "chronos2_hourly.nuclear_run_archive",
+      "chronos2_hourly.nuclear_sources",
+      "chronos2_hourly.nyx_annual_cpu_full_chain",
+      "chronos2_hourly.nyx_annual_cpu_reference_builder",
+      "chronos2_hourly.nyx_annual_saturn_archive",
+      "chronos2_hourly.nyx_annual_source_validation",
+      "chronos2_hourly.nyx_annual_wind_source",
+      "chronos2_hourly.nyx_saved_horizon_resume",
+      "chronos2_hourly.observation_precision",
+      "chronos2_hourly.oof_pipeline",
+      "chronos2_hourly.report_attribution_cache",
+      "chronos2_hourly.reporting",
+      "chronos2_hourly.rolling_capture",
+      "chronos2_hourly.shadow_reporting",
+      "chronos2_hourly.solar_cwe_sources",
+      "chronos2_hourly.solar_wind_reporting",
+      "chronos2_hourly.solar_wind_sources",
+      "chronos2_hourly.variable_attribution",
+      "chronos2_hourly.zone_live",
+      "chronos2_modular.forecast_explanation",
+      "chronos2_modular.hourly_comparison",
+      "chronos2_modular.metrics",
+      "chronos2_modular.report",
+      "evaluate_hourly_backtest",
+      "export_nyx_annual_comparisons",
+      "materialize_saturn_daily_asof",
+      "materialize_saturn_kalman_weather",
+      "nyx_prod_templates",
+      "nyx_prod_templates.model_storm_report",
+      "report_source_adapter",
+      "run_chronos2_hourly",
+      "run_extended_residual_hourly",
+      "run_mkonline_blend_hourly",
+      "run_mkonline_live_hourly",
+      "run_multicountry_forecast",
+      "run_nuclear_cwe_forecast",
+      "run_nuclear_forecast",
+      "run_nyx_annual_fuel_source",
+      "run_solar_wind_forecast"
+    ],
+    "fingerprint_only_files": [
+      "chronos2_hourly/nyx_annual_saturn_archive.py",
+      "chronos2_hourly/nyx_annual_wind_source.py",
+      "chronos2_hourly/nyx_saved_horizon_resume.py",
+      "chronos2_hourly/solar_cwe_sources.py",
+      "chronos2_hourly/solar_wind_sources.py",
+      "materialize_saturn_kalman_weather.py"
+    ],
+    "source_unchanged": true,
+    "validation": "PASS statique : 86 fichiers Python syntaxiquement valides, 92 fichiers source/config copies identiques en octets, 80 modules actifs et 568 fonctions/classes analysees ; 152 aretes imports locaux eager et 111 lazy actives toutes resolues, 6 configs et empreintes presentes. Pas execution scientifique faute seed/poids/client prive ; overlay requis avant import."
+  },
+  "source_files": [
+    {
+      "source": "chronos2_hourly/__init__.py",
+      "destination": "runtime/chronos2_hourly/__init__.py",
+      "bytes": 811,
+      "sha256": "7e97078b2df19a7bdbb90c1e092f7f0f4995c837610d0edf2f443f7ee7494e6f",
+      "reason": "package_init:chronos2_hourly.nyx_daily_refit",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/chronos_adapter.py",
+      "destination": "runtime/chronos2_hourly/chronos_adapter.py",
+      "bytes": 28491,
+      "sha256": "66ec9ec04f008f1083be6a613b5ff322868ae7bd398cb8f8638b932d30349305",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_baseline:24",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/features.py",
+      "destination": "runtime/chronos2_hourly/features.py",
+      "bytes": 17014,
+      "sha256": "03f94db2083c6c0ee06e5477921edfd25785cc3344b976a6714958a8de7bbe9e",
+      "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:22",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/historical_price_replay.py",
+      "destination": "runtime/chronos2_hourly/historical_price_replay.py",
+      "bytes": 13967,
+      "sha256": "13fd8886a54a30da312823be5657373c343437eb3c6bdb455bcc1a17c9fa2a48",
+      "reason": "eager:chronos2_hourly.nuclear_forecast:33",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/hourly_contract.py",
+      "destination": "runtime/chronos2_hourly/hourly_contract.py",
+      "bytes": 15141,
+      "sha256": "fdfe907a4a1a410935072ebc99076cad000d4171a7f31135c14931448decee5d",
+      "reason": "eager:chronos2_hourly:8",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/jao_flowbased.py",
+      "destination": "runtime/chronos2_hourly/jao_flowbased.py",
+      "bytes": 66439,
+      "sha256": "0b7acfa1563b0f6f224c3bf4951c408930eb3982f3d5533d948fe9819994c603",
+      "reason": "eager:chronos2_hourly.nyx_annual_jao_source:23",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/kalman_covariates.py",
+      "destination": "runtime/chronos2_hourly/kalman_covariates.py",
+      "bytes": 18165,
+      "sha256": "8fec18c28bfdfd52492236cf12f251e4354bbe394f4bcaac48ec8d5a0aa3eed1",
+      "reason": "eager:chronos2_hourly.kalman_residual:31",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/kalman_residual.py",
+      "destination": "runtime/chronos2_hourly/kalman_residual.py",
+      "bytes": 133539,
+      "sha256": "c6d54bf1eeac8e0f571c16417f99d1637a6474a061c46980d02aa45b26ca1c1d",
+      "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:21",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/__init__.py",
+      "destination": "runtime/chronos2_hourly/models/__init__.py",
+      "bytes": 1007,
+      "sha256": "9562000508b0aff9072e47c751793beb42b4b9261c286f30c6c69b7f4b35ba13",
+      "reason": "package_init:chronos2_hourly.models.residual_corrector",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/base.py",
+      "destination": "runtime/chronos2_hourly/models/base.py",
+      "bytes": 8092,
+      "sha256": "1b3c421fe9000d97164af69d5e526dfe789739c052ca39583a64fb46f61a46b8",
+      "reason": "eager:chronos2_hourly.models.residual_corrector:34",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/blended_residual_corrector.py",
+      "destination": "runtime/chronos2_hourly/models/blended_residual_corrector.py",
+      "bytes": 5885,
+      "sha256": "f7c13868a35b6b254d0c8b553020ab5b1d48fe092d318ba577b3c23168311752",
+      "reason": "eager:chronos2_hourly.models:4",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/calibration.py",
+      "destination": "runtime/chronos2_hourly/models/calibration.py",
+      "bytes": 6264,
+      "sha256": "f0f883bcb7cf89d1667bf224c85f116e86fcfbb61699701b6aca011e232b37ed",
+      "reason": "eager:chronos2_hourly.models:5",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/catboost_hourly.py",
+      "destination": "runtime/chronos2_hourly/models/catboost_hourly.py",
+      "bytes": 7309,
+      "sha256": "d6b9b047fa12a525b385bea7a12855c390bbd396dedfefd7a25599957172c9b9",
+      "reason": "eager:chronos2_hourly.models.residual_corrector:35",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/ensemble.py",
+      "destination": "runtime/chronos2_hourly/models/ensemble.py",
+      "bytes": 9868,
+      "sha256": "8e4af10fca04f7ff78e3be0efd6f18cd0aaed83b32566267d160f46d15c9c6ac",
+      "reason": "eager:chronos2_hourly.models:7",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/lear.py",
+      "destination": "runtime/chronos2_hourly/models/lear.py",
+      "bytes": 5821,
+      "sha256": "138e8a783b8bacc5f2484f0bbc4910c9186ea403506be4cd00e5cb3604ef7de7",
+      "reason": "eager:chronos2_hourly.models:8",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/models/residual_corrector.py",
+      "destination": "runtime/chronos2_hourly/models/residual_corrector.py",
+      "bytes": 51139,
+      "sha256": "5c47036f2ac621215038b8b6451f8fa85d1de486fb356447cc2b90c3ce4a19f9",
+      "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:23",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nuclear_cwe_forecast.py",
+      "destination": "runtime/chronos2_hourly/nuclear_cwe_forecast.py",
+      "bytes": 18230,
+      "sha256": "afad01fd121fe84db58a3347b6c8a64e63060706ec915bfa007d0d21af31617c",
+      "reason": "eager:chronos2_hourly.solar_wind_forecast:22",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nuclear_forecast.py",
+      "destination": "runtime/chronos2_hourly/nuclear_forecast.py",
+      "bytes": 37276,
+      "sha256": "04d64754ba13a08ca5e1f6a22695a4a43ab934f4b01d13991269f4ad98ac54c4",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_baseline:27",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_cpu_baseline.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_cpu_baseline.py",
+      "bytes": 44497,
+      "sha256": "5e570b047b817e3ffc5d7261f882aee5b0e6068b911d09f851b7ac73f5e748bb",
+      "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:20",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_cpu_bundle_builder.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_cpu_bundle_builder.py",
+      "bytes": 24721,
+      "sha256": "1a08b5fccb636ba46aaf83500198579c3d6b3ef4104c91fc7e8e256c90817a5e",
+      "reason": "chronos2_hourly.nyx_daily_refit_history.prepare_training_history:240",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_cpu_live.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_cpu_live.py",
+      "bytes": 18649,
+      "sha256": "ee8dbaae2b93e38eb5d805fb16ebfe56087605a88be7b44b5236a7f9dde05618",
+      "reason": "chronos2_hourly.nyx_daily_refit_experts.fit_daily_experts:142",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_epex_prices.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_epex_prices.py",
+      "bytes": 5833,
+      "sha256": "94273f8a887ebdaa1acf2e60914140b916b9068483c74800237bbad67f3ad342",
+      "reason": "eager:run_nyx_annual_auction_prices_source:28",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_equal_ensemble.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_equal_ensemble.py",
+      "bytes": 1758,
+      "sha256": "1c4d970b74ce99720937fcca584e08ed0ff53ce27141e49cfb330cdd9f887ea4",
+      "reason": "chronos2_hourly.nyx_daily_refit_reference._fit_block:170",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_feature_projection.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_feature_projection.py",
+      "bytes": 2679,
+      "sha256": "5006d3cfe4504d8b6f25bd9bd2e158a2eaaf56366fa275036522873ed99e5be3",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:26",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_jao_history.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_jao_history.py",
+      "bytes": 22825,
+      "sha256": "009393569eb3201118dca734ec49a58d862bc20df0675d119be925d5cfa92b0d",
+      "reason": "chronos2_hourly.nyx_annual_jao_source.verify_daily_capture:194",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_jao_source.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_jao_source.py",
+      "bytes": 26556,
+      "sha256": "15d330a9cb73accc6384d2d9f4d0d0dc00915df59bdfecca49302baefa237d07",
+      "reason": "chronos2_hourly.nyx_saved_horizon_sources._jao:331",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_live_preflight.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_live_preflight.py",
+      "bytes": 25839,
+      "sha256": "54e23f7614eeb63b6dd6c17c03d3539db0ea7a51d0c89da13f375d3d10d33bf6",
+      "reason": "eager:run_nyx_annual_auction_prices_source:24",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_nyx_quantiles_gate.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_nyx_quantiles_gate.py",
+      "bytes": 9304,
+      "sha256": "732c0ad3de23ddf1028468336dd9e42ddf0c648585598b5912a2ee077148fbf2",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_baseline:33",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_operational_context.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_operational_context.py",
+      "bytes": 4952,
+      "sha256": "c29372122793c41fc0cfbf29bda8ce282ce7458986eafb8ca0493ac7dbe7f63b",
+      "reason": "eager:chronos2_hourly.nyx_annual_live_preflight:19",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_prior90_cpu.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_prior90_cpu.py",
+      "bytes": 8069,
+      "sha256": "7310ad9ecfd15930b5e06b5a29aff56fc479d745b5ccf0c89556b001561c3440",
+      "reason": "chronos2_hourly.nyx_daily_refit_history.prepare_training_history:244",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_public_history.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_public_history.py",
+      "bytes": 17814,
+      "sha256": "858a20b22a1f19432591aa3b47fd111fdd0a1fcee9172a98d99c76c5c46ba0d8",
+      "reason": "run_nyx_annual_hydro_source.main:171",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_reference_pair.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_reference_pair.py",
+      "bytes": 2734,
+      "sha256": "90e64264f1cd22a4bba1943e8c385f63f2716879f1daf7e559afe88f5af9ffb3",
+      "reason": "chronos2_hourly.nyx_daily_refit_reference.fit_daily_reference:278",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_saturn_archive.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_saturn_archive.py",
+      "bytes": 7713,
+      "sha256": "fdf92a3e754d00bd00886355baa49de72cff028095deef49057f05669d7a9d1a",
+      "reason": "dependance_de_fichier_par_empreinte",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_saturn_source.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_saturn_source.py",
+      "bytes": 68934,
+      "sha256": "99147aa5d6a07f5fe0f29bf2533064ff9193941f2f8ca448d87101c51c0241d6",
+      "reason": "chronos2_hourly.nyx_saved_horizon_sources._profiles:95",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_test2_cpu.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_test2_cpu.py",
+      "bytes": 11755,
+      "sha256": "8ca638c471d7b76c9c8ba682a28af9c21ceb7e780e085a4a220336a7682d6aad",
+      "reason": "chronos2_hourly.nyx_daily_refit_reference._prepare:84",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_annual_wind_source.py",
+      "destination": "runtime/chronos2_hourly/nyx_annual_wind_source.py",
+      "bytes": 6651,
+      "sha256": "61d37f8c75ac4737a764bb593fbeb177090926c559287f15b7e2bb5bbfc8d9b8",
+      "reason": "dependance_de_fichier_par_empreinte",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly/nyx_forecast_profile_features.py",
+      "destination": "runtime/chronos2_hourly/nyx_forecast_profile_features.py",
+      "bytes": 5061,
+      "sha256": "5a76cc59b7ce4d3e0705bb61898963a38a15dea40a0b29767130fa7ce28ef182",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:31",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_fr_hydro_lagged_features.py",
+      "destination": "runtime/chronos2_hourly/nyx_fr_hydro_lagged_features.py",
+      "bytes": 14378,
+      "sha256": "a81baa8c88d1ff5fda255e628c780dc965b10999776a631e131f3baf3a8418ec",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:30",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_historical_hgb_reference.py",
+      "destination": "runtime/chronos2_hourly/nyx_historical_hgb_reference.py",
+      "bytes": 10720,
+      "sha256": "78a7fa0889492ed953f284e60c1b8984540773b44b076e21b2250ace24da547d",
+      "reason": "chronos2_hourly.nyx_daily_refit_reference._prepare:85",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_lagged_exchange_features.py",
+      "destination": "runtime/chronos2_hourly/nyx_lagged_exchange_features.py",
+      "bytes": 11854,
+      "sha256": "bf9cfa724104bf2cafe1d9bf2c32ea07b8cf62bdcd6c8ea24c6668a33b58afa5",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:25",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_live_baseline.py",
+      "destination": "runtime/chronos2_hourly/nyx_live_baseline.py",
+      "bytes": 30534,
+      "sha256": "3e0c84f1f8f3416a498eabb61c773a78a3888e36956f58ff2433ac1c2b40abe1",
+      "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:24",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_live_hybrid.py",
+      "destination": "runtime/chronos2_hourly/nyx_live_hybrid.py",
+      "bytes": 31018,
+      "sha256": "5ef12917868042f51460cdc6e184306b3a50dcad5156d7983beb79ef4e43936b",
+      "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:25",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_local_extra_features.py",
+      "destination": "runtime/chronos2_hourly/nyx_local_extra_features.py",
+      "bytes": 10846,
+      "sha256": "95c506a4d54124371ed5d1d89b523dda9ab0bde9db5b3392b388ae42bb08d999",
+      "reason": "chronos2_hourly.nyx_saved_horizon_inference._produce_horizon:404",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_local_io.py",
+      "destination": "runtime/chronos2_hourly/nyx_local_io.py",
+      "bytes": 5568,
+      "sha256": "f7479cb5738ac797a49b95fdc4078acae9fb48d673052ee5497102d890ab557d",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_baseline:31",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_local_price_features.py",
+      "destination": "runtime/chronos2_hourly/nyx_local_price_features.py",
+      "bytes": 19230,
+      "sha256": "82c479db05098a2a50616a45a420d81b01e331913fa04a0af8d88e4e4bed3275",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:27",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_local_squared_price_model.py",
+      "destination": "runtime/chronos2_hourly/nyx_local_squared_price_model.py",
+      "bytes": 6230,
+      "sha256": "6600368cced096a35549a033bebb889bf0254ada47bdc552fc5494920cea5662",
+      "reason": "eager:chronos2_hourly.nyx_forecast_profile_features:11",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_negative_probability_cpu.py",
+      "destination": "runtime/chronos2_hourly/nyx_negative_probability_cpu.py",
+      "bytes": 14143,
+      "sha256": "967d9c3f38c38d045b0d8142cef6495e7eee579bbd16366330c5d2b6e03df6f8",
+      "reason": "chronos2_hourly.nyx_daily_refit_experts.fit_daily_experts:141",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_pooled_calendar.py",
+      "destination": "runtime/chronos2_hourly/nyx_pooled_calendar.py",
+      "bytes": 5040,
+      "sha256": "03850df3760a3a69a48a355b674cfb5a55c3d4939f719f8f6f084ad634395118",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:29",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_pooled_cpu_price_model.py",
+      "destination": "runtime/chronos2_hourly/nyx_pooled_cpu_price_model.py",
+      "bytes": 15362,
+      "sha256": "58a13eebcdeae47b209782978c767e0bdfd55e916d663f78ab89fc691859f082",
+      "reason": "chronos2_hourly.nyx_daily_refit_experts.fit_daily_experts:140",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/nyx_thermal_capacity_features.py",
+      "destination": "runtime/chronos2_hourly/nyx_thermal_capacity_features.py",
+      "bytes": 5427,
+      "sha256": "c7114bfa6cf6b564b6def24760d095e5620ae9aac1531e4c6b167f59b36c8d74",
+      "reason": "chronos2_hourly.nyx_daily_refit_history.prepare_training_history:243",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/process_lock.py",
+      "destination": "runtime/chronos2_hourly/process_lock.py",
+      "bytes": 6242,
+      "sha256": "e208bdd4c2dfd8f6f94d6f09f54db5e353d3d227d4c4c38af87e2f60e091bb52",
+      "reason": "eager:run_nyx_annual_auction_prices_source:27",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/reporting_observations.py",
+      "destination": "runtime/chronos2_hourly/reporting_observations.py",
+      "bytes": 4805,
+      "sha256": "b39a649e285db8a335cba89f3dc7296b23200a8cdb6155c674825935612a06d8",
+      "reason": "chronos2_hourly.nyx_saved_horizon_reporting_sources.collect_horizon_reporting_sources:58",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/solar_cwe_sources.py",
+      "destination": "runtime/chronos2_hourly/solar_cwe_sources.py",
+      "bytes": 10282,
+      "sha256": "2ad7ec10f222693e010c1e760159ee407bd4303ba0c8727462b7737465781456",
+      "reason": "dependance_de_fichier_par_empreinte",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly/solar_wind_forecast.py",
+      "destination": "runtime/chronos2_hourly/solar_wind_forecast.py",
+      "bytes": 16461,
+      "sha256": "bde6f3d462b7113d1353419f6d34bbc2bb41dc3ed856e535ac7909bca41f5d64",
+      "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:28",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/solar_wind_interaction_features.py",
+      "destination": "runtime/chronos2_hourly/solar_wind_interaction_features.py",
+      "bytes": 10600,
+      "sha256": "372690a39c7a2088fe475a4e104200215edd43a33c2d7f8f189b0a1c4e547471",
+      "reason": "eager:chronos2_hourly.nyx_live_baseline:27",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/solar_wind_scarcity_ablation.py",
+      "destination": "runtime/chronos2_hourly/solar_wind_scarcity_ablation.py",
+      "bytes": 19424,
+      "sha256": "afd30b45df5583de57528356aa71180857d434033fa723d303c56bb032c713e7",
+      "reason": "eager:chronos2_hourly.nyx_live_hybrid:25",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/solar_wind_scarcity_hybrid.py",
+      "destination": "runtime/chronos2_hourly/solar_wind_scarcity_hybrid.py",
+      "bytes": 14406,
+      "sha256": "a32bf9a87caa6360bbeeda12e08b0f15947cfdd65ed539195c07956775bc3a7d",
+      "reason": "eager:chronos2_hourly.nyx_live_hybrid:24",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/solar_wind_scarcity_regime.py",
+      "destination": "runtime/chronos2_hourly/solar_wind_scarcity_regime.py",
+      "bytes": 24339,
+      "sha256": "4987d7d72ab295a5fb5449927fa1aa8c6a39ada90e0fd5f13bf006070e156215",
+      "reason": "eager:chronos2_hourly.nyx_live_hybrid:23",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_hourly/solar_wind_sources.py",
+      "destination": "runtime/chronos2_hourly/solar_wind_sources.py",
+      "bytes": 33593,
+      "sha256": "95ab77d6930fc827df907c5dde0a2441f5bcbeb95e0ea19cefd0f9d80e1c6829",
+      "reason": "dependance_de_fichier_par_empreinte",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly/storm_dashboard.py",
+      "destination": "runtime/chronos2_hourly/storm_dashboard.py",
+      "bytes": 46835,
+      "sha256": "30c62e5cb71facebd4fe603cce098109a879087964b6be3f0e86f2a28d4568c9",
+      "reason": "chronos2_hourly.nyx_saved_horizon_reporting_sources.collect_horizon_reporting_sources:59",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_modular/__init__.py",
+      "destination": "runtime/chronos2_modular/__init__.py",
+      "bytes": 65,
+      "sha256": "1a24907828db52cbc8c79dc4c7c8294bd7386db75f8536feb28bec358ad42dcd",
+      "reason": "package_init:chronos2_modular.saturn",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_modular/common.py",
+      "destination": "runtime/chronos2_modular/common.py",
+      "bytes": 12085,
+      "sha256": "777fb87ee9f72cc6d4c199d6b54b8d11d46553dec63005070cf95330b5453b6f",
+      "reason": "eager:chronos2_modular.saturn:15",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_modular/data.py",
+      "destination": "runtime/chronos2_modular/data.py",
+      "bytes": 42425,
+      "sha256": "37542e85c99fc8f2608b0e7f8b062ad172b73b9d760202b045fbff4035f1d9d4",
+      "reason": "eager:chronos2_hourly.nyx_annual_cpu_baseline:23",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_modular/exogenous_extensions.py",
+      "destination": "runtime/chronos2_modular/exogenous_extensions.py",
+      "bytes": 12024,
+      "sha256": "3cef50597da1ca232c29d6127b1ec0a8a1984f87db739d1cdd56c8c9bb6cde93",
+      "reason": "chronos2_hourly.models.residual_corrector.ResidualMetaFeatureBuilder:444",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_modular/forecasting.py",
+      "destination": "runtime/chronos2_modular/forecasting.py",
+      "bytes": 15754,
+      "sha256": "c9841c32428a6667e8696ba47b4e92f766731dcdb354701bc2cbb05c41eff743",
+      "reason": "chronos2_hourly.chronos_adapter.make_existing_forecasting_executor:613",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "chronos2_modular/saturn.py",
+      "destination": "runtime/chronos2_modular/saturn.py",
+      "bytes": 64498,
+      "sha256": "dd03d4d7ced433e3eb254a6c45f593383c8b701c5995f9f9808933f79bfdad6b",
+      "reason": "chronos2_hourly.nyx_saved_horizon_reporting_sources.collect_horizon_reporting_sources:57",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "experiment_console/__init__.py",
+      "destination": "runtime/experiment_console/__init__.py",
+      "bytes": 74,
+      "sha256": "775dfff666bc876469f5d4a44d114be855fcf2d6cb3d56887fdd2bf67a8abbae",
+      "reason": "package_init:experiment_console.security",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "experiment_console/security.py",
+      "destination": "runtime/experiment_console/security.py",
+      "bytes": 2666,
+      "sha256": "29d9f0c829ba1984421786e3d350319449be2aef36cced726d4792e311e238f6",
+      "reason": "chronos2_hourly.nyx_saved_horizon_reporting_sources._error:49",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "marginal_cost_expert/__init__.py",
+      "destination": "runtime/marginal_cost_expert/__init__.py",
+      "bytes": 79,
+      "sha256": "5abc0881415c37b2e1cabcd6a29d5cef845ad5e810d9c6ba6ecd8f7fb5ce3203",
+      "reason": "package_init:marginal_cost_expert.sources",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "marginal_cost_expert/sources.py",
+      "destination": "runtime/marginal_cost_expert/sources.py",
+      "bytes": 14689,
+      "sha256": "60e9ff517255a815f90b308e5ed71616e3c2ec0e2f4fde7a37f600efa4ef105d",
+      "reason": "eager:run_nyx_annual_thermal_source:28",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "materialize_saturn_kalman_fuel.py",
+      "destination": "runtime/materialize_saturn_kalman_fuel.py",
+      "bytes": 80207,
+      "sha256": "58384d0fd4ecbbfbf712c908cdb0dd1050599fb2bb7f25ee3311a225745c656e",
+      "reason": "chronos2_hourly.nyx_saved_horizon_sources._fuel:193",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "materialize_saturn_kalman_weather.py",
+      "destination": "runtime/materialize_saturn_kalman_weather.py",
+      "bytes": 30519,
+      "sha256": "fdde7ffce592753ad06d638f0957fe68d6efd43976a5cd0a7bc79c55671ab67a",
+      "reason": "dependance_de_fichier_par_empreinte",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "run_nyx_annual_auction_prices_source.py",
+      "destination": "runtime/run_nyx_annual_auction_prices_source.py",
+      "bytes": 12179,
+      "sha256": "6b0cf2ef7d5ba64d13a6f1f5bea7b6794a91b7149a8c551812db36511233d00f",
+      "reason": "chronos2_hourly.nyx_saved_horizon_reporting_sources.collect_horizon_reporting_sources:63",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "run_nyx_annual_exchange_source.py",
+      "destination": "runtime/run_nyx_annual_exchange_source.py",
+      "bytes": 24409,
+      "sha256": "e3070872347795a509336d84c1fdf19c6e9a1c0f41d8b71bbacb04c15bbcd633",
+      "reason": "chronos2_hourly.nyx_saved_horizon_sources.collect_horizon_sources:370",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "run_nyx_annual_hydro_source.py",
+      "destination": "runtime/run_nyx_annual_hydro_source.py",
+      "bytes": 10014,
+      "sha256": "462b11c386fc955c5e040e30cde0bc6e7d212760f52849d6d1ffb8bae10fa163",
+      "reason": "chronos2_hourly.nyx_saved_horizon_sources.collect_horizon_sources:369",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "run_nyx_annual_thermal_source.py",
+      "destination": "runtime/run_nyx_annual_thermal_source.py",
+      "bytes": 21778,
+      "sha256": "f3544c5d135f5da1715364b013dc59fa7db8b19d8ee57e485ac851e92262633c",
+      "reason": "chronos2_hourly.nyx_annual_cpu_bundle_builder.build_feature_matrices:224",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "config/nyx_annual_cpu_ordered_features.json",
+      "destination": "runtime/config/nyx_annual_cpu_ordered_features.json",
+      "bytes": 197237,
+      "sha256": "2fdf9dd9e129609123a01c0f755c89baf4088f07d377aac88642dc570b54173f",
+      "reason": "configuration_runtime_et_identite_epinglee",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "config/kalman_operational.yaml",
+      "destination": "runtime/config/kalman_operational.yaml",
+      "bytes": 4983,
+      "sha256": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d",
+      "reason": "configuration_runtime_et_identite_epinglee",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly_fr_residual_v1.yaml",
+      "destination": "runtime/chronos2_hourly_fr_residual_v1.yaml",
+      "bytes": 6416,
+      "sha256": "f1127f26bcdd8f5c62dd714fa319c024068327fa1284b3d183fa7872bdeaeea2",
+      "reason": "configuration_runtime_et_identite_epinglee",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly_de_residual_candidate_v1.yaml",
+      "destination": "runtime/chronos2_hourly_de_residual_candidate_v1.yaml",
+      "bytes": 5485,
+      "sha256": "2f44805b4f2e36a17070bc0aae9c6e48a3320828811a0c0a0ca2820dd79ec15d",
+      "reason": "configuration_runtime_et_identite_epinglee",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly_be_residual_candidate_v1.yaml",
+      "destination": "runtime/chronos2_hourly_be_residual_candidate_v1.yaml",
+      "bytes": 5485,
+      "sha256": "b67ea624a2438cc61231adc8c6d6b442780a4674c5eebd87c974fadf971c8b3a",
+      "reason": "configuration_runtime_et_identite_epinglee",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "chronos2_hourly_nl_residual_candidate_v1.yaml",
+      "destination": "runtime/chronos2_hourly_nl_residual_candidate_v1.yaml",
+      "bytes": 5516,
+      "sha256": "7ac94e36849bd441c6dee87ee9b1dd4eba644301b1ffc1ed79ce884b20e9c6fe",
+      "reason": "configuration_runtime_et_identite_epinglee",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_daily_refit.py",
+      "destination": "runtime/annual_extension/nyx_daily_refit.py",
+      "bytes": 20483,
+      "sha256": "d56bdbc0b12e72006b1de664ac8b9f56b5445f901a692641b458af456e70faa4",
+      "reason": "entrypoint",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_daily_refit_experts.py",
+      "destination": "runtime/annual_extension/nyx_daily_refit_experts.py",
+      "bytes": 16036,
+      "sha256": "163fdf6144a757535d1eb7d4dce47ff2d0526752787784621f9138bc6785a679",
+      "reason": "chronos2_hourly.nyx_daily_refit._fit_horizon_models:159",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_daily_refit_history.py",
+      "destination": "runtime/annual_extension/nyx_daily_refit_history.py",
+      "bytes": 26643,
+      "sha256": "899d0ca89109a2860787547063fbbc4ae53dee3a69966c918233892fd7d18479",
+      "reason": "chronos2_hourly.nyx_daily_refit._fit_horizon_models:157",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_daily_refit_reference.py",
+      "destination": "runtime/annual_extension/nyx_daily_refit_reference.py",
+      "bytes": 21039,
+      "sha256": "62858d063c91768bdc59d2e4226648b41e6d23f7694f52ef2a6cd51963ac59ea",
+      "reason": "chronos2_hourly.nyx_daily_refit._fit_horizon_models:158",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_daily_state_cache.py",
+      "destination": "runtime/annual_extension/nyx_daily_state_cache.py",
+      "bytes": 9201,
+      "sha256": "6817e40b426a838c4c4955a83110b9629b86c70c6f9e4135567e499ac6c605c7",
+      "reason": "chronos2_hourly.nyx_saved_horizon_inference.produce_horizon:466",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_daily_two_day_baseline.py",
+      "destination": "runtime/annual_extension/nyx_daily_two_day_baseline.py",
+      "bytes": 33116,
+      "sha256": "3562de879fe09d8ff66312029ed227ead8e4894e60b6dfafcef1cc5a81fe2c9f",
+      "reason": "chronos2_hourly.nyx_saved_horizon_inference.produce_horizon:474",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_saved_horizon_inference.py",
+      "destination": "runtime/annual_extension/nyx_saved_horizon_inference.py",
+      "bytes": 31977,
+      "sha256": "515f99333fffa89ba7f026f3554372f6a1dde98352036e21bc7fbbc60e202090",
+      "reason": "chronos2_hourly.nyx_daily_refit.produce_refit_horizon:141",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_saved_horizon_reporting_sources.py",
+      "destination": "runtime/annual_extension/nyx_saved_horizon_reporting_sources.py",
+      "bytes": 8765,
+      "sha256": "94d7e6cf5461edff60683d70530f2a8c0eb94877d5024fbc2ba83bab157ff937",
+      "reason": "reporting_api",
+      "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_saved_horizon_resume.py",
+      "destination": "runtime/annual_extension/nyx_saved_horizon_resume.py",
+      "bytes": 21556,
+      "sha256": "b842e34057d3a4522265baa59cc80cf08a865f8821fd38919c27033f43f1b91e",
+      "reason": "extension_preservee_pour_verification_empreinte_ou_reprise",
+      "fingerprint_required": true,
+      "active_call_path": false
+    },
+    {
+      "source": "data/offline_packets/20261016-192438-59abb8/render_sources/annual_extension/nyx_saved_horizon_sources.py",
+      "destination": "runtime/annual_extension/nyx_saved_horizon_sources.py",
+      "bytes": 24848,
+      "sha256": "447910097b2a13782e7e80ecc7e134e4ab4d5084b286e06c2ac90a916eb00536",
+      "reason": "chronos2_hourly.nyx_saved_horizon_inference._produce_horizon:373",
+      "fingerprint_required": true,
+      "active_call_path": true
+    }
+  ],
+  "original_application_top_level_launcher_in_repository": false,
+  "provided_report_origin": "Downloaded by user from NYX application",
+  "reference_reports": [
+    {
+      "name": "CWE_Model_Storm_2026-10-22.html",
+      "sha256": "5ea9180927eacc58ee80055a6c51e5527afaf3b971e65cd1cf871f88a7893066"
+    },
+    {
+      "name": "CWE_Model_Storm_2026-10-23.html",
+      "sha256": "7d33287a965a38e4c04c6cb9c6d4aa95e141f27bbadfc77b514b1a5177633fac"
+    },
+    {
+      "name": "CWE_Model_Storm_J1_J2_2026-10-22.html",
+      "sha256": "3a36147789a4ee4c6cd65e6fb50fb421a7e6d5ac2a2b3a969c7a4e066ef67358"
+    }
+  ]
+}

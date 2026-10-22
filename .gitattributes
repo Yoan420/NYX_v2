@@ -1,6 +1,13 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
+# The isolated production runtime retains byte-verified source receipts.
+production/runtime/** text eol=lf whitespace=-blank-at-eof
+production/SOURCE_MANIFEST.json text eol=lf
+production/nyx_production/** text eol=lf
+nyx_runtime/** text eol=lf
+deploy/aws/*.sh text eol=lf
+
 # Annual CPU qualification hashes these files as raw bytes on every host.
 chronos2_hourly/nyx_annual_cpu_live.py text eol=lf
 chronos2_hourly/nyx_annual_cpu_qualification.py text eol=lf
