@@ -1,3 +1,0 @@
-# Exécution AWS : même environnement scientifique que l'exécution locale.
--r requirements.txt
-boto3==1.43.117

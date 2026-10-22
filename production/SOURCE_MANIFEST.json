@@ -4,15 +4,15 @@
   "revision": "b0fa97f4d690c52a73d5716c16b152b0124c3882",
   "selection": {
     "source_ref": "b0fa97f4d690c52a73d5716c16b152b0124c3882",
-    "canonical_python_files": 76,
+    "canonical_python_files": 79,
     "extension_python_files": 10,
     "config_files": 6,
-    "method": "Approximation interprocedurale statique depuis produce_refit_horizon: imports eager des modules charges, appels directs, callbacks explicites, imports des fonctions atteintes. Pas une trace executee: dispatch dynamique et alias locaux peuvent exiger verification import-smoke.",
+    "method": "Fermeture statique des imports et appels depuis produce_refit_horizon et les comparateurs, complétée par les sources requises par empreinte et la chaîne dynamique capture_daily/verify_daily. Les captures publiques font partie du workflow quotidien avant la coupure.",
     "entrypoints": [
       "chronos2_hourly.nyx_daily_refit.produce_refit_horizon",
       "chronos2_hourly.nyx_saved_horizon_reporting_sources.collect_horizon_reporting_sources"
     ],
-    "overlay": "live.py ajoute runtime/annual_extension au chronos2_hourly.__path__. Sources et bytes conserves, noms de modules historiques des objets serialises preserves.",
+    "overlay": "nyx_runtime.engine.activate_runtime ajoute production/runtime au chemin Python et annual_extension au chronos2_hourly.__path__. Les noms historiques des objets sérialisés et les octets scientifiques sont préservés.",
     "excluded_modules": [
       "chronos2_exogenous",
       "chronos2_exogenous.activation_contract",
@@ -95,7 +95,11 @@
       "materialize_saturn_kalman_weather.py"
     ],
     "source_unchanged": true,
-    "validation": "PASS statique : 86 fichiers Python syntaxiquement valides, 92 fichiers source/config copies identiques en octets, 80 modules actifs et 568 fonctions/classes analysees ; 152 aretes imports locaux eager et 111 lazy actives toutes resolues, 6 configs et empreintes presentes. Pas execution scientifique faute seed/poids/client prive ; overlay requis avant import."
+    "validation": "95 fichiers source/configuration vérifiés identiques aux objets Git d'origine (89 Python analysés syntaxiquement, 6 configurations). Imports de capture vérifiés ; tests de fenêtres/DST, verrou et persistance avec fournisseurs simulés. Ces contrôles et les tests sur fixtures ne constituent pas une prévision complète avec les sources, poids et données privés.",
+    "capture_entrypoints": [
+      "run_nyx_annual_daily_capture.capture_daily",
+      "run_nyx_annual_daily_capture.verify_daily"
+    ]
   },
   "source_files": [
     {
@@ -924,6 +928,33 @@
       "sha256": "447910097b2a13782e7e80ecc7e134e4ab4d5084b286e06c2ac90a916eb00536",
       "reason": "chronos2_hourly.nyx_saved_horizon_inference._produce_horizon:373",
       "fingerprint_required": true,
+      "active_call_path": true
+    },
+    {
+      "source": "run_nyx_annual_daily_capture.py",
+      "destination": "runtime/run_nyx_annual_daily_capture.py",
+      "bytes": 10025,
+      "sha256": "083c510c0962ae5e77b27892626244316d1812dc48d8113f7b9e2d011cc68e40",
+      "reason": "Public point-in-time capture before the common forecast cutoff.",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "run_nyx_annual_jao_source.py",
+      "destination": "runtime/run_nyx_annual_jao_source.py",
+      "bytes": 3961,
+      "sha256": "3c03db1a67da2f618fa9b39f19dad27b0a23c1a8a22895169cadeb05b9e6f394",
+      "reason": "Public point-in-time capture before the common forecast cutoff.",
+      "fingerprint_required": false,
+      "active_call_path": true
+    },
+    {
+      "source": "materialize_jao_core_flowbased.py",
+      "destination": "runtime/materialize_jao_core_flowbased.py",
+      "bytes": 20166,
+      "sha256": "e02ddff54d44f9d2f447744688bcf2773c541a619c88b72a728ca4ab27babb4e",
+      "reason": "Public point-in-time capture before the common forecast cutoff.",
+      "fingerprint_required": false,
       "active_call_path": true
     }
   ],

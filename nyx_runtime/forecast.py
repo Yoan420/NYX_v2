@@ -24,6 +24,7 @@ from .engine import (
 )
 from .preflight import LivePreflightError, inspect_live
 from .reporting import CSV_COLUMNS
+from .detail_reports import render_country_reports
 
 
 def write_json(path: Path, value: dict) -> None:
@@ -175,6 +176,11 @@ def run_live(config: Mapping[str, Any], first_day: str, cutoff: Any, output_dir:
         native_paths[zone] = str(path)
     canonical_path = output / "predictions.csv"
     canonical.to_csv(canonical_path, index=False, encoding="utf-8")
+    # The original country reports contain negative-price probabilities and
+    # historical baseline statistics that the compact CWE overview cannot replace.
+    # Any rendering failure must propagate before this run can be published.
+    country_reports = render_country_reports(result, first_day, stamp,
+                                              output / "reports", comparisons, reporting_audit)
     audit_path = output / "live_audit.json"
     write_json(audit_path, {"protocol": PROTOCOL, "model_audit": audit,
                             "sources_audit": result.get("sources_audit", {}),
@@ -188,6 +194,7 @@ def run_live(config: Mapping[str, Any], first_day: str, cutoff: Any, output_dir:
                 "cutoff_utc": stamp.isoformat(), "generated_at_utc": datetime.now(timezone.utc).isoformat(),
                 "rows": len(canonical), "countries": list(ZONES), "qualified_for_production": False,
                 "predictions_csv": str(canonical_path), "forecasts_csv": native_paths,
+                "country_reports": country_reports, "index": country_reports["index"],
                 "csv_files": [str(canonical_path), *native_paths.values()],
                 "forecast_extension_dir": str(output / "forecast_extension"),
                 "model_audit_path": str(refit_receipt.parent / "model_audit.json"),

@@ -22,6 +22,15 @@ production/runtime/runs/
 *.pkl
 *.cbm
 *.safetensors
+*.bin
+*.pt
+*.csv
+*.csv.gz
+*.html
+!nyx_runtime/templates/report.html
+*.log
+.cache/
+huggingface/
 
 # Configuration et paquets privés
 config.local.json

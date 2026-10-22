@@ -117,6 +117,7 @@ class ProductionLiveTests(unittest.TestCase):
                 return module if name == "chronos2_hourly.nyx_daily_refit" else original_import(name, *args, **kwargs)
             with patch.object(live, "inspect_live", return_value={"ready": True}), \
                  patch.object(live, "activate_runtime"), \
+                 patch.object(live, "render_country_reports", return_value={"index": str(root / "new-run/reports/index.html")}), \
                  patch.object(live.importlib, "import_module", side_effect=import_module):
                 result = live.run_live(config, FIRST_DAY, CUTOFF, root / "new-run")
             self.assertEqual(result["status"], "CSV_COMPLETE")

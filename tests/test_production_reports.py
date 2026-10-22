@@ -138,12 +138,16 @@ class ProductionReportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             source, output = root / "predictions.csv", root / "reports-output"
+            output.mkdir()
+            (output / "latest.json").write_text('{"run_id":"prior-forecast"}')
             report_io.write_predictions(source, synthetic_rows())
             with patch.object(report_io, "_find_plotly", return_value="synthetic asset"), \
                  contextlib.redirect_stdout(io.StringIO()):
                 code = cli.main(["reports", "--csv", str(source), "--output-root", str(output)])
             self.assertEqual(code, 0)
-            pointer = json.loads((output / "latest.json").read_text())
+            self.assertEqual(json.loads((output / "latest.json").read_text()),
+                             {"run_id": "prior-forecast"})
+            pointer = json.loads((output / "latest_reports.json").read_text())
             self.assertEqual(pointer["action"], "reports")
             self.assertEqual((output / pointer["predictions_csv"]).resolve(), source)
             status = json.loads((output / pointer["status_file"]).read_text())
@@ -152,6 +156,21 @@ class ProductionReportTests(unittest.TestCase):
             html_files = status["result"]["html_files"]
             self.assertEqual(len(html_files), 3)
             self.assertTrue(all(Path(path).is_file() for path in html_files))
+
+    def test_report_only_supports_csv_on_another_windows_drive(self):
+        from nyx_runtime import pipeline
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source, output = root / "predictions.csv", root / "reports-output"
+            report_io.write_predictions(source, synthetic_rows())
+            with patch.object(report_io, "_find_plotly", return_value="synthetic asset"), \
+                 patch.object(pipeline.os.path, "relpath", side_effect=ValueError("different drives")), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                code = cli.main(["reports", "--csv", str(source), "--output-root", str(output)])
+            self.assertEqual(code, 0)
+            pointer = json.loads((output / "latest_reports.json").read_text())
+            self.assertEqual(pointer["predictions_csv"], str(source.resolve()))
+            self.assertFalse((output / "latest.json").exists())
 
     def test_json_duplicate_keys_and_javascript_input_are_rejected_without_execution(self):
         for raw in ('{"data":[],"data":[]}', '{"x":NaN}', 'alert("no execution")'):

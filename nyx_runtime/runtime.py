@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import shutil
+import stat
 from uuid import uuid4
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,13 +47,27 @@ def verify_runtime() -> None:
             raise ValueError(f"Source de production absente ou redirigée : {relative}")
         if hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]:
             raise ValueError(f"Source de production modifiée : {relative}")
+    # Un rendu absent doit bloquer avant de lancer les entraînements coûteux.
+    reporting = json.loads((PRODUCTION / "REPORTING_MANIFEST.json").read_text(encoding="utf-8"))
+    for name, expected in reporting["files"].items():
+        relative = PurePosixPath(name)
+        path = PRODUCTION / "reporting" / relative
+        if (relative.is_absolute() or ".." in relative.parts or path.is_symlink()
+                or not path.is_file() or not path.resolve().is_relative_to((PRODUCTION / "reporting").resolve())
+                or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
+            raise ValueError(f"Source de reporting absente ou modifiée : {relative}")
+    if not (ROOT / "nyx_runtime/templates/report.html").is_file():
+        raise ValueError("Modèle HTML CWE absent : nyx_runtime/templates/report.html")
 
 
 @contextmanager
 def runtime_lock():
     """Réserver le runtime à un seul précontrôle ou calcul à la fois."""
-    path = RUNTIME / "runs/.nyx_cloud.lock"
+    root = _checked_root(RUNTIME)
+    path = root / "runs/.nyx_cloud.lock"
+    _check_location(root, path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    _check_location(root, path)
     try:
         handle = path.open("x", encoding="utf-8")
     except FileExistsError as error:
@@ -62,7 +77,57 @@ def runtime_lock():
             json.dump({"pid": os.getpid(), "started_utc": datetime.now(timezone.utc).isoformat()}, handle)
         yield
     finally:
+        _check_location(root, path)
         path.unlink(missing_ok=True)
+
+
+def _redirected(path: Path) -> bool:
+    """Détecter aussi les jonctions Windows sur Python 3.11."""
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return False
+    return (stat.S_ISLNK(info.st_mode)
+            or getattr(info, "st_reparse_tag", 0) in (0xA0000003, 0xA000000C))
+
+
+def _checked_root(path: Path) -> Path:
+    path = Path(path).absolute()
+    # Contrôler les composants avant resolve(), qui effacerait les alias.
+    for candidate in (path, *path.parents):
+        if _redirected(candidate):
+            raise ValueError(f"Racine ou parent redirigé par lien/jonction : {candidate}")
+    return path.resolve()
+
+
+def _check_location(root: Path, path: Path) -> None:
+    if not path.is_relative_to(root) or not path.resolve().is_relative_to(root):
+        raise ValueError(f"Chemin d'état hors de la racine autorisée : {path}")
+    for candidate in (path, *path.parents):
+        if _redirected(candidate):
+            raise ValueError(f"Chemin d'état redirigé par lien/jonction : {candidate}")
+        if candidate == root:
+            break
+
+
+def _check_tree(root: Path, directory: Path) -> None:
+    """Examiner les entrées sans traverser de lien ou de jonction."""
+    _check_location(root, directory)
+    if not directory.exists():
+        return
+    if not directory.is_dir():
+        raise ValueError(f"Dossier d'état requis : {directory}")
+    pending = [directory]
+    while pending:
+        current = pending.pop()
+        with os.scandir(current) as entries:
+            for entry in entries:
+                path = Path(entry.path)
+                _check_location(root, path)
+                if entry.is_dir(follow_symlinks=False):
+                    pending.append(path)
+                elif not entry.is_file(follow_symlinks=False):
+                    raise ValueError(f"Fichier d'état non régulier : {path}")
 
 
 def copy_state(source: Path, destination: Path) -> None:
@@ -71,16 +136,19 @@ def copy_state(source: Path, destination: Path) -> None:
     Un dossier absent de la source est retiré de la destination pour éviter
     de mélanger des états provenant de deux snapshots différents.
     """
+    source, destination = _checked_root(source), _checked_root(destination)
+    if (source == destination or source.is_relative_to(destination)
+            or destination.is_relative_to(source)):
+        raise ValueError("Les racines des états doivent être distinctes et non imbriquées.")
+    # Tout valider avant la première suppression, y compris les parents et
+    # les jonctions internes qu'un parcours récursif pourrait sinon suivre.
+    for relative in STATE_PATHS:
+        _check_tree(source, source / relative)
+        _check_tree(destination, destination / relative)
     for relative in STATE_PATHS:
         origin, target = source / relative, destination / relative
-        if origin.is_symlink() or (origin.exists() and any(p.is_symlink() for p in origin.rglob("*"))):
-            raise ValueError(f"Lien symbolique interdit dans un état : {origin}")
-        if origin.exists() and not origin.is_dir():
-            raise ValueError(f"Dossier d'état requis : {origin}")
-        if target.is_symlink():
-            raise ValueError(f"Destination d'état redirigée : {target}")
-    for relative in STATE_PATHS:
-        origin, target = source / relative, destination / relative
+        _check_location(source, origin)
+        _check_location(destination, target)
         if target.exists():
             shutil.rmtree(target)
         if origin.exists():

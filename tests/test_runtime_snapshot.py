@@ -36,6 +36,14 @@ class SnapshotTests(unittest.TestCase):
         options.update(overrides)
         return create_snapshot(**options)
 
+    def make_symlink(self, link, target, *, directory=False):
+        try:
+            link.symlink_to(target, target_is_directory=directory)
+        except OSError as error:
+            if getattr(error, "winerror", None) == 1314:
+                self.skipTest("Windows does not grant symbolic-link creation privilege")
+            raise
+
     def test_exports_exact_bytes_and_selected_states_only(self):
         state = self.runtime / "runs/nyx_daily_cpu_states/seed/20261022"
         state.mkdir(parents=True)
@@ -59,7 +67,7 @@ class SnapshotTests(unittest.TestCase):
         blob = self.hub / MODEL_DIRECTORY / "blobs/digest"
         blob.parent.mkdir()
         blob.write_bytes(b"shared model blob")
-        weights.symlink_to(blob)
+        self.make_symlink(weights, blob)
         self.export()
         copied = self.destination / "huggingface/hub" / MODEL_DIRECTORY / "snapshots" / CHRONOS_REVISION / weights.name
         self.assertFalse(copied.is_symlink())
@@ -67,22 +75,23 @@ class SnapshotTests(unittest.TestCase):
         self.assertTrue(weights.is_symlink())
 
     def test_rejects_seed_links_without_creating_destination(self):
-        (self.bundle / "linked.json").symlink_to(self.output / "model.cbm")
+        self.make_symlink(self.bundle / "linked.json", self.output / "model.cbm")
         with self.assertRaisesRegex(ValueError, "symbolic link"):
             self.export()
         self.assertFalse(self.destination.exists())
 
     def test_rejects_huggingface_links_outside_model_directory(self):
-        (self.weights / "escaped.json").symlink_to(self.bundle / "receipt.json")
+        self.make_symlink(self.weights / "escaped.json", self.bundle / "receipt.json")
         with self.assertRaisesRegex(ValueError, "escaping symbolic link"):
             self.export()
         self.assertFalse(self.destination.exists())
 
-    def test_rejects_directory_links_and_source_overlaps(self):
-        (self.weights / "directory_link").symlink_to(self.bundle, target_is_directory=True)
+    def test_rejects_directory_links(self):
+        self.make_symlink(self.weights / "directory_link", self.bundle, directory=True)
         with self.assertRaises(ValueError):
             self.export()
-        (self.weights / "directory_link").unlink()
+
+    def test_rejects_source_overlaps(self):
         with self.assertRaisesRegex(ValueError, "overlaps"):
             self.export(destination=self.runtime / "export")
         self.assertFalse((self.runtime / "export").exists())
@@ -102,8 +111,8 @@ class SnapshotTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "checksum"):
             validate_snapshot(self.destination)
         artifact.write_bytes(b"saved estimator bytes")
-        (self.destination / "stale.txt").write_text("old S3 object")
-        with self.assertRaisesRegex(ValueError, "new, empty S3 prefix"):
+        (self.destination / "stale.txt").write_text("stale snapshot artifact")
+        with self.assertRaisesRegex(ValueError, "new, empty directory"):
             validate_snapshot(self.destination)
 
     def test_rejects_traversal_in_manifest(self):

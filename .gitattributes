@@ -4,4 +4,5 @@
 production/runtime/** text eol=lf whitespace=-blank-at-eof
 production/SOURCE_MANIFEST.json text eol=lf
 nyx_runtime/** text eol=lf
-deploy/aws/*.sh text eol=lf
+production/reporting/** text eol=lf
+production/REPORTING_MANIFEST.json text eol=lf

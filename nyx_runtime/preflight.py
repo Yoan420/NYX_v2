@@ -8,13 +8,14 @@ from __future__ import annotations
 
 from datetime import date
 import importlib.metadata
-import importlib.util
+import os
 from pathlib import Path
+import re
+import sys
 from typing import Any, Mapping
 
 from .engine import (
     CHRONOS_REVISION,
-    DEPENDENCIES,
     EXTENSIONS,
     FAMILIES,
     PROTOCOL,
@@ -35,6 +36,76 @@ class LivePreflightError(ValueError):
     def __init__(self, report: dict):
         self.report = report
         super().__init__("Précontrôle bloqué : " + "; ".join(report["blockers"]))
+
+
+REQUIREMENTS = Path(__file__).resolve().parents[1] / "requirements.txt"
+
+
+def _release_version(value: str) -> tuple[int, ...] | None:
+    """Normaliser les versions finales épinglées, selon leur identité PEP 440.
+
+    Les pins de cette recette sont des versions finales numériques. Un suffixe
+    local valide (+cpu, par exemple) ne change pas la version publique. Les
+    versions pre/dev/post et les epochs non nuls ne sont pas ces releases.
+    """
+    match = re.fullmatch(
+        r"\s*[vV]?(?:0!)?(\d+(?:\.\d+)*)(?:\+[a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*)?\s*",
+        str(value),
+    )
+    if match is None:
+        return None
+    release = tuple(int(part) for part in match.group(1).split("."))
+    while len(release) > 1 and release[-1] == 0:
+        release = release[:-1]
+    return release
+
+
+def pinned_requirements(path: Path | None = None) -> dict[str, str]:
+    """Lire le contrat installé depuis requirements.txt, sans importer de paquet."""
+    path = REQUIREMENTS if path is None else path
+    expected = {}
+    for number, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+        line = line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        match = re.fullmatch(r"([A-Za-z0-9][A-Za-z0-9._-]*)==([0-9]+(?:\.[0-9]+)*)", line)
+        if match is None:
+            raise ValueError(f"requirements.txt:{number} exige une version finale exacte package==version.")
+        name, version = match.groups()
+        normalized = re.sub(r"[-_.]+", "-", name).lower()
+        if normalized in expected:
+            raise ValueError(f"requirements.txt contient un pin dupliqué : {normalized}.")
+        expected[normalized] = version
+    if not expected:
+        raise ValueError("requirements.txt ne contient aucun pin de dépendance.")
+    if "tshistory-lite" in expected and expected["tshistory-lite"] != "0.5":
+        raise ValueError("Le client Saturn privé doit conserver tshistory_lite==0.5.")
+    expected["tshistory-lite"] = "0.5"
+    return expected
+
+
+def inspect_versions(expected: Mapping[str, str]) -> dict:
+    """Comparer uniquement les métadonnées des distributions à la recette."""
+    versions, mismatches, missing = {}, [], []
+    for distribution, wanted in expected.items():
+        try:
+            observed = importlib.metadata.version(distribution)
+        except importlib.metadata.PackageNotFoundError:
+            observed = None
+            missing.append(distribution)
+        versions[distribution] = observed
+        if observed is None or _release_version(observed) != _release_version(wanted):
+            mismatches.append({"distribution": distribution, "expected": wanted, "observed": observed})
+    return {"passed": not mismatches, "expected_versions": dict(expected),
+            "installed_versions": versions, "mismatches": mismatches,
+            "missing_distributions": missing, "metadata_only": True}
+
+
+def check_python_version() -> dict:
+    observed = ".".join(str(part) for part in sys.version_info[:3])
+    if sys.version_info[:2] != (3, 11):
+        raise ValueError(f"Python observé {observed} ; attendu 3.11.x. Recréer l'environnement avec Python 3.11.")
+    return {"observed": observed, "expected": "3.11.x"}
 
 
 def validate_seed(bundle: Path, output: Path, first_day: str) -> dict:
@@ -96,7 +167,18 @@ def inspect_live(config: Mapping[str, Any], first_day: str, cutoff: Any) -> dict
             report["blockers"].append(f"{name} : {message}")
             return None
 
+    check("python_version", check_python_version)
     request = check("request", lambda: validate_request(first_day, cutoff))
+    def saturn_author():
+        if not os.environ.get("SATURN_AUTHOR", "").strip():
+            raise ValueError("Définir SATURN_AUTHOR avec votre identifiant professionnel avant la prévision.")
+        return {"configured": True, "network_access_checked": False}
+    check("saturn_author", saturn_author)
+    def fixed_cutoff_context():
+        if "NYX_ANNUAL_OPERATIONAL_CONTEXT" in os.environ:
+            raise ValueError("Retirer NYX_ANNUAL_OPERATIONAL_CONTEXT : ce lanceur utilise la coupure fixe de 08 h Paris.")
+        return {"shared_cutoff_override": False}
+    check("fixed_cutoff_context", fixed_cutoff_context)
     if request:
         first_day, stamp = request
         report["cutoff_utc"] = stamp.isoformat()
@@ -121,29 +203,23 @@ def inspect_live(config: Mapping[str, Any], first_day: str, cutoff: Any) -> dict
     if repo:
         check("runtime_files", runtime_files)
 
-    versions, missing = {}, []
-    for module, distribution in DEPENDENCIES.items():
-        try:
-            present = importlib.util.find_spec(module) is not None
-        except (ImportError, ValueError):
-            present = False
-        if not present:
-            missing.append(module)
-        else:
-            try:
-                versions[distribution] = importlib.metadata.version(distribution)
-            except importlib.metadata.PackageNotFoundError:
-                versions[distribution] = "module présent ; distribution non identifiée"
-    report["installed_versions"] = versions
-    report["checks"]["dependencies"] = {"passed": not missing, "missing_modules": missing}
-    if missing:
-        report["blockers"].append("dependencies : modules absents : " + ", ".join(missing))
+    expected = check("dependency_manifest", pinned_requirements)
+    dependencies = inspect_versions(expected) if expected else {"passed": False, "installed_versions": {}}
+    report["installed_versions"] = dependencies["installed_versions"]
+    report["checks"]["dependencies"] = dependencies
+    for mismatch in dependencies.get("mismatches", []):
+        name, wanted, observed = mismatch["distribution"], mismatch["expected"], mismatch["observed"]
+        remedy = ("Installer le wheel Saturn approuvé tshistory_lite==0.5."
+                  if name == "tshistory-lite" else "Réinstaller les versions de requirements.txt.")
+        report["blockers"].append(
+            f"dependencies : {name} observé {observed or 'absent'} ; attendu {wanted}. {remedy}"
+        )
     seed = check("seed_artifacts", lambda: validate_seed(bundle, output, first_day)) if bundle and output and request else None
     if seed:
         report["checks"]["seed_artifacts"]["detail"] = {
             "receipt_sha256": seed["receipt_sha256"], "counts": seed["counts"]}
 
-    if seed and "huggingface_hub" not in missing:
+    if seed and dependencies["passed"]:
         def model_cache():
             from huggingface_hub import snapshot_download
             local = Path(snapshot_download("amazon/chronos-2", revision=CHRONOS_REVISION,

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import json
 from pathlib import Path
 import sys
@@ -20,11 +21,9 @@ def parser() -> argparse.ArgumentParser:
         command.add_argument("--horizons", type=int, nargs="+", default=[1, 2])
         command.add_argument("--zones", nargs="+", default=list(ZONES))
         if name != "plan":
-            command.add_argument("--config", type=Path, help="Configuration JSON des chemins et du stockage.")
+            command.add_argument("--config", type=Path, help="Configuration JSON des chemins locaux.")
             command.add_argument("--input-root", type=Path)
             command.add_argument("--output-root", type=Path)
-            command.add_argument("--input-s3-uri")
-            command.add_argument("--output-s3-uri")
             sources = command.add_mutually_exclusive_group()
             sources.add_argument("--collect-reporting-sources", dest="collect_reporting_sources",
                                  action="store_true", default=None)
@@ -34,6 +33,15 @@ def parser() -> argparse.ArgumentParser:
     export = commands.add_parser("export-input", help="Copier les seeds, poids et états du poste d'origine.")
     for flag in ("seed-bundle", "seed-output", "runtime-root", "hf-hub-cache", "destination"):
         export.add_argument("--" + flag, type=Path, required=True)
+
+    capture = commands.add_parser("capture", help="Capturer les sources publiques avant 08 h à Paris.")
+    capture.add_argument("--config", type=Path)
+    capture.add_argument("--input-root", type=Path)
+    capture.add_argument("--output-root", type=Path)
+    capture.add_argument("--delivery-day", type=date.fromisoformat,
+                         help="Vérification de date : demain à Paris, ou jour archivé avec --verify-only.")
+    capture.add_argument("--verify-only", action="store_true")
+    capture.add_argument("--ca-bundle", type=Path, help="Certificats PEM approuvés pour le proxy JAO.")
 
     reports = commands.add_parser("reports", help="Produire les HTML depuis un CSV de prévisions.")
     reports.add_argument("--csv", type=Path, required=True)
@@ -59,6 +67,13 @@ def main(argv: list[str] | None = None) -> int:
             settings = load_settings(args.config, output_root=args.output_root)
             return render_saved_reports(args.csv, settings.output_root)
 
+        if args.command == "capture":
+            from .capture import execute_capture
+            settings = load_settings(args.config, input_root=args.input_root,
+                                     output_root=args.output_root)
+            return execute_capture(settings, requested_day=args.delivery_day,
+                                   verify_only=args.verify_only, ca_bundle=args.ca_bundle)
+
         if sorted(args.horizons) != [1, 2] or len(args.zones) != 4 or set(args.zones) != set(ZONES):
             raise ValueError("La recette retenue exige J+1 et J+2 et les quatre pays FR/DE/BE/NL.")
         plan = make_plan(args.first_day, args.as_of)
@@ -69,7 +84,6 @@ def main(argv: list[str] | None = None) -> int:
         from .pipeline import execute
         settings = load_settings(
             args.config, input_root=args.input_root, output_root=args.output_root,
-            input_s3_uri=args.input_s3_uri, output_s3_uri=args.output_s3_uri,
             collect_reporting_sources=args.collect_reporting_sources,
         )
         return execute(args.command, settings, plan)

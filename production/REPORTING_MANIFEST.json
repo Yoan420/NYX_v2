@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "purpose": "Original NYX detailed reports, byte-identical to main; recovered mail confirms assembly calls",
+  "source": "NYX_rapports_simplifies_plan_performances_2026-10-15.txt",
+  "attachment_sha256": "3c67be89d9e3ff3b74bbc164d962735ceea0c35308bd0d803c58175f000d84a7",
+  "embedded_payload_sha256": "d299504b9cc134fc2218a336f8beb3e72fe580285c9fc170c6063c605872deee",
+  "template_commit": "6f44ee290df4a2c32adb27ce52297caa5ae3b227",
+  "files": {
+    "report_detail_adapter.py": "dbb7875d8013bc0f51b8231f65738974d9b5bb8dc63a8a86df551304cd1d1f6c",
+    "nyx_prod_templates/__init__.py": "5714ffe6fa3b5beda9934e8a70ad14d347a1ad3971e35a8cf439b5e27cf922f4",
+    "nyx_prod_templates/common.py": "777fb87ee9f72cc6d4c199d6b54b8d11d46553dec63005070cf95330b5453b6f",
+    "nyx_prod_templates/report.py": "bcee043dfa0c2ace014affbb065d79fafed8fc100addc6f73d2bcd38327841f1",
+    "nyx_prod_templates/metrics.py": "032e8140c94eb116b68edf48aeafff7ca12921ff1b3dd9244c5ed149db29164c",
+    "nyx_prod_templates/hourly_comparison.py": "b40f85b672f7d7ed7b7162d513cec9289b10dd238f79f570a54acd9d9133a1c5",
+    "nyx_prod_templates/forecast_explanation.py": "9731f3df67dfa5afa22c2c4b022365de3ea419d322425e716a55e813a3b65c56"
+  },
+  "repository": "https://github.com/Yoan420/NYX_v2",
+  "commit": "b0fa97f4d690c52a73d5716c16b152b0124c3882",
+  "source_directory": "data/offline_packets/20261016-192438-59abb8/render_sources"
+}

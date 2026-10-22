@@ -1,17 +1,14 @@
 """Étapes d'un lancement : préparer, vérifier, calculer, rendre, publier."""
 from __future__ import annotations
 
-from contextlib import nullcontext
 from datetime import datetime, timezone
 import hashlib
 import json
 import os
 from pathlib import Path
-import sys
-import tempfile
 from uuid import uuid4
 
-from . import runtime, snapshot, storage
+from . import runtime, snapshot
 from .settings import RunSettings
 
 
@@ -22,24 +19,11 @@ def _validate_locations(settings: RunSettings) -> None:
     for path in (inputs, outputs):
         if path == runtime.PRODUCTION or path.is_relative_to(runtime.PRODUCTION):
             raise ValueError("Les données doivent rester hors du dossier du code de production.")
-    if settings.input_s3_uri and settings.output_s3_uri:
-        input_bucket, input_prefix = storage.parse_s3_uri(settings.input_s3_uri)
-        output_bucket, output_prefix = storage.parse_s3_uri(settings.output_s3_uri)
-        if input_bucket == output_bucket and (
-            not input_prefix or not output_prefix or input_prefix == output_prefix
-            or input_prefix.startswith(output_prefix + "/")
-            or output_prefix.startswith(input_prefix + "/")
-        ):
-            raise ValueError("Les préfixes S3 d'entrée et de sortie doivent être distincts et non imbriqués.")
 
 
-def _prepare_runtime(settings: RunSettings, store: storage.S3Store | None) -> dict:
+def _prepare_runtime(settings: RunSettings) -> dict:
     """Vérifier le snapshot puis restaurer les états avant d'importer le calcul."""
     inputs = settings.input_root.resolve()
-    if settings.input_s3_uri:
-        if inputs.exists() and any(inputs.iterdir()):
-            raise ValueError("Le téléchargement S3 exige un --input-root vide (snapshot immuable).")
-        storage.download_prefix(settings.input_s3_uri, inputs)
     document = snapshot.validate_snapshot(inputs)
     runtime.verify_runtime()
     os.environ["HF_HOME"] = str(inputs / "huggingface")
@@ -50,30 +34,20 @@ def _prepare_runtime(settings: RunSettings, store: storage.S3Store | None) -> di
     identity = hashlib.sha256((inputs / "snapshot.json").read_bytes()).hexdigest()
     identity_path = runtime.RUNTIME / "runs/.nyx_snapshot.json"
     previous = json.loads(identity_path.read_text(encoding="utf-8")) if identity_path.is_file() else {}
-    with tempfile.TemporaryDirectory(prefix="nyx-state-") as temporary:
-        restored = store.restore_state(Path(temporary)) if store else None
-        state_source = Path(temporary) if restored else inputs / "state"
-        # Les calculs locaux gardent leurs états récents tant que le snapshot
-        # ne change pas. AWS restaure toujours l'état publié sélectionné.
-        if store or previous.get("snapshot_sha256") != identity:
-            runtime.copy_state(state_source, runtime.RUNTIME)
-            runtime.write_json(identity_path, {"snapshot_sha256": identity})
+    # Garder les états et captures récents tant que le seed ne change pas.
+    if previous.get("snapshot_sha256") != identity:
+        runtime.copy_state(inputs / "state", runtime.RUNTIME)
+        runtime.write_json(identity_path, {"snapshot_sha256": identity})
     return document
 
 
-def _record_failure(directory: Path, status: dict, error: BaseException,
-                    store: storage.S3Store | None = None) -> None:
+def _record_failure(directory: Path, status: dict, error: BaseException) -> None:
     from .engine import redact_error
     status.update(
         state="INTERRUPTED" if isinstance(error, KeyboardInterrupt) else "FAILED",
         error_type=type(error).__name__, error=redact_error(error),
     )
     runtime.write_json(directory / "status.json", status)
-    if store:
-        try:
-            store.publish_run(directory, status["run_id"], success=False)
-        except Exception:
-            print("Publication du diagnostic S3 impossible ; statut local conservé.", file=sys.stderr)
 
 
 def execute(command: str, settings: RunSettings, plan: dict) -> int:
@@ -81,12 +55,11 @@ def execute(command: str, settings: RunSettings, plan: dict) -> int:
     if command not in ("preflight", "forecast"):
         raise ValueError("Le pipeline accepte preflight ou forecast.")
     _validate_locations(settings)
-    store = storage.S3Store(settings.output_s3_uri) if settings.output_s3_uri else None
-    with runtime.runtime_lock(), (store.lock() if store and command == "forecast" else nullcontext()):
-        document = _prepare_runtime(settings, store)
+    with runtime.runtime_lock():
+        document = _prepare_runtime(settings)
         # Imports différés : exporter des fichiers n'exige aucune dépendance
         # scientifique ni base de fuseaux horaires sur le poste d'origine.
-        from . import forecast, preflight, reporting
+        from . import detail_reports, forecast, preflight, reporting
         inputs = settings.input_root.resolve()
         config = {
             "repo_root": str(runtime.RUNTIME),
@@ -109,22 +82,15 @@ def execute(command: str, settings: RunSettings, plan: dict) -> int:
             if not inspection["ready"]:
                 status.update(state="BLOCKED", preflight=inspection)
                 runtime.write_json(directory / "status.json", status)
-                if store:
-                    store.publish_run(directory, run_id, success=False)
                 print(json.dumps(status, ensure_ascii=False, indent=2, default=str))
                 return 2
             print(json.dumps({"state": "FITTING", "run_id": run_id, **plan}, ensure_ascii=False), flush=True)
             result = forecast.run_live(config, plan["first_day"], plan["forecast_origin_utc"], directory)
             result["reports"] = reporting.render_reports(Path(result["predictions_csv"]), directory / "reports")
+            detail_reports.finalize_report_set(result["country_reports"], result["reports"])
             status.update(state="COMPLETE", new_predictions_computed=True, result=result)
             runtime.write_json(directory / "status.json", status)
-            if store:
-                with tempfile.TemporaryDirectory(prefix="nyx-state-publish-") as temporary:
-                    runtime.copy_state(runtime.RUNTIME, Path(temporary))
-                    store.publish_state(Path(temporary), run_id)
-                store.publish_run(directory, run_id, success=True)
-            # Le pointeur avance après la production des HTML et, le cas
-            # échéant, après leur publication distante complète.
+            # Le pointeur avance seulement après le calcul et tous les HTML.
             runtime.write_json(settings.output_root.resolve() / "latest.json", {
                 "run_id": run_id, "status_file": f"{run_id}/status.json",
                 "predictions_csv": f"{run_id}/predictions.csv",
@@ -132,7 +98,7 @@ def execute(command: str, settings: RunSettings, plan: dict) -> int:
             print(json.dumps(status, ensure_ascii=False, indent=2, default=str))
             return 0
         except BaseException as error:
-            _record_failure(directory, status, error, store)
+            _record_failure(directory, status, error)
             raise
 
 
@@ -154,12 +120,16 @@ def render_saved_reports(csv_path: Path, output_root: Path) -> int:
         result = reporting.render_reports(csv_path, directory / "reports")
         status.update(state="COMPLETE", result=result)
         runtime.write_json(directory / "status.json", status)
+        try:
+            source_reference = os.path.relpath(csv_path, output_root)
+        except ValueError:
+            # Windows cannot express a relative path across drives/UNC shares.
+            source_reference = str(csv_path)
         pointer = {
             "run_id": run_id, "action": "reports", "status_file": f"{run_id}/status.json",
-            "predictions_csv": os.path.relpath(csv_path, output_root),
+            "predictions_csv": source_reference,
         }
         runtime.write_json(output_root / "latest_reports.json", pointer)
-        runtime.write_json(output_root / "latest.json", pointer)
         print(json.dumps(status, ensure_ascii=False, indent=2, default=str))
         return 0
     except BaseException as error:

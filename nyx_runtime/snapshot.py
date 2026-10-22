@@ -181,7 +181,7 @@ def validate_snapshot(root: Path) -> dict[str, Any]:
     inventory = _scan(directory)
     observed = {name: digest for name, (_, digest) in inventory.items() if name != "snapshot.json"}
     if observed.keys() != files.keys():
-        raise ValueError("Snapshot file inventory differs; export to a new, empty S3 prefix")
+        raise ValueError("Snapshot file inventory differs; export to a new, empty directory")
     for name, expected in files.items():
         if observed[name] != expected:
             raise ValueError(f"Snapshot artifact checksum differs: {name}")

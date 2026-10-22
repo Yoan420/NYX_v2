@@ -31,19 +31,6 @@ EXTENSIONS = (
     "nyx_saved_horizon_resume", "nyx_saved_horizon_reporting_sources",
 )
 
-DEPENDENCIES = {
-    "numpy": "numpy", "pandas": "pandas", "pyarrow": "pyarrow",
-    "catboost": "catboost", "sklearn": "scikit-learn", "scipy": "scipy",
-    "joblib": "joblib", "holidays": "holidays", "pykalman": "pykalman",
-    "torch": "torch", "chronos": "chronos-forecasting",
-    "huggingface_hub": "huggingface-hub", "transformers": "transformers",
-    "safetensors": "safetensors", "accelerate": "accelerate", "einops": "einops",
-    "requests": "requests", "httpx": "httpx", "yaml": "PyYAML",
-    "threadpoolctl": "threadpoolctl", "psutil": "psutil", "filelock": "filelock",
-    "tshistory_lite": "tshistory_lite",
-}
-
-
 def sha256_file(path: Path) -> str:
     """Calcule le SHA-256 d’un fichier sans le charger en mémoire."""
     digest = hashlib.sha256()

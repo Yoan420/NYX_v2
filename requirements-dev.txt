@@ -1,2 +1,2 @@
--r requirements_aws.txt
+-r requirements.txt
 pytest>=8,<9

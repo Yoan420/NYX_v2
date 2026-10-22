@@ -1,4 +1,4 @@
-"""Cloud orchestration tests with fake adapters and S3; no model or provider I/O."""
+"""Daily orchestration tests with fake adapters; no model or provider I/O."""
 from __future__ import annotations
 
 from contextlib import contextmanager, nullcontext
@@ -14,7 +14,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-from nyx_runtime import cli, forecast, pipeline, planning, preflight, reporting, runtime, snapshot, storage
+from nyx_runtime import cli, detail_reports, forecast, pipeline, planning, preflight, reporting, runtime, snapshot
 from nyx_runtime.settings import RunSettings
 
 
@@ -32,40 +32,6 @@ class FrozenClock:
     combine = staticmethod(datetime.combine)
 
 
-class FakeStore:
-    def __init__(self, events, local_latest, *, fail_publication=False):
-        self.events, self.local_latest = events, local_latest
-        self.fail_publication = fail_publication
-
-    @contextmanager
-    def lock(self):
-        self.events.append("cloud_lock")
-        try:
-            yield self
-        finally:
-            self.events.append("cloud_unlock")
-
-    def restore_state(self, destination):
-        self.events.append("restore_state")
-        return None
-
-    def publish_state(self, source, run_id):
-        self.events.append("publish_state")
-        self._previous_pointer_unchanged()
-
-    def publish_run(self, source, run_id, success):
-        self.events.append("publish_run_success" if success else "publish_run_failure")
-        self._previous_pointer_unchanged()
-        status = json.loads((source / "status.json").read_text())
-        if success:
-            if status["state"] != "COMPLETE" or not (source / "reports/report.html").is_file():
-                raise AssertionError("Cloud publication preceded complete HTML production")
-            if self.fail_publication:
-                raise OSError("synthetic S3 publication failure")
-
-    def _previous_pointer_unchanged(self):
-        if self.local_latest.read_text() != '{"run_id":"previous-success"}':
-            raise AssertionError("Local success pointer changed before full cloud publication")
 
 
 class RuntimeCLITests(unittest.TestCase):
@@ -125,8 +91,8 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
                 self.assertEqual(result, 2)
                 execute.assert_not_called()
 
-    def _run(self, root, *, command="forecast", ready=True, cloud=True,
-             publication_fails=False, model_error=None, snapshot_error=None):
+    def _run(self, root, *, command="forecast", ready=True,
+             model_error=None, snapshot_error=None):
         inputs, outputs = root / "inputs", root / "outputs"
         inputs.mkdir()
         (inputs / "snapshot.json").write_text(json.dumps({"protocol": snapshot.PROTOCOL, "fixture": True}))
@@ -134,7 +100,6 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
         latest = outputs / "latest.json"
         latest.write_text('{"run_id":"previous-success"}')
         events = []
-        store = FakeStore(events, latest, fail_publication=publication_fails)
 
         def inspect(*args):
             events.append("inspect")
@@ -147,7 +112,7 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
             output = args[-1]
             csv = output / "predictions.csv"
             csv.write_text("synthetic new model output")
-            return {"predictions_csv": str(csv), "qualified_for_production": False}
+            return {"predictions_csv": str(csv), "country_reports": {}, "qualified_for_production": False}
 
         def render(source, destination):
             events.append("render")
@@ -160,7 +125,6 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
             run_live=Mock(side_effect=run))
         fake_report = SimpleNamespace(render_reports=Mock(side_effect=render))
         settings = RunSettings(input_root=inputs, output_root=outputs,
-            input_s3_uri=None, output_s3_uri="s3://test-bucket/results" if cloud else None,
             collect_reporting_sources=False)
         patches = [
             patch.object(runtime, "runtime_lock", return_value=nullcontext()),
@@ -168,9 +132,9 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
             patch.object(preflight, "inspect_live", fake_live.inspect_live),
             patch.object(forecast, "run_live", fake_live.run_live),
             patch.object(reporting, "render_reports", fake_report.render_reports),
+            patch.object(detail_reports, "finalize_report_set", side_effect=lambda *args: events.append("finalize")),
             patch.object(snapshot, "validate_snapshot", side_effect=snapshot_error,
                          return_value={"protocol": snapshot.PROTOCOL}),
-            patch.object(storage, "S3Store", return_value=store),
             patch.dict(os.environ), patch("sys.stdout", new_callable=io.StringIO),
             patch.object(runtime, "RUNTIME", root / "runtime"),
         ]
@@ -185,28 +149,19 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
         return SimpleNamespace(code=code, error=error, events=events, latest=latest,
             outputs=outputs, live=fake_live, report=fake_report, mocks=active)
 
-    def test_cloud_success_pointer_follows_full_render_and_remote_publication(self):
+    def test_success_pointer_follows_full_render(self):
         with tempfile.TemporaryDirectory() as folder:
             result = self._run(Path(folder))
             self.assertIsNone(result.error)
             self.assertEqual(result.code, 0)
             self.assertLess(result.events.index("fit"), result.events.index("render"))
-            self.assertLess(result.events.index("render"), result.events.index("publish_run_success"))
-            self.assertEqual(result.events[-1], "cloud_unlock")
+            self.assertEqual(result.events, ["inspect", "fit", "render", "finalize"])
             pointer = json.loads(result.latest.read_text())
             self.assertNotEqual(pointer["run_id"], "previous-success")
             state = json.loads((result.outputs / pointer["status_file"]).read_text())
             self.assertEqual(state["state"], "COMPLETE")
             self.assertTrue(state["new_predictions_computed"])
 
-    def test_remote_publication_failure_preserves_previous_success_and_local_diagnostic(self):
-        with tempfile.TemporaryDirectory() as folder:
-            result = self._run(Path(folder), publication_fails=True)
-            self.assertIsInstance(result.error, OSError)
-            self.assertEqual(json.loads(result.latest.read_text())["run_id"], "previous-success")
-            states = [json.loads(p.read_text()) for p in result.outputs.glob("*/status.json")]
-            self.assertEqual([p["state"] for p in states], ["FAILED"])
-            self.assertIn("publish_run_failure", result.events)
 
     def test_model_failure_preserves_previous_success_and_never_publishes_state(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -253,32 +208,6 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
             with self.assertRaisesRegex(ValueError, "distinctes et non imbriquées"):
                 pipeline.execute("forecast", settings, planning.make_plan(FIRST_DAY, ORIGIN))
 
-    def test_overlapping_s3_prefixes_fail_before_credentials_or_download(self):
-        pairs = (
-            ("s3://test-bucket/nyx", "s3://test-bucket/nyx"),
-            ("s3://test-bucket/nyx/inputs", "s3://test-bucket/nyx"),
-            ("s3://test-bucket/nyx", "s3://test-bucket/nyx/results"),
-            ("s3://test-bucket/nyx/", "s3://test-bucket/nyx"),
-            ("s3://test-bucket/", "s3://test-bucket/results"),
-            ("s3://test-bucket/inputs", "s3://test-bucket/"),
-        )
-        with tempfile.TemporaryDirectory() as folder:
-            root = Path(folder)
-            for input_uri, output_uri in pairs:
-                settings = RunSettings(input_root=root / "inputs",
-                    output_root=root / "outputs", input_s3_uri=input_uri,
-                    output_s3_uri=output_uri, collect_reporting_sources=False)
-                with self.subTest(input_uri=input_uri, output_uri=output_uri), \
-                     patch.object(storage, "S3Store") as store, \
-                     patch.object(storage, "download_prefix") as download, \
-                     patch.object(snapshot, "validate_snapshot") as validate, \
-                     patch.object(runtime, "runtime_lock") as lock:
-                    with self.assertRaisesRegex(ValueError, "préfixes S3"):
-                        pipeline.execute("forecast", settings, planning.make_plan(FIRST_DAY, ORIGIN))
-                    store.assert_not_called()
-                    download.assert_not_called()
-                    validate.assert_not_called()
-                    lock.assert_not_called()
 
     def test_state_restore_removes_stale_directories_absent_from_selected_snapshot(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -311,7 +240,7 @@ print(json.dumps({'code': result, 'loaded': sorted(set(sys.modules) & {'torch', 
             continued_state = runtime_root / runtime.STATE_PATHS[0] / "state.json"
             fake_live = SimpleNamespace(inspect_live=Mock(return_value={"ready": True}))
             settings = RunSettings(input_root=inputs, output_root=outputs,
-                input_s3_uri=None, output_s3_uri=None, collect_reporting_sources=False)
+                collect_reporting_sources=False)
             with patch.object(runtime, "RUNTIME", runtime_root), \
                  patch.object(runtime, "runtime_lock", side_effect=lambda: nullcontext()), \
                  patch.object(runtime, "verify_runtime"), \

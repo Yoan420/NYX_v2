@@ -27,42 +27,23 @@ class RuntimeSettingsTests(unittest.TestCase):
             previous = Path.cwd()
             try:
                 os.chdir(other)
-                settings = load_settings(config, environ={})
+                settings = load_settings(config)
             finally:
                 os.chdir(previous)
             self.assertEqual(settings.input_root, root / "inputs")
             self.assertEqual(settings.output_root, config.parent / "results")
 
-    def test_explicit_overrides_win_over_environment_and_configuration(self):
+    def test_explicit_overrides_win_over_configuration(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             config = self._config(root, {"input_root": "inputs", "output_root": "outputs",
-                "input_s3_uri": "s3://configured/inputs", "output_s3_uri": "s3://configured/results",
                 "collect_reporting_sources": False})
             settings = load_settings(config, input_root=root / "selected-input",
-                output_root=root / "selected-output", input_s3_uri="s3://selected/inputs",
-                output_s3_uri="s3://selected/results", collect_reporting_sources=True,
-                environ={"NYX_INPUT_S3_URI": "s3://environment/inputs",
-                         "NYX_OUTPUT_S3_URI": "s3://environment/results"})
+                output_root=root / "selected-output", collect_reporting_sources=True)
             self.assertEqual(settings.input_root, root / "selected-input")
             self.assertEqual(settings.output_root, root / "selected-output")
-            self.assertEqual(settings.input_s3_uri, "s3://selected/inputs")
-            self.assertEqual(settings.output_s3_uri, "s3://selected/results")
             self.assertTrue(settings.collect_reporting_sources)
 
-    def test_aws_environment_can_select_storage_without_changing_local_configuration(self):
-        with tempfile.TemporaryDirectory() as folder:
-            root = Path(folder)
-            config = self._config(root, {"input_root": "inputs", "output_root": "outputs",
-                "input_s3_uri": "s3://configured/inputs", "output_s3_uri": "s3://configured/results",
-                "collect_reporting_sources": False})
-            original = config.read_bytes()
-            settings = load_settings(config, environ={"NYX_INPUT_S3_URI": "s3://job/inputs",
-                "NYX_OUTPUT_S3_URI": "s3://job/results"})
-            self.assertEqual(settings.input_s3_uri, "s3://job/inputs")
-            self.assertEqual(settings.output_s3_uri, "s3://job/results")
-            self.assertFalse(settings.collect_reporting_sources)
-            self.assertEqual(config.read_bytes(), original)
 
     def test_configuration_cannot_silently_change_scientific_parameters_or_coerce_types(self):
         documents = ({"learning_rate": .1}, {"collect_reporting_sources": "false"},
@@ -71,7 +52,7 @@ class RuntimeSettingsTests(unittest.TestCase):
             with self.subTest(document=document), tempfile.TemporaryDirectory() as folder:
                 config = self._config(Path(folder), document)
                 with self.assertRaises(ValueError):
-                    load_settings(config, environ={})
+                    load_settings(config)
 
     def test_public_cli_applies_configuration_and_explicit_reporting_override(self):
         with tempfile.TemporaryDirectory() as folder:
