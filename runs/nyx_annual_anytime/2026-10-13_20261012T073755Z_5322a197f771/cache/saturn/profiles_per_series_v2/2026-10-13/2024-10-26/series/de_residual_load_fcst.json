@@ -1,0 +1,68 @@
+{
+  "evidence": {
+    "alias": "de_residual_load_fcst",
+    "delivery_day": "2024-10-26",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": [
+          {
+            "duplicated_value": 23.335487668499997,
+            "local_timestamp": "2024-10-27T02:00:00",
+            "physical_hours_utc": [
+              "2024-10-27T00:00:00+00:00",
+              "2024-10-27T01:00:00+00:00"
+            ],
+            "policy": "duplicate"
+          }
+        ]
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2024-10-25T06:00:00+00:00",
+    "origin_snapshot_verified": true,
+    "outer_delivery_day": "2026-10-13",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T10:58:11.305296+00:00",
+    "revision_utc": "2024-10-25T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Berlin",
+      "series": "power.de.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "own_origin",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "0284f2401eb8c139973d6495598fe684b9e61208c04a212766df19f49f8e5cbc"
+  },
+  "values": [
+    40.35061413966,
+    38.70695193966,
+    37.698303539659996,
+    37.851283439659994,
+    38.13940283966,
+    38.702010839660005,
+    40.123193839660004,
+    42.466398339659996,
+    43.52189573966,
+    40.77211253966,
+    35.29948723966,
+    29.544228439660003,
+    25.577241639660002,
+    23.39677003966,
+    23.77975753966,
+    28.368850739659997,
+    36.00431163966,
+    43.010098239659996,
+    44.023533539659994,
+    40.212203539659995,
+    34.04095723966,
+    30.81518953966,
+    28.722825039660002,
+    25.965873339660003
+  ]
+}

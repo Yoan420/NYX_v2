@@ -1,0 +1,59 @@
+{
+  "evidence": {
+    "alias": "fr_residual_load_fcst",
+    "delivery_day": "2024-08-16",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2024-08-15T06:00:00+00:00",
+    "origin_snapshot_verified": false,
+    "outer_delivery_day": "2026-10-13",
+    "own_origin_failure": "Saturn 2024-08-16 / forecast_profile / fr_residual_load_fcst (power.fr.residual.load.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2024-08-15T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.fr.residual.load.hourly.gw.fcst; plage=2024-08-15 14:00:00+00:00 -> 2024-08-17 05:00:00+00:00; cutoff=2024-08-15 06:00:00+00:00. reponse vide (dialecte=from_value_date/to_value_date)",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T10:27:42.992144+00:00",
+    "revision_utc": "2026-10-12T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "outer_revision",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "4854c4e1f5138ef6dacbe5ee1f2b6fdc18ba08663289fdfd31f77787e91471b8"
+  },
+  "values": [
+    30.445420616666667,
+    28.95838451666667,
+    26.82994121666667,
+    25.06829771666667,
+    24.567781916666668,
+    25.453008416666666,
+    26.933289116666664,
+    27.935991116666663,
+    28.95350261666667,
+    29.417335516666665,
+    28.424817116666667,
+    27.84528121666667,
+    28.366675516666668,
+    26.83712211666667,
+    26.963917316666667,
+    26.798292416666662,
+    27.185847416666668,
+    28.873775216666665,
+    32.02405481666666,
+    35.224309516666665,
+    36.02423341666667,
+    36.874594116666664,
+    37.484722616666666,
+    36.96978381666666
+  ]
+}

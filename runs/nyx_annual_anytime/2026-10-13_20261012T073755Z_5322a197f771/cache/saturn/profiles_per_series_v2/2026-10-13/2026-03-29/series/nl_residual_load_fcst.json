@@ -1,0 +1,86 @@
+{
+  "evidence": {
+    "alias": "nl_residual_load_fcst",
+    "delivery_day": "2026-03-29",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2026-03-28T07:00:00+00:00",
+    "origin_snapshot_verified": true,
+    "outer_delivery_day": "2026-10-13",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T14:39:16.275319+00:00",
+    "revision_utc": "2026-03-28T07:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "UTC",
+      "series": "power.nl.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "own_origin",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [
+        {
+          "donor_hours_utc": [
+            "2026-03-29T01:00:00+00:00",
+            "2026-03-29T03:00:00+00:00"
+          ],
+          "donor_values_gw": [
+            7.055772800000001,
+            6.871650800000001
+          ],
+          "forecast_origin_utc": "2026-03-28T07:00:00+00:00",
+          "repaired_value_gw": 6.9637118000000005,
+          "value_time_local": "2026-03-29T04:00:00+02:00",
+          "value_time_utc": "2026-03-29T02:00:00+00:00"
+        },
+        {
+          "donor_hours_utc": [
+            "2026-03-29T03:00:00+00:00",
+            "2026-03-29T05:00:00+00:00"
+          ],
+          "donor_values_gw": [
+            6.871650800000001,
+            7.2462797000000005
+          ],
+          "forecast_origin_utc": "2026-03-28T07:00:00+00:00",
+          "repaired_value_gw": 7.058965250000001,
+          "value_time_local": "2026-03-29T06:00:00+02:00",
+          "value_time_utc": "2026-03-29T04:00:00+00:00"
+        }
+      ],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "ded74bd0388870b438b53c74a0000136af3a8459a83fe32d2d668ce18b7a780c"
+  },
+  "values": [
+    5.9802354,
+    7.0984047,
+    7.055772800000001,
+    6.9637118000000005,
+    6.871650800000001,
+    7.058965250000001,
+    7.2462797000000005,
+    7.485034800000001,
+    8.0808084,
+    5.029384,
+    -0.9003072999999997,
+    -6.192508499999999,
+    -9.473073899999997,
+    -12.095775799999998,
+    -13.659752899999999,
+    -13.7208307,
+    -12.4636108,
+    -8.963920499999999,
+    -4.571393499999999,
+    -0.8247775999999991,
+    1.0533929999999998,
+    1.8610842000000023,
+    1.3872224000000006
+  ]
+}

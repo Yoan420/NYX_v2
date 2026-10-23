@@ -1,0 +1,58 @@
+{
+  "evidence": {
+    "alias": "de_wind_generation_fcst",
+    "delivery_day": "2026-04-06",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2026-04-05T06:00:00+00:00",
+    "origin_snapshot_verified": true,
+    "outer_delivery_day": "2026-10-13",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T14:43:03.929865+00:00",
+    "revision_utc": "2026-04-05T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Berlin",
+      "series": "power.de.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "own_origin",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "25a738b3c74211cbb1a7b5b4933284ac8668717cb8e4017df1ba06f98f9f2d5e"
+  },
+  "values": [
+    35.8149531,
+    35.4739371,
+    35.1331964,
+    34.3585675,
+    33.2266722,
+    32.0323779,
+    31.0218868,
+    29.9775562,
+    28.4353828,
+    27.427705499999995,
+    27.0554672,
+    26.699082099999995,
+    26.144954900000002,
+    25.532019499999997,
+    24.896626299999998,
+    24.313467699999997,
+    23.8129009,
+    23.2835552,
+    21.657199999999996,
+    19.5779685,
+    17.8677844,
+    16.7101501,
+    15.8657556,
+    15.251247500000002
+  ]
+}

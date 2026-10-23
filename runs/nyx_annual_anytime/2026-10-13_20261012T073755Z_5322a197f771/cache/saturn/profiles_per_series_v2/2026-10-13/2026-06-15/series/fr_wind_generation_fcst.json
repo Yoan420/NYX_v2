@@ -1,0 +1,59 @@
+{
+  "evidence": {
+    "alias": "fr_wind_generation_fcst",
+    "delivery_day": "2026-06-15",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2026-06-14T06:00:00+00:00",
+    "origin_snapshot_verified": false,
+    "outer_delivery_day": "2026-10-13",
+    "own_origin_failure": "Saturn 2026-06-15 / forecast_profile / fr_wind_generation_fcst (power.fr.generation.wind.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-14T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.fr.generation.wind.hourly.gw.fcst; plage=2026-06-14 14:00:00+00:00 -> 2026-06-16 05:00:00+00:00; cutoff=2026-06-14 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.fr.generation.wind.hourly.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-14T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-14T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-16T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T16:58:51.529727+00:00",
+    "revision_utc": "2026-10-12T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "outer_revision",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "99cb0736c1c47663c80cabe5670e458b5a46180b4670d4858fdeb37716f3f1f0"
+  },
+  "values": [
+    4.030705199999999,
+    4.0742886,
+    4.310172499999999,
+    4.1251105,
+    3.9097809999999997,
+    3.7301134999999994,
+    3.4624201999999995,
+    3.1454101999999997,
+    2.8585526,
+    2.1720078,
+    1.8485922,
+    1.6700853000000002,
+    1.5906969999999998,
+    1.5073069,
+    1.6057177999999999,
+    1.717951,
+    1.8490845999999999,
+    2.0584531,
+    2.2203307999999997,
+    2.3875691999999997,
+    2.4862084999999996,
+    2.8141612,
+    3.4112684,
+    4.111718
+  ]
+}

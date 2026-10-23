@@ -1,0 +1,12 @@
+{
+  "protocol": "nyx_annual_cpu_daily_unqualified_reports_v1",
+  "status": "REPORTS_COMPLETE",
+  "phase": "complete",
+  "delivery_day": "2026-10-13",
+  "started_at_utc": "2026-10-14T13:52:06.111079+00:00",
+  "updated_at_utc": "2026-10-14T14:01:04.292044+00:00",
+  "qualified_for_production": false,
+  "forecast_published": false,
+  "attempt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime_reports\\.2026-10-13_20261012T073755Z_5322a197f771.attempts\\64a36a08f2044763ac32566a81ccad1e",
+  "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime_reports\\2026-10-13_20261012T073755Z_5322a197f771\\receipt.json"
+}

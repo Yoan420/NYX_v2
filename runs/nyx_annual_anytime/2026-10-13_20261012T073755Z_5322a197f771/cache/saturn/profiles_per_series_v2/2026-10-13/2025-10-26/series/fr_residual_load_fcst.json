@@ -1,0 +1,69 @@
+{
+  "evidence": {
+    "alias": "fr_residual_load_fcst",
+    "delivery_day": "2025-10-26",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": [
+          {
+            "duplicated_value": 30.12146475,
+            "local_timestamp": "2025-10-26T02:00:00",
+            "physical_hours_utc": [
+              "2025-10-26T00:00:00+00:00",
+              "2025-10-26T01:00:00+00:00"
+            ],
+            "policy": "duplicate"
+          }
+        ]
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2025-10-25T06:00:00+00:00",
+    "origin_snapshot_verified": true,
+    "outer_delivery_day": "2026-10-13",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T13:33:37.201032+00:00",
+    "revision_utc": "2025-10-25T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "own_origin",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "95278eacd953ab3e11a9b0c8994f63e5e98c6adc702816e0e84cdbe4d487aa4c"
+  },
+  "values": [
+    33.57549855,
+    32.482940549999995,
+    30.12146475,
+    30.12146475,
+    27.26106045,
+    26.01042135,
+    26.916976050000002,
+    28.206446049999997,
+    29.01006185,
+    28.524903349999995,
+    27.93154425,
+    27.63937845,
+    26.94308165,
+    27.488146849999996,
+    25.497265350000003,
+    24.96780665,
+    25.885228350000002,
+    28.69589165,
+    33.497829550000006,
+    39.27137895,
+    42.29383505,
+    37.37591275,
+    34.392211450000005,
+    34.10152715,
+    33.48375885
+  ]
+}

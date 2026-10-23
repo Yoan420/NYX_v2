@@ -1,0 +1,595 @@
+{"delivery_day": "2026-10-13", "run_directory": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771", "log": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\launch_de424a69a6744b96a591ac51ea15fecb.log", "operational_snapshot": {"protocol": "nyx_annual_operational_snapshot_v1", "delivery_day": "2026-10-13", "requested_at_utc": "2026-10-12T07:37:55.512108+00:00", "asof_utc": "2026-10-12T06:00:00+00:00", "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"}}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_daily_capture.py", "--delivery-day", "2026-10-13", "--jao-cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture", "--exchange-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture", "--hydro-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture", "--log-file", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\capture.jsonl"]}
+{"action": "capture", "delivery_day": "2026-10-13", "started_at_utc": "2026-10-12T20:55:44.447785+00:00", "state": "COMPLETE", "sources": {"jao_initial": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:00.644170+00:00", "cache_root": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture"}, "lagged_exchange": {"state": "COMPLETE", "capture_receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture\\2026-10-13\\capture.json"}, "public_hydro": {"state": "COMPLETE", "capture_receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture\\2026-10-13\\capture.json"}}, "model_inputs_complete": false, "forecast_enabled": false, "operational_snapshot": {"protocol": "nyx_annual_operational_snapshot_v1", "delivery_day": "2026-10-13", "requested_at_utc": "2026-10-12T07:37:55.512108+00:00", "asof_utc": "2026-10-12T06:00:00+00:00", "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"}}
+{"name": "capture_operational_sources", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_daily_capture.py", "--verify-only", "--delivery-day", "2026-10-13", "--jao-cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture", "--exchange-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture", "--hydro-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture", "--log-file", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\capture.jsonl"]}
+{"action": "verify", "delivery_day": "2026-10-13", "checked_at_utc": "2026-10-12T20:55:48.227177+00:00", "state": "COMPLETE", "sources": {"jao_initial": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:00.644170+00:00", "cache_root": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture"}, "lagged_exchange": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:03.080615+00:00", "capture_receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture\\2026-10-13\\capture.json"}, "public_hydro": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:05.372322+00:00"}}, "model_inputs_complete": false, "forecast_enabled": false, "operational_snapshot": {"protocol": "nyx_annual_operational_snapshot_v1", "delivery_day": "2026-10-13", "requested_at_utc": "2026-10-12T07:37:55.512108+00:00", "asof_utc": "2026-10-12T06:00:00+00:00", "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"}}
+{"name": "delivery_captures", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_jao_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--bootstrap-history", "--history-cache-root", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_history", "--cache-root", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture"]}
+{"source": "jao_initial", "delivery_day": "2026-10-13", "state": "COMPLETE", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\jao_initial.json", "reused": true, "passed": true, "daily_raw_captures_recomputed": 366, "history_policy": "current_fit_snapshot_v1", "asof_cutoff_verified": false, "origin_snapshot_capture_verified": false, "delivery_snapshot_pre_cutoff_verified": false, "provider_first_publication_certified": false}
+{"name": "jao_initial", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_hydro_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--action", "bootstrap", "--history-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\public_history", "--archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture"]}
+{"state": "COMPLETE", "source_group": "public_hydro", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\public_hydro.json"}
+{"name": "public_hydro", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_exchange_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--action", "bootstrap", "--history-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\public_history", "--archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture"]}
+{"state": "COMPLETE", "action": "bootstrap", "delivery_day": "2026-10-13", "output": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\lagged_exchange.json", "model_inputs_complete": false}
+{"name": "lagged_exchange", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_saturn_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\saturn"]}
+Saturn: EPEX-only training prices at outer cutoff 2026-10-12T06:00:00+00:00
+Saturn: checking 835 archived profile days (2024-07-01 to 2026-10-13)
+Saturn: 10/835 daily states verified
+Saturn: 20/835 daily states verified
+Saturn: 30/835 daily states verified
+Saturn: 40/835 daily states verified
+Saturn: 50/835 daily states verified
+Saturn: 60/835 daily states verified
+Saturn: 70/835 daily states verified
+Saturn: 80/835 daily states verified
+Saturn: 90/835 daily states verified
+Saturn: 100/835 daily states verified
+Saturn: 110/835 daily states verified
+Saturn: 120/835 daily states verified
+Saturn: 130/835 daily states verified
+Saturn: 140/835 daily states verified
+Saturn: 150/835 daily states verified
+Saturn: 160/835 daily states verified
+Saturn: 170/835 daily states verified
+Saturn: 180/835 daily states verified
+Saturn: 190/835 daily states verified
+Saturn: 200/835 daily states verified
+Saturn: 210/835 daily states verified
+Saturn: 220/835 daily states verified
+Saturn: 230/835 daily states verified
+Saturn: 240/835 daily states verified
+Saturn: 250/835 daily states verified
+Saturn: 260/835 daily states verified
+Saturn: 270/835 daily states verified
+Saturn: 280/835 daily states verified
+Saturn: 290/835 daily states verified
+Saturn: 300/835 daily states verified
+Saturn: 310/835 daily states verified
+Saturn: 320/835 daily states verified
+Saturn: 330/835 daily states verified
+Saturn: 340/835 daily states verified
+Saturn: 350/835 daily states verified
+Saturn: 360/835 daily states verified
+Saturn: 370/835 daily states verified
+Saturn: 380/835 daily states verified
+Saturn: 390/835 daily states verified
+Saturn: 400/835 daily states verified
+Saturn: 410/835 daily states verified
+Saturn: 420/835 daily states verified
+Saturn: 430/835 daily states verified
+Saturn: 440/835 daily states verified
+Saturn: 450/835 daily states verified
+Saturn: 460/835 daily states verified
+Saturn: 470/835 daily states verified
+Saturn: 480/835 daily states verified
+Saturn: 490/835 daily states verified
+Saturn: 500/835 daily states verified
+Saturn: 510/835 daily states verified
+Saturn: 520/835 daily states verified
+Saturn: 530/835 daily states verified
+Saturn: 540/835 daily states verified
+Saturn: 550/835 daily states verified
+Saturn: 560/835 daily states verified
+Saturn: 570/835 daily states verified
+Saturn: 580/835 daily states verified
+Saturn: 590/835 daily states verified
+Saturn: 600/835 daily states verified
+Saturn: 610/835 daily states verified
+Saturn: 620/835 daily states verified
+Saturn: 630/835 daily states verified
+Saturn: 640/835 daily states verified
+Saturn: 650/835 daily states verified
+Saturn: 660/835 daily states verified
+Saturn: 670/835 daily states verified
+Saturn: 680/835 daily states verified
+Saturn: 690/835 daily states verified
+Saturn: 700/835 daily states verified
+Saturn: 710/835 daily states verified
+Saturn: 720/835 daily states verified
+Saturn: 730/835 daily states verified
+Saturn: 740/835 daily states verified
+Saturn: 750/835 daily states verified
+Saturn: 760/835 daily states verified
+Saturn: 770/835 daily states verified
+Saturn: 780/835 daily states verified
+Saturn: 790/835 daily states verified
+Saturn: 800/835 daily states verified
+Saturn: 810/835 daily states verified
+Saturn: 820/835 daily states verified
+Saturn: 830/835 daily states verified
+Saturn: 835/835 daily states verified
+{"state": "COMPLETE", "source_group": "saturn", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\saturn.json", "target_history_policy": "current_fit_origin_reconstruction_v1", "target_revision_utc": "2026-10-12T06:00:00+00:00", "target_origin_snapshot_verified": false, "profile_history_policy": "own_origin_with_per_series_recovery_v2", "profile_revision_ceiling_utc": "2026-10-12T06:00:00+00:00", "profile_origin_snapshot_verified": false}
+{"name": "saturn", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_auction_prices_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--history-start-day", "2025-07-01"]}
+{"state": "COMPLETE", "source_group": "auction_prices", "delivery_day": "2026-10-13", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\auction_prices.json", "hours_per_zone": 11256, "model_inputs_complete": false}
+{"name": "auction_prices", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_fuel_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--history-start-day", "2025-07-01", "--cache-dir", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\fuel"]}
+C:\Users\BQ6757\NYX_CWE_CPU\runs\nyx_annual_anytime\2026-10-13_20261012T073755Z_5322a197f771\cache\fuel\market_fuel_features.parquet | REUSE | couverture valide jusqu'au 2026-10-13
+{"state": "COMPLETE", "source": "fuel", "delivery_day": "2026-10-13", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\fuel.json", "model_inputs_complete": false}
+{"name": "fuel", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_thermal_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\thermal"]}
+{"state": "COMPLETE", "source_group": "thermal_capacity", "delivery_day": "2026-10-13", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\thermal_capacity.json", "model_inputs_complete": false}
+{"name": "thermal_capacity", "state": "COMPLETE"}
+Loading weights:   0%|          | 0/170 [00:00<?, ?it/s]Loading weights: 100%|██████████| 170/170 [00:00<00:00, 10320.78it/s]
+Verrou abandonne repris apres verification du processus : C:\Users\BQ6757\NYX_CWE_CPU\runs\nyx_annual_anytime\2026-10-13_20261012T073755Z_5322a197f771\bundle\.annual_baseline.lock
+{"stage": "cpu_baseline", "delivery_day": "2024-07-01", "last_day": "2026-10-13", "completed_days": 1, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-02", "last_day": "2026-10-13", "completed_days": 2, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-03", "last_day": "2026-10-13", "completed_days": 3, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-04", "last_day": "2026-10-13", "completed_days": 4, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-05", "last_day": "2026-10-13", "completed_days": 5, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-06", "last_day": "2026-10-13", "completed_days": 6, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-07", "last_day": "2026-10-13", "completed_days": 7, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-08", "last_day": "2026-10-13", "completed_days": 8, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-09", "last_day": "2026-10-13", "completed_days": 9, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-10", "last_day": "2026-10-13", "completed_days": 10, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-11", "last_day": "2026-10-13", "completed_days": 11, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-12", "last_day": "2026-10-13", "completed_days": 12, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-13", "last_day": "2026-10-13", "completed_days": 13, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-14", "last_day": "2026-10-13", "completed_days": 14, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-15", "last_day": "2026-10-13", "completed_days": 15, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-16", "last_day": "2026-10-13", "completed_days": 16, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-17", "last_day": "2026-10-13", "completed_days": 17, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-18", "last_day": "2026-10-13", "completed_days": 18, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-19", "last_day": "2026-10-13", "completed_days": 19, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-20", "last_day": "2026-10-13", "completed_days": 20, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-21", "last_day": "2026-10-13", "completed_days": 21, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-22", "last_day": "2026-10-13", "completed_days": 22, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-23", "last_day": "2026-10-13", "completed_days": 23, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-24", "last_day": "2026-10-13", "completed_days": 24, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-25", "last_day": "2026-10-13", "completed_days": 25, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-26", "last_day": "2026-10-13", "completed_days": 26, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-27", "last_day": "2026-10-13", "completed_days": 27, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-28", "last_day": "2026-10-13", "completed_days": 28, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-29", "last_day": "2026-10-13", "completed_days": 29, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-30", "last_day": "2026-10-13", "completed_days": 30, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-07-31", "last_day": "2026-10-13", "completed_days": 31, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-01", "last_day": "2026-10-13", "completed_days": 32, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-02", "last_day": "2026-10-13", "completed_days": 33, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-03", "last_day": "2026-10-13", "completed_days": 34, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-04", "last_day": "2026-10-13", "completed_days": 35, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-05", "last_day": "2026-10-13", "completed_days": 36, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-06", "last_day": "2026-10-13", "completed_days": 37, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-07", "last_day": "2026-10-13", "completed_days": 38, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-08", "last_day": "2026-10-13", "completed_days": 39, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-09", "last_day": "2026-10-13", "completed_days": 40, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-10", "last_day": "2026-10-13", "completed_days": 41, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-11", "last_day": "2026-10-13", "completed_days": 42, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-12", "last_day": "2026-10-13", "completed_days": 43, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-13", "last_day": "2026-10-13", "completed_days": 44, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-14", "last_day": "2026-10-13", "completed_days": 45, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-15", "last_day": "2026-10-13", "completed_days": 46, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-16", "last_day": "2026-10-13", "completed_days": 47, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-17", "last_day": "2026-10-13", "completed_days": 48, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-18", "last_day": "2026-10-13", "completed_days": 49, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-19", "last_day": "2026-10-13", "completed_days": 50, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-20", "last_day": "2026-10-13", "completed_days": 51, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-21", "last_day": "2026-10-13", "completed_days": 52, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-22", "last_day": "2026-10-13", "completed_days": 53, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-23", "last_day": "2026-10-13", "completed_days": 54, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-24", "last_day": "2026-10-13", "completed_days": 55, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-25", "last_day": "2026-10-13", "completed_days": 56, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-26", "last_day": "2026-10-13", "completed_days": 57, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-27", "last_day": "2026-10-13", "completed_days": 58, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-28", "last_day": "2026-10-13", "completed_days": 59, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-29", "last_day": "2026-10-13", "completed_days": 60, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-30", "last_day": "2026-10-13", "completed_days": 61, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-08-31", "last_day": "2026-10-13", "completed_days": 62, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-01", "last_day": "2026-10-13", "completed_days": 63, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-02", "last_day": "2026-10-13", "completed_days": 64, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-03", "last_day": "2026-10-13", "completed_days": 65, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-04", "last_day": "2026-10-13", "completed_days": 66, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-05", "last_day": "2026-10-13", "completed_days": 67, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-06", "last_day": "2026-10-13", "completed_days": 68, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-07", "last_day": "2026-10-13", "completed_days": 69, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-08", "last_day": "2026-10-13", "completed_days": 70, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-09", "last_day": "2026-10-13", "completed_days": 71, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-10", "last_day": "2026-10-13", "completed_days": 72, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-11", "last_day": "2026-10-13", "completed_days": 73, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-12", "last_day": "2026-10-13", "completed_days": 74, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-13", "last_day": "2026-10-13", "completed_days": 75, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-14", "last_day": "2026-10-13", "completed_days": 76, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-15", "last_day": "2026-10-13", "completed_days": 77, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-16", "last_day": "2026-10-13", "completed_days": 78, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-17", "last_day": "2026-10-13", "completed_days": 79, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-18", "last_day": "2026-10-13", "completed_days": 80, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-19", "last_day": "2026-10-13", "completed_days": 81, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-20", "last_day": "2026-10-13", "completed_days": 82, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-21", "last_day": "2026-10-13", "completed_days": 83, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-22", "last_day": "2026-10-13", "completed_days": 84, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-23", "last_day": "2026-10-13", "completed_days": 85, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-24", "last_day": "2026-10-13", "completed_days": 86, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-25", "last_day": "2026-10-13", "completed_days": 87, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-26", "last_day": "2026-10-13", "completed_days": 88, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-27", "last_day": "2026-10-13", "completed_days": 89, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-28", "last_day": "2026-10-13", "completed_days": 90, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-29", "last_day": "2026-10-13", "completed_days": 91, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-09-30", "last_day": "2026-10-13", "completed_days": 92, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-01", "last_day": "2026-10-13", "completed_days": 93, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-02", "last_day": "2026-10-13", "completed_days": 94, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-03", "last_day": "2026-10-13", "completed_days": 95, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-04", "last_day": "2026-10-13", "completed_days": 96, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-05", "last_day": "2026-10-13", "completed_days": 97, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-06", "last_day": "2026-10-13", "completed_days": 98, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-07", "last_day": "2026-10-13", "completed_days": 99, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-08", "last_day": "2026-10-13", "completed_days": 100, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-09", "last_day": "2026-10-13", "completed_days": 101, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-10", "last_day": "2026-10-13", "completed_days": 102, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-11", "last_day": "2026-10-13", "completed_days": 103, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-12", "last_day": "2026-10-13", "completed_days": 104, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-13", "last_day": "2026-10-13", "completed_days": 105, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-14", "last_day": "2026-10-13", "completed_days": 106, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-15", "last_day": "2026-10-13", "completed_days": 107, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-16", "last_day": "2026-10-13", "completed_days": 108, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-17", "last_day": "2026-10-13", "completed_days": 109, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-18", "last_day": "2026-10-13", "completed_days": 110, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-19", "last_day": "2026-10-13", "completed_days": 111, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-20", "last_day": "2026-10-13", "completed_days": 112, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-21", "last_day": "2026-10-13", "completed_days": 113, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-22", "last_day": "2026-10-13", "completed_days": 114, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-23", "last_day": "2026-10-13", "completed_days": 115, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-24", "last_day": "2026-10-13", "completed_days": 116, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-25", "last_day": "2026-10-13", "completed_days": 117, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-26", "last_day": "2026-10-13", "completed_days": 118, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-27", "last_day": "2026-10-13", "completed_days": 119, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-28", "last_day": "2026-10-13", "completed_days": 120, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-29", "last_day": "2026-10-13", "completed_days": 121, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-30", "last_day": "2026-10-13", "completed_days": 122, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-10-31", "last_day": "2026-10-13", "completed_days": 123, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-01", "last_day": "2026-10-13", "completed_days": 124, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-02", "last_day": "2026-10-13", "completed_days": 125, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-03", "last_day": "2026-10-13", "completed_days": 126, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-04", "last_day": "2026-10-13", "completed_days": 127, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-05", "last_day": "2026-10-13", "completed_days": 128, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-06", "last_day": "2026-10-13", "completed_days": 129, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-07", "last_day": "2026-10-13", "completed_days": 130, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-08", "last_day": "2026-10-13", "completed_days": 131, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-09", "last_day": "2026-10-13", "completed_days": 132, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-10", "last_day": "2026-10-13", "completed_days": 133, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-11", "last_day": "2026-10-13", "completed_days": 134, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-12", "last_day": "2026-10-13", "completed_days": 135, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-13", "last_day": "2026-10-13", "completed_days": 136, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-14", "last_day": "2026-10-13", "completed_days": 137, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-15", "last_day": "2026-10-13", "completed_days": 138, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-16", "last_day": "2026-10-13", "completed_days": 139, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-17", "last_day": "2026-10-13", "completed_days": 140, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-18", "last_day": "2026-10-13", "completed_days": 141, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-19", "last_day": "2026-10-13", "completed_days": 142, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-20", "last_day": "2026-10-13", "completed_days": 143, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-21", "last_day": "2026-10-13", "completed_days": 144, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-22", "last_day": "2026-10-13", "completed_days": 145, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-23", "last_day": "2026-10-13", "completed_days": 146, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-24", "last_day": "2026-10-13", "completed_days": 147, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-25", "last_day": "2026-10-13", "completed_days": 148, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-26", "last_day": "2026-10-13", "completed_days": 149, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-27", "last_day": "2026-10-13", "completed_days": 150, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-28", "last_day": "2026-10-13", "completed_days": 151, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-29", "last_day": "2026-10-13", "completed_days": 152, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-11-30", "last_day": "2026-10-13", "completed_days": 153, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-01", "last_day": "2026-10-13", "completed_days": 154, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-02", "last_day": "2026-10-13", "completed_days": 155, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-03", "last_day": "2026-10-13", "completed_days": 156, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-04", "last_day": "2026-10-13", "completed_days": 157, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-05", "last_day": "2026-10-13", "completed_days": 158, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-06", "last_day": "2026-10-13", "completed_days": 159, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-07", "last_day": "2026-10-13", "completed_days": 160, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-08", "last_day": "2026-10-13", "completed_days": 161, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-09", "last_day": "2026-10-13", "completed_days": 162, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-10", "last_day": "2026-10-13", "completed_days": 163, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-11", "last_day": "2026-10-13", "completed_days": 164, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-12", "last_day": "2026-10-13", "completed_days": 165, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-13", "last_day": "2026-10-13", "completed_days": 166, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-14", "last_day": "2026-10-13", "completed_days": 167, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-15", "last_day": "2026-10-13", "completed_days": 168, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-16", "last_day": "2026-10-13", "completed_days": 169, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-17", "last_day": "2026-10-13", "completed_days": 170, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-18", "last_day": "2026-10-13", "completed_days": 171, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-19", "last_day": "2026-10-13", "completed_days": 172, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-20", "last_day": "2026-10-13", "completed_days": 173, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-21", "last_day": "2026-10-13", "completed_days": 174, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-22", "last_day": "2026-10-13", "completed_days": 175, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-23", "last_day": "2026-10-13", "completed_days": 176, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-24", "last_day": "2026-10-13", "completed_days": 177, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-25", "last_day": "2026-10-13", "completed_days": 178, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-26", "last_day": "2026-10-13", "completed_days": 179, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-27", "last_day": "2026-10-13", "completed_days": 180, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-28", "last_day": "2026-10-13", "completed_days": 181, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-29", "last_day": "2026-10-13", "completed_days": 182, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-30", "last_day": "2026-10-13", "completed_days": 183, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2024-12-31", "last_day": "2026-10-13", "completed_days": 184, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-01", "last_day": "2026-10-13", "completed_days": 185, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-02", "last_day": "2026-10-13", "completed_days": 186, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-03", "last_day": "2026-10-13", "completed_days": 187, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-04", "last_day": "2026-10-13", "completed_days": 188, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-05", "last_day": "2026-10-13", "completed_days": 189, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-06", "last_day": "2026-10-13", "completed_days": 190, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-07", "last_day": "2026-10-13", "completed_days": 191, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-08", "last_day": "2026-10-13", "completed_days": 192, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-09", "last_day": "2026-10-13", "completed_days": 193, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-10", "last_day": "2026-10-13", "completed_days": 194, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-11", "last_day": "2026-10-13", "completed_days": 195, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-12", "last_day": "2026-10-13", "completed_days": 196, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-13", "last_day": "2026-10-13", "completed_days": 197, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-14", "last_day": "2026-10-13", "completed_days": 198, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-15", "last_day": "2026-10-13", "completed_days": 199, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-16", "last_day": "2026-10-13", "completed_days": 200, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-17", "last_day": "2026-10-13", "completed_days": 201, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-18", "last_day": "2026-10-13", "completed_days": 202, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-19", "last_day": "2026-10-13", "completed_days": 203, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-20", "last_day": "2026-10-13", "completed_days": 204, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-21", "last_day": "2026-10-13", "completed_days": 205, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-22", "last_day": "2026-10-13", "completed_days": 206, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-23", "last_day": "2026-10-13", "completed_days": 207, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-24", "last_day": "2026-10-13", "completed_days": 208, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-25", "last_day": "2026-10-13", "completed_days": 209, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-26", "last_day": "2026-10-13", "completed_days": 210, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-27", "last_day": "2026-10-13", "completed_days": 211, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-28", "last_day": "2026-10-13", "completed_days": 212, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-29", "last_day": "2026-10-13", "completed_days": 213, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-30", "last_day": "2026-10-13", "completed_days": 214, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-01-31", "last_day": "2026-10-13", "completed_days": 215, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-01", "last_day": "2026-10-13", "completed_days": 216, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-02", "last_day": "2026-10-13", "completed_days": 217, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-03", "last_day": "2026-10-13", "completed_days": 218, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-04", "last_day": "2026-10-13", "completed_days": 219, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-05", "last_day": "2026-10-13", "completed_days": 220, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-06", "last_day": "2026-10-13", "completed_days": 221, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-07", "last_day": "2026-10-13", "completed_days": 222, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-08", "last_day": "2026-10-13", "completed_days": 223, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-09", "last_day": "2026-10-13", "completed_days": 224, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-10", "last_day": "2026-10-13", "completed_days": 225, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-11", "last_day": "2026-10-13", "completed_days": 226, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-12", "last_day": "2026-10-13", "completed_days": 227, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-13", "last_day": "2026-10-13", "completed_days": 228, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-14", "last_day": "2026-10-13", "completed_days": 229, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-15", "last_day": "2026-10-13", "completed_days": 230, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-16", "last_day": "2026-10-13", "completed_days": 231, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-17", "last_day": "2026-10-13", "completed_days": 232, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-18", "last_day": "2026-10-13", "completed_days": 233, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-19", "last_day": "2026-10-13", "completed_days": 234, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-20", "last_day": "2026-10-13", "completed_days": 235, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-21", "last_day": "2026-10-13", "completed_days": 236, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-22", "last_day": "2026-10-13", "completed_days": 237, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-23", "last_day": "2026-10-13", "completed_days": 238, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-24", "last_day": "2026-10-13", "completed_days": 239, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-25", "last_day": "2026-10-13", "completed_days": 240, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-26", "last_day": "2026-10-13", "completed_days": 241, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-27", "last_day": "2026-10-13", "completed_days": 242, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-02-28", "last_day": "2026-10-13", "completed_days": 243, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-01", "last_day": "2026-10-13", "completed_days": 244, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-02", "last_day": "2026-10-13", "completed_days": 245, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-03", "last_day": "2026-10-13", "completed_days": 246, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-04", "last_day": "2026-10-13", "completed_days": 247, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-05", "last_day": "2026-10-13", "completed_days": 248, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-06", "last_day": "2026-10-13", "completed_days": 249, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-07", "last_day": "2026-10-13", "completed_days": 250, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-08", "last_day": "2026-10-13", "completed_days": 251, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-09", "last_day": "2026-10-13", "completed_days": 252, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-10", "last_day": "2026-10-13", "completed_days": 253, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-11", "last_day": "2026-10-13", "completed_days": 254, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-12", "last_day": "2026-10-13", "completed_days": 255, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-13", "last_day": "2026-10-13", "completed_days": 256, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-14", "last_day": "2026-10-13", "completed_days": 257, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-15", "last_day": "2026-10-13", "completed_days": 258, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-16", "last_day": "2026-10-13", "completed_days": 259, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-17", "last_day": "2026-10-13", "completed_days": 260, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-18", "last_day": "2026-10-13", "completed_days": 261, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-19", "last_day": "2026-10-13", "completed_days": 262, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-20", "last_day": "2026-10-13", "completed_days": 263, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-21", "last_day": "2026-10-13", "completed_days": 264, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-22", "last_day": "2026-10-13", "completed_days": 265, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-23", "last_day": "2026-10-13", "completed_days": 266, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-24", "last_day": "2026-10-13", "completed_days": 267, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-25", "last_day": "2026-10-13", "completed_days": 268, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-26", "last_day": "2026-10-13", "completed_days": 269, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-27", "last_day": "2026-10-13", "completed_days": 270, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-28", "last_day": "2026-10-13", "completed_days": 271, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-29", "last_day": "2026-10-13", "completed_days": 272, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-30", "last_day": "2026-10-13", "completed_days": 273, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-03-31", "last_day": "2026-10-13", "completed_days": 274, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-01", "last_day": "2026-10-13", "completed_days": 275, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-02", "last_day": "2026-10-13", "completed_days": 276, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-03", "last_day": "2026-10-13", "completed_days": 277, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-04", "last_day": "2026-10-13", "completed_days": 278, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-05", "last_day": "2026-10-13", "completed_days": 279, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-06", "last_day": "2026-10-13", "completed_days": 280, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-07", "last_day": "2026-10-13", "completed_days": 281, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-08", "last_day": "2026-10-13", "completed_days": 282, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-09", "last_day": "2026-10-13", "completed_days": 283, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-10", "last_day": "2026-10-13", "completed_days": 284, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-11", "last_day": "2026-10-13", "completed_days": 285, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-12", "last_day": "2026-10-13", "completed_days": 286, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-13", "last_day": "2026-10-13", "completed_days": 287, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-14", "last_day": "2026-10-13", "completed_days": 288, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-15", "last_day": "2026-10-13", "completed_days": 289, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-16", "last_day": "2026-10-13", "completed_days": 290, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-17", "last_day": "2026-10-13", "completed_days": 291, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-18", "last_day": "2026-10-13", "completed_days": 292, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-19", "last_day": "2026-10-13", "completed_days": 293, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-20", "last_day": "2026-10-13", "completed_days": 294, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-21", "last_day": "2026-10-13", "completed_days": 295, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-22", "last_day": "2026-10-13", "completed_days": 296, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-23", "last_day": "2026-10-13", "completed_days": 297, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-24", "last_day": "2026-10-13", "completed_days": 298, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-25", "last_day": "2026-10-13", "completed_days": 299, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-26", "last_day": "2026-10-13", "completed_days": 300, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-27", "last_day": "2026-10-13", "completed_days": 301, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-28", "last_day": "2026-10-13", "completed_days": 302, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-29", "last_day": "2026-10-13", "completed_days": 303, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-04-30", "last_day": "2026-10-13", "completed_days": 304, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-01", "last_day": "2026-10-13", "completed_days": 305, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-02", "last_day": "2026-10-13", "completed_days": 306, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-03", "last_day": "2026-10-13", "completed_days": 307, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-04", "last_day": "2026-10-13", "completed_days": 308, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-05", "last_day": "2026-10-13", "completed_days": 309, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-06", "last_day": "2026-10-13", "completed_days": 310, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-07", "last_day": "2026-10-13", "completed_days": 311, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-08", "last_day": "2026-10-13", "completed_days": 312, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-09", "last_day": "2026-10-13", "completed_days": 313, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-10", "last_day": "2026-10-13", "completed_days": 314, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-11", "last_day": "2026-10-13", "completed_days": 315, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-12", "last_day": "2026-10-13", "completed_days": 316, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-13", "last_day": "2026-10-13", "completed_days": 317, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-14", "last_day": "2026-10-13", "completed_days": 318, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-15", "last_day": "2026-10-13", "completed_days": 319, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-16", "last_day": "2026-10-13", "completed_days": 320, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-17", "last_day": "2026-10-13", "completed_days": 321, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-18", "last_day": "2026-10-13", "completed_days": 322, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-19", "last_day": "2026-10-13", "completed_days": 323, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-20", "last_day": "2026-10-13", "completed_days": 324, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-21", "last_day": "2026-10-13", "completed_days": 325, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-22", "last_day": "2026-10-13", "completed_days": 326, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-23", "last_day": "2026-10-13", "completed_days": 327, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-24", "last_day": "2026-10-13", "completed_days": 328, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-25", "last_day": "2026-10-13", "completed_days": 329, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-26", "last_day": "2026-10-13", "completed_days": 330, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-27", "last_day": "2026-10-13", "completed_days": 331, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-28", "last_day": "2026-10-13", "completed_days": 332, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-29", "last_day": "2026-10-13", "completed_days": 333, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-30", "last_day": "2026-10-13", "completed_days": 334, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-05-31", "last_day": "2026-10-13", "completed_days": 335, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-01", "last_day": "2026-10-13", "completed_days": 336, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-02", "last_day": "2026-10-13", "completed_days": 337, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-03", "last_day": "2026-10-13", "completed_days": 338, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-04", "last_day": "2026-10-13", "completed_days": 339, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-05", "last_day": "2026-10-13", "completed_days": 340, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-06", "last_day": "2026-10-13", "completed_days": 341, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-07", "last_day": "2026-10-13", "completed_days": 342, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-08", "last_day": "2026-10-13", "completed_days": 343, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-09", "last_day": "2026-10-13", "completed_days": 344, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-10", "last_day": "2026-10-13", "completed_days": 345, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-11", "last_day": "2026-10-13", "completed_days": 346, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-12", "last_day": "2026-10-13", "completed_days": 347, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-13", "last_day": "2026-10-13", "completed_days": 348, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-14", "last_day": "2026-10-13", "completed_days": 349, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-15", "last_day": "2026-10-13", "completed_days": 350, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-16", "last_day": "2026-10-13", "completed_days": 351, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-17", "last_day": "2026-10-13", "completed_days": 352, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-18", "last_day": "2026-10-13", "completed_days": 353, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-19", "last_day": "2026-10-13", "completed_days": 354, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-20", "last_day": "2026-10-13", "completed_days": 355, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-21", "last_day": "2026-10-13", "completed_days": 356, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-22", "last_day": "2026-10-13", "completed_days": 357, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-23", "last_day": "2026-10-13", "completed_days": 358, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-24", "last_day": "2026-10-13", "completed_days": 359, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-25", "last_day": "2026-10-13", "completed_days": 360, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-26", "last_day": "2026-10-13", "completed_days": 361, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-27", "last_day": "2026-10-13", "completed_days": 362, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-28", "last_day": "2026-10-13", "completed_days": 363, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-29", "last_day": "2026-10-13", "completed_days": 364, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-06-30", "last_day": "2026-10-13", "completed_days": 365, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-01", "last_day": "2026-10-13", "completed_days": 366, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-02", "last_day": "2026-10-13", "completed_days": 367, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-03", "last_day": "2026-10-13", "completed_days": 368, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-04", "last_day": "2026-10-13", "completed_days": 369, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-05", "last_day": "2026-10-13", "completed_days": 370, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-06", "last_day": "2026-10-13", "completed_days": 371, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-07", "last_day": "2026-10-13", "completed_days": 372, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-08", "last_day": "2026-10-13", "completed_days": 373, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-09", "last_day": "2026-10-13", "completed_days": 374, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-10", "last_day": "2026-10-13", "completed_days": 375, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-11", "last_day": "2026-10-13", "completed_days": 376, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-12", "last_day": "2026-10-13", "completed_days": 377, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-13", "last_day": "2026-10-13", "completed_days": 378, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-14", "last_day": "2026-10-13", "completed_days": 379, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-15", "last_day": "2026-10-13", "completed_days": 380, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-16", "last_day": "2026-10-13", "completed_days": 381, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-17", "last_day": "2026-10-13", "completed_days": 382, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-18", "last_day": "2026-10-13", "completed_days": 383, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-19", "last_day": "2026-10-13", "completed_days": 384, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-20", "last_day": "2026-10-13", "completed_days": 385, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-21", "last_day": "2026-10-13", "completed_days": 386, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-22", "last_day": "2026-10-13", "completed_days": 387, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-23", "last_day": "2026-10-13", "completed_days": 388, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-24", "last_day": "2026-10-13", "completed_days": 389, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-25", "last_day": "2026-10-13", "completed_days": 390, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-26", "last_day": "2026-10-13", "completed_days": 391, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-27", "last_day": "2026-10-13", "completed_days": 392, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-28", "last_day": "2026-10-13", "completed_days": 393, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-29", "last_day": "2026-10-13", "completed_days": 394, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-30", "last_day": "2026-10-13", "completed_days": 395, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-07-31", "last_day": "2026-10-13", "completed_days": 396, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-01", "last_day": "2026-10-13", "completed_days": 397, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-02", "last_day": "2026-10-13", "completed_days": 398, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-03", "last_day": "2026-10-13", "completed_days": 399, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-04", "last_day": "2026-10-13", "completed_days": 400, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-05", "last_day": "2026-10-13", "completed_days": 401, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-06", "last_day": "2026-10-13", "completed_days": 402, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-07", "last_day": "2026-10-13", "completed_days": 403, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-08", "last_day": "2026-10-13", "completed_days": 404, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-09", "last_day": "2026-10-13", "completed_days": 405, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-10", "last_day": "2026-10-13", "completed_days": 406, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-11", "last_day": "2026-10-13", "completed_days": 407, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-12", "last_day": "2026-10-13", "completed_days": 408, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-13", "last_day": "2026-10-13", "completed_days": 409, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-14", "last_day": "2026-10-13", "completed_days": 410, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-15", "last_day": "2026-10-13", "completed_days": 411, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-16", "last_day": "2026-10-13", "completed_days": 412, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-17", "last_day": "2026-10-13", "completed_days": 413, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-18", "last_day": "2026-10-13", "completed_days": 414, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-19", "last_day": "2026-10-13", "completed_days": 415, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-20", "last_day": "2026-10-13", "completed_days": 416, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-21", "last_day": "2026-10-13", "completed_days": 417, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-22", "last_day": "2026-10-13", "completed_days": 418, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-23", "last_day": "2026-10-13", "completed_days": 419, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-24", "last_day": "2026-10-13", "completed_days": 420, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-25", "last_day": "2026-10-13", "completed_days": 421, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-26", "last_day": "2026-10-13", "completed_days": 422, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-27", "last_day": "2026-10-13", "completed_days": 423, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-28", "last_day": "2026-10-13", "completed_days": 424, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-29", "last_day": "2026-10-13", "completed_days": 425, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-30", "last_day": "2026-10-13", "completed_days": 426, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-08-31", "last_day": "2026-10-13", "completed_days": 427, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-01", "last_day": "2026-10-13", "completed_days": 428, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-02", "last_day": "2026-10-13", "completed_days": 429, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-03", "last_day": "2026-10-13", "completed_days": 430, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-04", "last_day": "2026-10-13", "completed_days": 431, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-05", "last_day": "2026-10-13", "completed_days": 432, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-06", "last_day": "2026-10-13", "completed_days": 433, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-07", "last_day": "2026-10-13", "completed_days": 434, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-08", "last_day": "2026-10-13", "completed_days": 435, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-09", "last_day": "2026-10-13", "completed_days": 436, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-10", "last_day": "2026-10-13", "completed_days": 437, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-11", "last_day": "2026-10-13", "completed_days": 438, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-12", "last_day": "2026-10-13", "completed_days": 439, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-13", "last_day": "2026-10-13", "completed_days": 440, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-14", "last_day": "2026-10-13", "completed_days": 441, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-15", "last_day": "2026-10-13", "completed_days": 442, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-16", "last_day": "2026-10-13", "completed_days": 443, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-17", "last_day": "2026-10-13", "completed_days": 444, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-18", "last_day": "2026-10-13", "completed_days": 445, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-19", "last_day": "2026-10-13", "completed_days": 446, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-20", "last_day": "2026-10-13", "completed_days": 447, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-21", "last_day": "2026-10-13", "completed_days": 448, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-22", "last_day": "2026-10-13", "completed_days": 449, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-23", "last_day": "2026-10-13", "completed_days": 450, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-24", "last_day": "2026-10-13", "completed_days": 451, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-25", "last_day": "2026-10-13", "completed_days": 452, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-26", "last_day": "2026-10-13", "completed_days": 453, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-27", "last_day": "2026-10-13", "completed_days": 454, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-28", "last_day": "2026-10-13", "completed_days": 455, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-29", "last_day": "2026-10-13", "completed_days": 456, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-09-30", "last_day": "2026-10-13", "completed_days": 457, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-01", "last_day": "2026-10-13", "completed_days": 458, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-02", "last_day": "2026-10-13", "completed_days": 459, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-03", "last_day": "2026-10-13", "completed_days": 460, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-04", "last_day": "2026-10-13", "completed_days": 461, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-05", "last_day": "2026-10-13", "completed_days": 462, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-06", "last_day": "2026-10-13", "completed_days": 463, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-07", "last_day": "2026-10-13", "completed_days": 464, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-08", "last_day": "2026-10-13", "completed_days": 465, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-09", "last_day": "2026-10-13", "completed_days": 466, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-10", "last_day": "2026-10-13", "completed_days": 467, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-11", "last_day": "2026-10-13", "completed_days": 468, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-12", "last_day": "2026-10-13", "completed_days": 469, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-13", "last_day": "2026-10-13", "completed_days": 470, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-14", "last_day": "2026-10-13", "completed_days": 471, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-15", "last_day": "2026-10-13", "completed_days": 472, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-16", "last_day": "2026-10-13", "completed_days": 473, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-17", "last_day": "2026-10-13", "completed_days": 474, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-18", "last_day": "2026-10-13", "completed_days": 475, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-19", "last_day": "2026-10-13", "completed_days": 476, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-20", "last_day": "2026-10-13", "completed_days": 477, "total_days": 835}
+{"stage": "cpu_baseline", "delivery_day": "2025-10-21", "last_day": "2026-10-13", "completed_days": 478, "total_days": 835}

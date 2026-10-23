@@ -1,0 +1,40 @@
+{
+  "protocol": "nyx_annual_public_hydro_capture_v1",
+  "delivery_day": "2026-10-13",
+  "state": "COMPLETE",
+  "cutoff_utc": "2026-10-12T06:00:00+00:00",
+  "retrieved_at_utc": "2026-10-12T07:38:05.372322+00:00",
+  "source_window_utc": [
+    "2026-10-03T23:00:00+00:00",
+    "2026-10-11T22:00:00+00:00"
+  ],
+  "provider_response": {
+    "generated_at_utc": "2026-10-12T07:38:05+00:00",
+    "available_from_utc": "2026-10-03T23:00:00+00:00",
+    "available_until_utc": "2026-10-11T21:45:00+00:00",
+    "observations": 764
+  },
+  "artifact_sha256": {
+    "FR.json": "52354df35c500bf9a665473f7b09cab1188bda480ac8d8c5be17847394a3e7bd",
+    "features.parquet": "7b834a6f0e13b2cd71b44e6ba2c813edd2e57d5a4e7bfefc8d67ae8498993da6"
+  },
+  "capture_code_sha256": "462b11c386fc955c5e040e30cde0bc6e7d212760f52849d6d1ffb8bae10fa163",
+  "feature_code_sha256": "a81baa8c88d1ff5fda255e628c780dc965b10999776a631e131f3baf3a8418ec",
+  "origin_snapshot_capture_verified": false,
+  "provider_first_publication_timestamp_verified": false,
+  "operational_snapshot": {
+    "protocol": "nyx_annual_operational_snapshot_v1",
+    "delivery_day": "2026-10-13",
+    "requested_at_utc": "2026-10-12T07:37:55.512108+00:00",
+    "asof_utc": "2026-10-12T06:00:00+00:00",
+    "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"
+  },
+  "asof_cutoff_verified": false,
+  "request_window_utc": {
+    "FR": [
+      "2026-10-03T23:00:00+00:00",
+      "2026-10-11T22:00:00+00:00"
+    ]
+  },
+  "delivery_snapshot_pre_cutoff_verified": false
+}

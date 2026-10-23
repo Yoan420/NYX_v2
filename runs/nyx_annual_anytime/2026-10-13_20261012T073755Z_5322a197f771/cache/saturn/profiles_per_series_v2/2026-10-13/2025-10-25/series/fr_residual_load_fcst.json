@@ -1,0 +1,68 @@
+{
+  "evidence": {
+    "alias": "fr_residual_load_fcst",
+    "delivery_day": "2025-10-25",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": [
+          {
+            "duplicated_value": 29.51532795,
+            "local_timestamp": "2025-10-26T02:00:00",
+            "physical_hours_utc": [
+              "2025-10-26T00:00:00+00:00",
+              "2025-10-26T01:00:00+00:00"
+            ],
+            "policy": "duplicate"
+          }
+        ]
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2025-10-24T06:00:00+00:00",
+    "origin_snapshot_verified": true,
+    "outer_delivery_day": "2026-10-13",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T13:32:54.354985+00:00",
+    "revision_utc": "2025-10-24T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "own_origin",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "5f168b0ca8d48948beffbf497301fb61845fc82713d6063a170587a5a3045057"
+  },
+  "values": [
+    31.24220233333333,
+    29.508143333333336,
+    26.995449733333334,
+    24.757012133333333,
+    23.46593163333333,
+    24.256869933333334,
+    26.335764833333332,
+    28.947091533333335,
+    30.51891133333333,
+    31.695026333333335,
+    32.408471633333335,
+    31.752987833333336,
+    31.77753823333334,
+    29.749614233333332,
+    28.72339183333333,
+    27.738621533333337,
+    28.41171673333333,
+    30.713044033333336,
+    35.54625943333333,
+    39.92100953333333,
+    37.06806123333333,
+    34.87899333333333,
+    36.07470163333333,
+    36.74406573333333
+  ]
+}

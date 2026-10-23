@@ -1,0 +1,59 @@
+{
+  "evidence": {
+    "alias": "nl_wind_generation_fcst",
+    "delivery_day": "2026-06-15",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2026-06-14T06:00:00+00:00",
+    "origin_snapshot_verified": false,
+    "outer_delivery_day": "2026-10-13",
+    "own_origin_failure": "Saturn 2026-06-15 / forecast_profile / nl_wind_generation_fcst (power.nl.generation.wind.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-14T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.nl.generation.wind.hourly.gw.fcst; plage=2026-06-14 14:00:00+00:00 -> 2026-06-16 05:00:00+00:00; cutoff=2026-06-14 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.nl.generation.wind.hourly.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-14T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-14T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-16T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T16:58:49.090015+00:00",
+    "revision_utc": "2026-10-12T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Amsterdam",
+      "series": "power.nl.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "outer_revision",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "bee69263eaef27327be0a21d3551a63bc364ab8aedc17759ad08061c8982116b"
+  },
+  "values": [
+    4.3627587000000005,
+    4.1422225,
+    3.7855724999999993,
+    3.5727118,
+    3.8198041,
+    3.9831613,
+    3.8634475,
+    3.5747609000000002,
+    3.2269216999999997,
+    3.077208,
+    3.3402442999999997,
+    3.3350470999999997,
+    3.0520510999999995,
+    2.6582220999999997,
+    2.2163381999999996,
+    2.1601598999999996,
+    1.9903836,
+    1.790198,
+    1.5445095,
+    1.2663871,
+    1.0428092999999998,
+    0.9434787999999998,
+    0.8147831999999998,
+    0.8771158
+  ]
+}

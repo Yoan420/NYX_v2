@@ -1,0 +1,59 @@
+{
+  "evidence": {
+    "alias": "fr_nuclear_generation_fcst_gw",
+    "delivery_day": "2026-06-16",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+    "origin_snapshot_verified": false,
+    "outer_delivery_day": "2026-10-13",
+    "own_origin_failure": "Saturn 2026-06-16 / forecast_profile / fr_nuclear_generation_fcst_gw (power.fr.generation.nuclear.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-15T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.fr.generation.nuclear.gw.fcst; plage=2026-06-15 14:00:00+00:00 -> 2026-06-17 05:00:00+00:00; cutoff=2026-06-15 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.fr.generation.nuclear.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-15T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-15T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-17T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T16:58:58.595254+00:00",
+    "revision_utc": "2026-10-12T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.generation.nuclear.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "outer_revision",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "5017d11ead4302bf366da20595660045b0c4ea6dad1fc92e1d32e0538d2fb945"
+  },
+  "values": [
+    43.84,
+    43.84,
+    42.734,
+    42.734,
+    42.734,
+    42.734,
+    42.734,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.044000000000004,
+    44.454,
+    44.454,
+    44.454,
+    44.454,
+    45.434,
+    46.669000000000004
+  ]
+}

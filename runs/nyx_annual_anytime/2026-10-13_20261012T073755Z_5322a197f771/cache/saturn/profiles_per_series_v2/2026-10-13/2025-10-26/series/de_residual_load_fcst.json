@@ -1,0 +1,69 @@
+{
+  "evidence": {
+    "alias": "de_residual_load_fcst",
+    "delivery_day": "2025-10-26",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": [
+          {
+            "duplicated_value": -2.6521332368800046,
+            "local_timestamp": "2025-10-26T02:00:00",
+            "physical_hours_utc": [
+              "2025-10-26T00:00:00+00:00",
+              "2025-10-26T01:00:00+00:00"
+            ],
+            "policy": "duplicate"
+          }
+        ]
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2025-10-25T06:00:00+00:00",
+    "origin_snapshot_verified": true,
+    "outer_delivery_day": "2026-10-13",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T13:33:41.411244+00:00",
+    "revision_utc": "2025-10-25T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Berlin",
+      "series": "power.de.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "own_origin",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "90c7e4520675fcad59edee03e3a79bc43670573f8af9f788f42b54ca215c9064"
+  },
+  "values": [
+    0.44171486311999786,
+    -1.835716136879995,
+    -2.6521332368800046,
+    -2.6521332368800046,
+    -4.174280936879995,
+    -3.717435336879994,
+    -3.7358494368799953,
+    -4.180494436879997,
+    -5.281468136880001,
+    -7.499035736879996,
+    -10.197506536879999,
+    -11.995907436879996,
+    -11.290623336879996,
+    -10.68637673688,
+    -10.592178236879995,
+    -10.270404536879994,
+    -7.831161736879999,
+    -4.01940543688,
+    0.19481036311999134,
+    3.1435036631200077,
+    2.24179616312,
+    0.7078875631200034,
+    0.10157486311999975,
+    0.26925316311999836,
+    -1.5856914368800048
+  ]
+}

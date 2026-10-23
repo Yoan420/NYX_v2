@@ -1,0 +1,68 @@
+{
+  "evidence": {
+    "alias": "be_wind_generation_fcst",
+    "delivery_day": "2025-10-25",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": [
+          {
+            "duplicated_value": 3.0630359499999993,
+            "local_timestamp": "2025-10-26T02:00:00",
+            "physical_hours_utc": [
+              "2025-10-26T00:00:00+00:00",
+              "2025-10-26T01:00:00+00:00"
+            ],
+            "policy": "duplicate"
+          }
+        ]
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2025-10-24T06:00:00+00:00",
+    "origin_snapshot_verified": true,
+    "outer_delivery_day": "2026-10-13",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T13:33:40.509648+00:00",
+    "revision_utc": "2025-10-24T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Brussels",
+      "series": "power.be.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "own_origin",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "45bacc5badf4d8c5d5fa8fb145bce12a8e4b1ac11aabbc5b8f0c5f873616860a"
+  },
+  "values": [
+    3.7540186999999996,
+    3.7354675,
+    3.6981349,
+    3.6286750999999997,
+    3.5560205,
+    3.5479019,
+    3.6059385999999995,
+    3.6328015999999996,
+    3.5981633999999993,
+    3.5807576999999995,
+    3.5593525,
+    3.5034316999999997,
+    3.4291578,
+    3.3207748999999995,
+    3.1779880999999994,
+    3.0474048,
+    2.9455077999999997,
+    2.8747982,
+    2.796408,
+    2.7038588,
+    2.6698251999999996,
+    2.7305989999999998,
+    2.8274709999999996,
+    2.9147722
+  ]
+}

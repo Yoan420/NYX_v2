@@ -42,6 +42,10 @@ data/pit/nyx_annual_public_history/
 !/runs/nyx_daily_refit_states/**
 !/runs/nyx_daily_cpu_states/
 !/runs/nyx_daily_cpu_states/**
+!/runs/nyx_annual_anytime/
+!/runs/nyx_annual_anytime/**
+!/runs/nyx_annual_anytime_reports/
+!/runs/nyx_annual_anytime_reports/**
 
 
 # Local runs, generated reports and desktop shortcuts are rebuilt on each host.

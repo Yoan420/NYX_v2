@@ -1,0 +1,23 @@
+{
+  "protocol": "nyx_annual_anytime_run_v1",
+  "operational_snapshot": {
+    "protocol": "nyx_annual_operational_snapshot_v1",
+    "delivery_day": "2026-10-13",
+    "requested_at_utc": "2026-10-12T07:37:55.512108+00:00",
+    "asof_utc": "2026-10-12T06:00:00+00:00",
+    "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"
+  },
+  "output": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime_reports\\2026-10-13_20261012T073755Z_5322a197f771",
+  "run_directory": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771",
+  "state": "REPORTS_COMPLETE",
+  "log": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\launch_db8038ec32c54b539846e95abfd96236.log",
+  "bundle": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle",
+  "price_reference": "EPEX",
+  "price_reference_policy": "epex_only_v1",
+  "source_mixing": false,
+  "price_source_migration": "selected_before_first_price_snapshot",
+  "prior_model_price_reference": "canonical_entsoe_with_audited_completion",
+  "price_source_selected_at_utc": "2026-10-12T10:00:18.450844+00:00",
+  "index": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime_reports\\2026-10-13_20261012T073755Z_5322a197f771\\index.html",
+  "qualified_for_production": false
+}

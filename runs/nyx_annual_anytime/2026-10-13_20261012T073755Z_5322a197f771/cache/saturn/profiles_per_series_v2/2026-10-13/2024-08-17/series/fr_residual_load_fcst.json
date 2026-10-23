@@ -1,0 +1,59 @@
+{
+  "evidence": {
+    "alias": "fr_residual_load_fcst",
+    "delivery_day": "2024-08-17",
+    "dst_evidence": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "logical_forecast_origin_utc": "2024-08-16T06:00:00+00:00",
+    "origin_snapshot_verified": false,
+    "outer_delivery_day": "2026-10-13",
+    "own_origin_failure": "Saturn 2024-08-17 / forecast_profile / fr_residual_load_fcst (power.fr.residual.load.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2024-08-16T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.fr.residual.load.hourly.gw.fcst; plage=2024-08-16 14:00:00+00:00 -> 2024-08-18 05:00:00+00:00; cutoff=2024-08-16 06:00:00+00:00. reponse vide (dialecte=from_value_date/to_value_date)",
+    "protocol": "nyx_annual_saturn_profile_alias_v2",
+    "retrieved_at_utc": "2026-10-12T10:27:53.690067+00:00",
+    "revision_utc": "2026-10-12T06:00:00+00:00",
+    "series": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "source": "outer_revision",
+    "source_substitutions": [],
+    "spring_dst_repair": {
+      "alias": "nl_residual_load_fcst",
+      "entries": [],
+      "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+    },
+    "values_sha256": "bce02cf04a983a1b687f8405e06946067e82d37bd81efb4a4dc89eefe6d0c2e8"
+  },
+  "values": [
+    33.419439249999996,
+    31.878622650000004,
+    29.76441195,
+    27.816405450000005,
+    26.742250150000004,
+    27.20053325,
+    28.15941745,
+    28.58297555,
+    29.25768525,
+    29.765062049999997,
+    29.74194655,
+    29.90300095,
+    31.02744565,
+    29.637499050000002,
+    29.11299015,
+    28.356376149999996,
+    28.279189449999997,
+    29.444121550000006,
+    32.19232795,
+    34.76004275,
+    34.77409615,
+    35.53940245,
+    35.888020250000004,
+    35.57228225
+  ]
+}

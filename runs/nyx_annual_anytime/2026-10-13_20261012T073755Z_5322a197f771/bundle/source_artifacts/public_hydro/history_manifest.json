@@ -1,0 +1,73 @@
+{
+  "protocol": "nyx_annual_public_history_v1",
+  "history_policy": "current_fit_snapshot_v1",
+  "source_group": "public_hydro",
+  "delivery_day": "2026-10-13",
+  "cutoff_utc": "2026-10-12T06:00:00+00:00",
+  "training_target_window_utc": [
+    "2025-10-12T22:00:00+00:00",
+    "2026-10-12T21:00:00+00:00"
+  ],
+  "delivery_capture_sha256": "f68a267b5a79053935b1703ec79003c5cbfa939a4451770183fd43a59a4dc893",
+  "partitions": [
+    {
+      "key": "FR/20251003T230000Z_20251101T000000Z",
+      "retrieval_sha256": "26c4e4230093300d5c921449d46a20312bf975bc716cbb9b4bedf0bc3117fdae"
+    },
+    {
+      "key": "FR/20251101T000000Z_20251201T000000Z",
+      "retrieval_sha256": "05535e312b29ee837a571d58d18a8eeca771530c3ad57de955e099d7dae51bcc"
+    },
+    {
+      "key": "FR/20251201T000000Z_20260101T000000Z",
+      "retrieval_sha256": "6ec60b60876a3975e899d142a5006ea0022e64b0842d91a0e7c1f1fb4beee58d"
+    },
+    {
+      "key": "FR/20260101T000000Z_20260201T000000Z",
+      "retrieval_sha256": "33c2eaeb81e8e74e644130a1fab5374e6fba7ba4c88a8d1db15898af73340d9a"
+    },
+    {
+      "key": "FR/20260201T000000Z_20260301T000000Z",
+      "retrieval_sha256": "72df60f2bcf8d740a11e28c01c3fe3bcc76e11b5412080c931db8d499778cf80"
+    },
+    {
+      "key": "FR/20260301T000000Z_20260401T000000Z",
+      "retrieval_sha256": "44ffb2785f84cf67a6001f4c57983c537d4b2aa84d1bb32196693ca1c8a32d48"
+    },
+    {
+      "key": "FR/20260401T000000Z_20260501T000000Z",
+      "retrieval_sha256": "9fa7837f94304788993a7d431bac5066ad6ff7e383d1d47f9c2baf5ed4b4834a"
+    },
+    {
+      "key": "FR/20260501T000000Z_20260601T000000Z",
+      "retrieval_sha256": "e0bb9935845dd3291f575ab4bc8c544d6c86082611b7e142af5670ba9f64cb1f"
+    },
+    {
+      "key": "FR/20260601T000000Z_20260701T000000Z",
+      "retrieval_sha256": "79d9ba6fa135268c0ce87adb774f79f3d1c7bda7481ef36d7711f2319d54e93a"
+    },
+    {
+      "key": "FR/20260701T000000Z_20260801T000000Z",
+      "retrieval_sha256": "bd4560b7817f4f69e99fb6e9e1669697daca584628951d920827f5242c44dd50"
+    },
+    {
+      "key": "FR/20260801T000000Z_20260901T000000Z",
+      "retrieval_sha256": "92c5cbb3aa017883bef5f0b4e86fadef48fa8b72e308395bd829a1909f5c0dbf"
+    },
+    {
+      "key": "FR/20260901T000000Z_20261001T000000Z",
+      "retrieval_sha256": "728fc51e4b685104b47a42af2eec8b565a78fb0e85c732b0a75f0066a6e76fdd"
+    },
+    {
+      "key": "FR/20261001T000000Z_20261010T220000Z",
+      "retrieval_sha256": "5bbcbae1420570522a82cfe759b3d5c57b8573273c6d71cbdf776b819f560c1c"
+    }
+  ],
+  "operational_snapshot": {
+    "protocol": "nyx_annual_operational_snapshot_v1",
+    "delivery_day": "2026-10-13",
+    "requested_at_utc": "2026-10-12T07:37:55.512108+00:00",
+    "asof_utc": "2026-10-12T06:00:00+00:00",
+    "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"
+  }
+}

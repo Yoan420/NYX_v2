@@ -1,0 +1,675 @@
+{
+  "alias_evidence": {
+    "be_residual_load_fcst": {
+      "alias": "be_residual_load_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T15:12:16.784403+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Brussels",
+        "series": "power.be.residual.load.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "f7fe57890a68016635660cb8bff94096bda6fe5b28151c11b8f0408651826f52"
+    },
+    "be_solar_generation_fcst": {
+      "alias": "be_solar_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": false,
+      "outer_delivery_day": "2026-10-13",
+      "own_origin_failure": "Saturn 2026-06-16 / forecast_profile / be_solar_generation_fcst (power.be.generation.solar.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-15T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.be.generation.solar.hourly.gw.fcst; plage=2026-06-15 14:00:00+00:00 -> 2026-06-17 05:00:00+00:00; cutoff=2026-06-15 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.be.generation.solar.hourly.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-15T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-15T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-17T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:59:05.947521+00:00",
+      "revision_utc": "2026-10-12T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Brussels",
+        "series": "power.be.generation.solar.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "outer_revision",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "6ff317b29bdd7021495f062a9d0110f9ced08cbeae4363fa3bb0c845f6a4d471"
+    },
+    "be_wind_generation_fcst": {
+      "alias": "be_wind_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:58:56.669489+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Brussels",
+        "series": "power.be.generation.wind.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "fafe28e3e5191dbca22f7e74a7a6d9b7a5479d5c2feffa60dae3a248416d1a80"
+    },
+    "de_residual_load_fcst": {
+      "alias": "de_residual_load_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T15:12:10.070516+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Berlin",
+        "series": "power.de.residual.load.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "2e50af46fb32e1a644627f0ebc93eb36bb29ccd2befc572c20e0ed2e1cc4efec"
+    },
+    "de_solar_generation_fcst": {
+      "alias": "de_solar_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": false,
+      "outer_delivery_day": "2026-10-13",
+      "own_origin_failure": "Saturn 2026-06-16 / forecast_profile / de_solar_generation_fcst (power.de.generation.solar.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-15T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.de.generation.solar.hourly.gw.fcst; plage=2026-06-15 14:00:00+00:00 -> 2026-06-17 05:00:00+00:00; cutoff=2026-06-15 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.de.generation.solar.hourly.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-15T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-15T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-17T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:59:03.386748+00:00",
+      "revision_utc": "2026-10-12T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Berlin",
+        "series": "power.de.generation.solar.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "outer_revision",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "d8673fc7b856e2d34fc1f8409d35a70597612eef08935ef596486e8544a9c1c4"
+    },
+    "de_wind_generation_fcst": {
+      "alias": "de_wind_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:58:48.539580+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Berlin",
+        "series": "power.de.generation.wind.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "5bf552ec3c842ef4e3fa29f87fb4877afc48ced3b7c0e91f024a56966e82a6fc"
+    },
+    "es_residual_load_fcst": {
+      "alias": "es_residual_load_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T15:12:27.657520+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Madrid",
+        "series": "power.es.residual.load.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "45d6fd2308417cccc5e8b5ba1edd0f1731dd4380897ed3eb897040cb43d4178b"
+    },
+    "fr_nuclear_generation_fcst_gw": {
+      "alias": "fr_nuclear_generation_fcst_gw",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": false,
+      "outer_delivery_day": "2026-10-13",
+      "own_origin_failure": "Saturn 2026-06-16 / forecast_profile / fr_nuclear_generation_fcst_gw (power.fr.generation.nuclear.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-15T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.fr.generation.nuclear.gw.fcst; plage=2026-06-15 14:00:00+00:00 -> 2026-06-17 05:00:00+00:00; cutoff=2026-06-15 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.fr.generation.nuclear.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-15T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-15T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-17T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:58:58.595254+00:00",
+      "revision_utc": "2026-10-12T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Paris",
+        "series": "power.fr.generation.nuclear.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "outer_revision",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "5017d11ead4302bf366da20595660045b0c4ea6dad1fc92e1d32e0538d2fb945"
+    },
+    "fr_residual_load_fcst": {
+      "alias": "fr_residual_load_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T15:12:04.846316+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Paris",
+        "series": "power.fr.residual.load.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "7b1915905fb9a24e100a3977e7017c2a46507429f0b54b2a13de49cd141b5b7f"
+    },
+    "fr_solar_generation_fcst": {
+      "alias": "fr_solar_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": false,
+      "outer_delivery_day": "2026-10-13",
+      "own_origin_failure": "Saturn 2026-06-16 / forecast_profile / fr_solar_generation_fcst (power.fr.generation.solar.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-15T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.fr.generation.solar.hourly.gw.fcst; plage=2026-06-15 14:00:00+00:00 -> 2026-06-17 05:00:00+00:00; cutoff=2026-06-15 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.fr.generation.solar.hourly.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-15T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-15T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-17T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:59:00.887987+00:00",
+      "revision_utc": "2026-10-12T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Paris",
+        "series": "power.fr.generation.solar.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "outer_revision",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "4498c67263f71d5a51f34b33a3a94b604fd4f2d49f0bdff5598f1bfb9e1ba1d8"
+    },
+    "fr_wind_generation_fcst": {
+      "alias": "fr_wind_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:58:54.129538+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Paris",
+        "series": "power.fr.generation.wind.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "325205e38b399f05a8e7679a8261bfabb0f040c3bfa016e8fc27a680a479668b"
+    },
+    "nl_residual_load_fcst": {
+      "alias": "nl_residual_load_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T15:12:22.163701+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "UTC",
+        "series": "power.nl.residual.load.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "47f0592dae6e344ce951d93d709c7a6881a7795bbdc93c2bdc35ee5c04713e64"
+    },
+    "nl_solar_generation_fcst": {
+      "alias": "nl_solar_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate_zero_only"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": false,
+      "outer_delivery_day": "2026-10-13",
+      "own_origin_failure": "Saturn 2026-06-16 / forecast_profile / nl_solar_generation_fcst (power.nl.generation.solar.hourly.gw.fcst): RuntimeError: 3 attempts at revision 2026-06-15T06:00:00+00:00 failed: Saturn indisponible ou vide pour power.nl.generation.solar.hourly.gw.fcst; plage=2026-06-15 14:00:00+00:00 -> 2026-06-17 05:00:00+00:00; cutoff=2026-06-15 06:00:00+00:00. SSLError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.nl.generation.solar.hourly.gw.fcst&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-06-15T06%3A00%3A00%2B00%3A00&from_value_date=2026-06-15T14%3A00%3A00%2B00%3A00&to_value_date=2026-06-17T05%3A00%3A00%2B00%3A00 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)')))",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:59:08.372316+00:00",
+      "revision_utc": "2026-10-12T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate_zero_only",
+        "naive_timezone": "Europe/Amsterdam",
+        "series": "power.nl.generation.solar.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "outer_revision",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "93042d9497ac1f669c34e1ddb1a1f22ce81925f34d7c15c85918b0d259b1306e"
+    },
+    "nl_wind_generation_fcst": {
+      "alias": "nl_wind_generation_fcst",
+      "delivery_day": "2026-06-16",
+      "dst_evidence": {
+        "normalizer_attrs": {
+          "dst_repairs": []
+        },
+        "policy": "duplicate"
+      },
+      "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+      "origin_snapshot_verified": true,
+      "outer_delivery_day": "2026-10-13",
+      "protocol": "nyx_annual_saturn_profile_alias_v2",
+      "retrieved_at_utc": "2026-10-12T16:58:51.737184+00:00",
+      "revision_utc": "2026-06-15T06:00:00+00:00",
+      "series": {
+        "dst_policy": "duplicate",
+        "naive_timezone": "Europe/Amsterdam",
+        "series": "power.nl.generation.wind.hourly.gw.fcst",
+        "unit": "GW"
+      },
+      "source": "own_origin",
+      "source_substitutions": [],
+      "spring_dst_repair": {
+        "alias": "nl_residual_load_fcst",
+        "entries": [],
+        "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+      },
+      "values_sha256": "bf631f9ac78089893dac6af1032a3d1ff0830eb92fa6e46b4725110e5f5a381e"
+    }
+  },
+  "alias_origins_verified": {
+    "be_residual_load_fcst": true,
+    "be_solar_generation_fcst": false,
+    "be_wind_generation_fcst": true,
+    "de_residual_load_fcst": true,
+    "de_solar_generation_fcst": false,
+    "de_wind_generation_fcst": true,
+    "es_residual_load_fcst": true,
+    "fr_nuclear_generation_fcst_gw": false,
+    "fr_residual_load_fcst": true,
+    "fr_solar_generation_fcst": false,
+    "fr_wind_generation_fcst": true,
+    "nl_residual_load_fcst": true,
+    "nl_solar_generation_fcst": false,
+    "nl_wind_generation_fcst": true
+  },
+  "alias_revisions_utc": {
+    "be_residual_load_fcst": "2026-06-15T06:00:00+00:00",
+    "be_solar_generation_fcst": "2026-10-12T06:00:00+00:00",
+    "be_wind_generation_fcst": "2026-06-15T06:00:00+00:00",
+    "de_residual_load_fcst": "2026-06-15T06:00:00+00:00",
+    "de_solar_generation_fcst": "2026-10-12T06:00:00+00:00",
+    "de_wind_generation_fcst": "2026-06-15T06:00:00+00:00",
+    "es_residual_load_fcst": "2026-06-15T06:00:00+00:00",
+    "fr_nuclear_generation_fcst_gw": "2026-10-12T06:00:00+00:00",
+    "fr_residual_load_fcst": "2026-06-15T06:00:00+00:00",
+    "fr_solar_generation_fcst": "2026-10-12T06:00:00+00:00",
+    "fr_wind_generation_fcst": "2026-06-15T06:00:00+00:00",
+    "nl_residual_load_fcst": "2026-06-15T06:00:00+00:00",
+    "nl_solar_generation_fcst": "2026-10-12T06:00:00+00:00",
+    "nl_wind_generation_fcst": "2026-06-15T06:00:00+00:00"
+  },
+  "alias_sources": {
+    "be_residual_load_fcst": "own_origin",
+    "be_solar_generation_fcst": "outer_revision",
+    "be_wind_generation_fcst": "own_origin",
+    "de_residual_load_fcst": "own_origin",
+    "de_solar_generation_fcst": "outer_revision",
+    "de_wind_generation_fcst": "own_origin",
+    "es_residual_load_fcst": "own_origin",
+    "fr_nuclear_generation_fcst_gw": "outer_revision",
+    "fr_residual_load_fcst": "own_origin",
+    "fr_solar_generation_fcst": "outer_revision",
+    "fr_wind_generation_fcst": "own_origin",
+    "nl_residual_load_fcst": "own_origin",
+    "nl_solar_generation_fcst": "outer_revision",
+    "nl_wind_generation_fcst": "own_origin"
+  },
+  "artifact_sha256": {
+    "covariates.parquet": "ae1c7288968376144229d383bd4ca394879042c437d99b45d9768899abbb1d1b"
+  },
+  "availability_basis": "Complete series selected independently at own origin, outer fit cutoff, or audited NL repository vintage",
+  "collector_code_sha256": "99147aa5d6a07f5fe0f29bf2533064ff9193941f2f8ca448d87101c51c0241d6",
+  "delivery_day": "2026-06-16",
+  "dst_evidence": {
+    "be_residual_load_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "be_solar_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "be_wind_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "de_residual_load_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "de_solar_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "de_wind_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "es_residual_load_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "fr_nuclear_generation_fcst_gw": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "fr_residual_load_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "fr_solar_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "fr_wind_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "nl_residual_load_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    },
+    "nl_solar_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate_zero_only"
+    },
+    "nl_wind_generation_fcst": {
+      "normalizer_attrs": {
+        "dst_repairs": []
+      },
+      "policy": "duplicate"
+    }
+  },
+  "logical_forecast_origin_utc": "2026-06-15T06:00:00+00:00",
+  "outer_delivery_day": "2026-10-13",
+  "profile_history_policy": "own_origin_with_per_series_recovery_v2",
+  "profile_normalization_policy": "historical_saturn_profiles_with_audited_nl_spring_v1",
+  "profile_origin_snapshot_verified": false,
+  "profile_revision_ceiling_utc": "2026-10-12T06:00:00+00:00",
+  "profile_revision_max_utc": "2026-10-12T06:00:00+00:00",
+  "protocol": "nyx_annual_saturn_profiles_per_series_v2",
+  "provider_publication_timestamp_verified": false,
+  "publication_verified": false,
+  "retrieved_at_utc": "2026-10-12T16:59:08.372316+00:00",
+  "series": {
+    "be_residual_load_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Brussels",
+      "series": "power.be.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "be_solar_generation_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Brussels",
+      "series": "power.be.generation.solar.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "be_wind_generation_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Brussels",
+      "series": "power.be.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "de_residual_load_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Berlin",
+      "series": "power.de.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "de_solar_generation_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Berlin",
+      "series": "power.de.generation.solar.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "de_wind_generation_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Berlin",
+      "series": "power.de.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "es_residual_load_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Madrid",
+      "series": "power.es.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "fr_nuclear_generation_fcst_gw": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.generation.nuclear.gw.fcst",
+      "unit": "GW"
+    },
+    "fr_residual_load_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "fr_solar_generation_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.generation.solar.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "fr_wind_generation_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Paris",
+      "series": "power.fr.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "nl_residual_load_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "UTC",
+      "series": "power.nl.residual.load.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "nl_solar_generation_fcst": {
+      "dst_policy": "duplicate_zero_only",
+      "naive_timezone": "Europe/Amsterdam",
+      "series": "power.nl.generation.solar.hourly.gw.fcst",
+      "unit": "GW"
+    },
+    "nl_wind_generation_fcst": {
+      "dst_policy": "duplicate",
+      "naive_timezone": "Europe/Amsterdam",
+      "series": "power.nl.generation.wind.hourly.gw.fcst",
+      "unit": "GW"
+    }
+  },
+  "source_substitution_count": 0,
+  "source_substitutions": [],
+  "spring_dst_repair": {
+    "alias": "nl_residual_load_fcst",
+    "entries": [],
+    "policy": "nl_residual_load_fcst uniquement: grille contractuellement naive UTC d'un jour de passage a l'heure d'ete; si 04:00 et 06:00 locales sont exactement les deux seules heures physiques manquantes, moyenne lineaire des voisins UTC immediats issus du meme etat Saturn as-of; toute autre signature echoue"
+  },
+  "state": "COMPLETE",
+  "wind_gap_policy": null
+}

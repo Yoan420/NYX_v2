@@ -1,0 +1,23 @@
+{
+  "protocol": "nyx_annual_cpu_live_source_receipt_v1",
+  "source_group": "fuel",
+  "delivery_day": "2026-10-13",
+  "state": "COMPLETE",
+  "asof_cutoff_verified": true,
+  "training_window_complete": true,
+  "asof_state_utc": "2026-10-12T06:00:00+00:00",
+  "availability_basis": "Saturn revision_date query at recorded operational cutoff_utc",
+  "latest_source_value_time_utc": "2026-10-08T22:00:00+00:00",
+  "cutoff_utc": "2026-10-12T06:00:00+00:00",
+  "rows_in_training_and_delivery": 8784,
+  "artifact_sha256": {
+    "source_artifacts/fuel/market_fuel_features.parquet": "a7f93add66f4bb0b670114151735d633084bb5eb0bad560dc84341060151b063",
+    "source_artifacts/fuel/market_fuel_features.parquet.audit.json": "e5c42a82cb1f2382c6b38cebef237a3feb29f5a5ec71d8c89cf226af590d92ae"
+  },
+  "materializer_code_sha256": "58384d0fd4ecbbfbf712c908cdb0dd1050599fb2bb7f25ee3311a225745c656e",
+  "materializer_artifact_type": "kalman_market_fuel_features_pit_hourly",
+  "provider_revision_timestamp_available": false,
+  "provider_publication_timestamp_verified": false,
+  "publication_vintage_limit": "Actual operational query-as-of revision is recorded; provider insertion timestamps are not exposed.",
+  "model_inputs_complete": false
+}

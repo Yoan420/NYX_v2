@@ -1,0 +1,208 @@
+{"delivery_day": "2026-10-13", "run_directory": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771", "log": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\launch_17077bdce5614bd9acf1a23f15a3f935.log", "operational_snapshot": {"protocol": "nyx_annual_operational_snapshot_v1", "delivery_day": "2026-10-13", "requested_at_utc": "2026-10-12T07:37:55.512108+00:00", "asof_utc": "2026-10-12T06:00:00+00:00", "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"}}
+Verrou abandonne repris apres verification du processus : C:\Users\BQ6757\NYX_CWE_CPU\runs\live\nyx_annual_cpu\pipeline.lock
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_daily_capture.py", "--delivery-day", "2026-10-13", "--jao-cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture", "--exchange-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture", "--hydro-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture", "--log-file", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\capture.jsonl"]}
+{"action": "capture", "delivery_day": "2026-10-13", "started_at_utc": "2026-10-12T20:39:41.809489+00:00", "state": "COMPLETE", "sources": {"jao_initial": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:00.644170+00:00", "cache_root": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture"}, "lagged_exchange": {"state": "COMPLETE", "capture_receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture\\2026-10-13\\capture.json"}, "public_hydro": {"state": "COMPLETE", "capture_receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture\\2026-10-13\\capture.json"}}, "model_inputs_complete": false, "forecast_enabled": false, "operational_snapshot": {"protocol": "nyx_annual_operational_snapshot_v1", "delivery_day": "2026-10-13", "requested_at_utc": "2026-10-12T07:37:55.512108+00:00", "asof_utc": "2026-10-12T06:00:00+00:00", "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"}}
+{"name": "capture_operational_sources", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_daily_capture.py", "--verify-only", "--delivery-day", "2026-10-13", "--jao-cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture", "--exchange-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture", "--hydro-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture", "--log-file", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\capture.jsonl"]}
+{"action": "verify", "delivery_day": "2026-10-13", "checked_at_utc": "2026-10-12T20:39:45.544259+00:00", "state": "COMPLETE", "sources": {"jao_initial": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:00.644170+00:00", "cache_root": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture"}, "lagged_exchange": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:03.080615+00:00", "capture_receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture\\2026-10-13\\capture.json"}, "public_hydro": {"state": "COMPLETE", "retrieved_at_utc": "2026-10-12T07:38:05.372322+00:00"}}, "model_inputs_complete": false, "forecast_enabled": false, "operational_snapshot": {"protocol": "nyx_annual_operational_snapshot_v1", "delivery_day": "2026-10-13", "requested_at_utc": "2026-10-12T07:37:55.512108+00:00", "asof_utc": "2026-10-12T06:00:00+00:00", "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"}}
+{"name": "delivery_captures", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_jao_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--bootstrap-history", "--history-cache-root", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_history", "--cache-root", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\jao_capture"]}
+{"source": "jao_initial", "delivery_day": "2026-10-13", "state": "COMPLETE", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\jao_initial.json", "reused": true, "passed": true, "daily_raw_captures_recomputed": 366, "history_policy": "current_fit_snapshot_v1", "asof_cutoff_verified": false, "origin_snapshot_capture_verified": false, "delivery_snapshot_pre_cutoff_verified": false, "provider_first_publication_certified": false}
+{"name": "jao_initial", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_hydro_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--action", "bootstrap", "--history-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\public_history", "--archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\hydro_capture"]}
+{"state": "COMPLETE", "source_group": "public_hydro", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\public_hydro.json"}
+{"name": "public_hydro", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_exchange_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--action", "bootstrap", "--history-archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\public_history", "--archive", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\exchange_capture"]}
+{"state": "COMPLETE", "action": "bootstrap", "delivery_day": "2026-10-13", "output": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\lagged_exchange.json", "model_inputs_complete": false}
+{"name": "lagged_exchange", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_saturn_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\saturn"]}
+Saturn: EPEX-only training prices at outer cutoff 2026-10-12T06:00:00+00:00
+Saturn: checking 835 archived profile days (2024-07-01 to 2026-10-13)
+Saturn: 10/835 daily states verified
+Saturn: 20/835 daily states verified
+Saturn: 30/835 daily states verified
+Saturn: 40/835 daily states verified
+Saturn: 50/835 daily states verified
+Saturn: 60/835 daily states verified
+Saturn: 70/835 daily states verified
+Saturn: 80/835 daily states verified
+Saturn: 90/835 daily states verified
+Saturn: 100/835 daily states verified
+Saturn: 110/835 daily states verified
+Saturn: 120/835 daily states verified
+Saturn: 130/835 daily states verified
+Saturn: 140/835 daily states verified
+Saturn: 150/835 daily states verified
+Saturn: 160/835 daily states verified
+Saturn: 170/835 daily states verified
+Saturn: 180/835 daily states verified
+Saturn: 190/835 daily states verified
+Saturn: 200/835 daily states verified
+Saturn: 210/835 daily states verified
+Saturn: 220/835 daily states verified
+Saturn: 230/835 daily states verified
+Saturn: 240/835 daily states verified
+Saturn: 250/835 daily states verified
+Saturn: 260/835 daily states verified
+Saturn: 270/835 daily states verified
+Saturn: 280/835 daily states verified
+Saturn: 290/835 daily states verified
+Saturn: 300/835 daily states verified
+Saturn: 310/835 daily states verified
+Saturn: 320/835 daily states verified
+Saturn: 330/835 daily states verified
+Saturn: 340/835 daily states verified
+Saturn: 350/835 daily states verified
+Saturn: 360/835 daily states verified
+Saturn: 370/835 daily states verified
+Saturn: 380/835 daily states verified
+Saturn: 390/835 daily states verified
+Saturn: 400/835 daily states verified
+Saturn: 410/835 daily states verified
+Saturn: 420/835 daily states verified
+Saturn: 430/835 daily states verified
+Saturn: 440/835 daily states verified
+Saturn: 450/835 daily states verified
+Saturn: 460/835 daily states verified
+Saturn: 470/835 daily states verified
+Saturn: 480/835 daily states verified
+Saturn: 490/835 daily states verified
+Saturn: 500/835 daily states verified
+Saturn: 510/835 daily states verified
+Saturn: 520/835 daily states verified
+Saturn: 530/835 daily states verified
+Saturn: 540/835 daily states verified
+Saturn: 550/835 daily states verified
+Saturn: 560/835 daily states verified
+Saturn: 570/835 daily states verified
+Saturn: 580/835 daily states verified
+Saturn: 590/835 daily states verified
+Saturn: 600/835 daily states verified
+Saturn: 610/835 daily states verified
+Saturn: 620/835 daily states verified
+Saturn: 630/835 daily states verified
+Saturn: 640/835 daily states verified
+Saturn: 650/835 daily states verified
+Saturn: 660/835 daily states verified
+Saturn: 670/835 daily states verified
+Saturn: 680/835 daily states verified
+Saturn: 690/835 daily states verified
+Saturn: 700/835 daily states verified
+Saturn: 710/835 daily states verified
+Saturn: 720/835 daily states verified
+Saturn: 730/835 daily states verified
+Saturn: 740/835 daily states verified
+Saturn: 750/835 daily states verified
+Saturn: 760/835 daily states verified
+Saturn: 770/835 daily states verified
+Saturn: 780/835 daily states verified
+Saturn: 790/835 daily states verified
+Saturn: 800/835 daily states verified
+Saturn: 810/835 daily states verified
+Saturn: 820/835 daily states verified
+Saturn: 830/835 daily states verified
+Saturn: 835/835 daily states verified
+{"state": "COMPLETE", "source_group": "saturn", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\saturn.json", "target_history_policy": "current_fit_origin_reconstruction_v1", "target_revision_utc": "2026-10-12T06:00:00+00:00", "target_origin_snapshot_verified": false, "profile_history_policy": "own_origin_with_per_series_recovery_v2", "profile_revision_ceiling_utc": "2026-10-12T06:00:00+00:00", "profile_origin_snapshot_verified": false}
+{"name": "saturn", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_auction_prices_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--history-start-day", "2025-07-01"]}
+Traceback (most recent call last):
+  File "C:\Users\BQ6757\NYX_CWE_CPU\run_nyx_annual_auction_prices_source.py", line 250, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\run_nyx_annual_auction_prices_source.py", line 240, in main
+    values, evidence = collect(client, args.delivery_day, history_start_day=args.history_start_day)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\run_nyx_annual_auction_prices_source.py", line 115, in collect
+    fetched = fetch_epex_prices(client, zone, expected, cutoff,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\chronos2_hourly\nyx_annual_epex_prices.py", line 97, in fetch_epex_prices
+    raw = fetch(_StrictPriceClient(client, expected), EPEX_SERIES[zone], expected[0], expected[-1], "UTC",
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\chronos2_modular\saturn.py", line 664, in fetch_saturn_series_from_client
+    raise RuntimeError(
+RuntimeError: Saturn indisponible ou vide pour power.price.fr.euromwh.h.obs.epex; plage=2025-06-30 22:00:00+00:00 -> 2026-10-12 21:00:00+00:00; cutoff=2026-10-12 06:00:00+00:00. ConnectionError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.price.fr.euromwh.h.obs.epex&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-10-12T06%3A00%3A00%2B00%3A00&from_value_date=2025-06-30T20%3A00%3A00%2B00%3A00&to_value_date=2026-10-12T23%3A00%3A00%2B00%3A00 (Caused by NameResolutionError("HTTPSConnection(host='saturn-energyscan.gem.myengie.com', port=443): Failed to resolve 'saturn-energyscan.gem.myengie.com' ([Errno 11001] getaddrinfo failed)"))
+{"name": "auction_prices", "state": "ERROR", "error": "RuntimeError: run_nyx_annual_auction_prices_source.py: RuntimeError: Saturn indisponible ou vide pour power.price.fr.euromwh.h.obs.epex; plage=2025-06-30 22:00:00+00:00 -> 2026-10-12 21:00:00+00:00; cutoff=2026-10-12 06:00:00+00:00. ConnectionError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/state?name=power.price.fr.euromwh.h.obs.epex&format=tshpack&nocache=True&live=False&_keep_nans=False&insertion_date=2026-10-12T06%3A00%3A00%2B00%3A00&from_value_date=2025-06-30T20%3A00%3A00%2B00%3A00&to_value_date=2026-10-12T23%3A00%3A00%2B00%3A00 (Caused by NameResolutionError(\"HTTPSCo… (code 1)"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_fuel_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--history-start-day", "2025-07-01", "--cache-dir", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\fuel"]}
+C:\Users\BQ6757\NYX_CWE_CPU\runs\nyx_annual_anytime\2026-10-13_20261012T073755Z_5322a197f771\cache\fuel\market_fuel_features.parquet | REUSE | couverture valide jusqu'au 2026-10-13
+{"state": "COMPLETE", "source": "fuel", "delivery_day": "2026-10-13", "receipt": "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle\\source_receipts\\fuel.json", "model_inputs_complete": false}
+{"name": "fuel", "state": "COMPLETE"}
+{"stage_command": ["C:\\Users\\BQ6757\\NYX_CWE_CPU\\.venv-annual\\Scripts\\python.exe", "-u", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\run_nyx_annual_thermal_source.py", "--delivery-day", "2026-10-13", "--bundle", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\bundle", "--cache", "C:\\Users\\BQ6757\\NYX_CWE_CPU\\runs\\nyx_annual_anytime\\2026-10-13_20261012T073755Z_5322a197f771\\cache\\thermal"]}
+Traceback (most recent call last):
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connection.py", line 239, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\AppData\Local\Programs\Python\Python311\Lib\socket.py", line 962, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connectionpool.py", line 494, in _make_request
+    raise new_e
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connectionpool.py", line 470, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connectionpool.py", line 1125, in _validate_conn
+    conn.connect()
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connection.py", line 827, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connection.py", line 246, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='saturn-energyscan.gem.myengie.com', port=443): Failed to resolve 'saturn-energyscan.gem.myengie.com' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\requests\adapters.py", line 696, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\urllib3\util\retry.py", line 555, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/block_staircase?name=power.nrjscan.be.3mv.availability.pmax.type.ccgt.gw&format=tshpack&from_value_date=2025-10-13T00%3A00%3A00%2B00%3A00&to_value_date=2026-10-13T00%3A00%3A00%2B00%3A00&revision_freq=%7B%22days%22%3A+1%7D&revision_time=%7B%22hour%22%3A+8%7D&revision_tz=Europe%2FParis&maturity_offset=%7B%22days%22%3A+1%7D&maturity_time=%7B%22hour%22%3A+0%7D (Caused by NameResolutionError("HTTPSConnection(host='saturn-energyscan.gem.myengie.com', port=443): Failed to resolve 'saturn-energyscan.gem.myengie.com' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\BQ6757\NYX_CWE_CPU\run_nyx_annual_thermal_source.py", line 421, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\run_nyx_annual_thermal_source.py", line 412, in main
+    daily, evidence = collect(client, args.delivery_day, cache=args.cache)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\run_nyx_annual_thermal_source.py", line 158, in collect
+    return _collect(client, delivery_day, now_utc=now_utc, cache=cache)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\run_nyx_annual_thermal_source.py", line 183, in _collect
+    raw = client.block_staircase(
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\tshistory_lite\client.py", line 40, in wrapper
+    res = func(*a, **k)
+          ^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\tshistory_lite\client.py", line 883, in block_staircase
+    res = self.session.get(f'{self.uri}/series/block_staircase', params=args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\requests\sessions.py", line 671, in get
+    return self.request("GET", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\requests\sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\BQ6757\NYX_CWE_CPU\.venv-annual\Lib\site-packages\requests\adapters.py", line 729, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='saturn-energyscan.gem.myengie.com', port=443): Max retries exceeded with url: //api/series/block_staircase?name=power.nrjscan.be.3mv.availability.pmax.type.ccgt.gw&format=tshpack&from_value_date=2025-10-13T00%3A00%3A00%2B00%3A00&to_value_date=2026-10-13T00%3A00%3A00%2B00%3A00&revision_freq=%7B%22days%22%3A+1%7D&revision_time=%7B%22hour%22%3A+8%7D&revision_tz=Europe%2FParis&maturity_offset=%7B%22days%22%3A+1%7D&maturity_time=%7B%22hour%22%3A+0%7D (Caused by NameResolutionError("HTTPSConnection(host='saturn-energyscan.gem.myengie.com', port=443): Failed to resolve 'saturn-energyscan.gem.myengie.com' ([Errno 11001] getaddrinfo failed)"))
+{"name": "thermal_capacity", "state": "ERROR", "error": "RuntimeError: run_nyx_annual_thermal_source.py: urllib3.exceptions.NameResolutionError: HTTPSConnection(host='saturn-energyscan.gem.myengie.com', port=443): Failed to resolve 'saturn-energyscan.gem.myengie.com' ([Errno 11001] getaddrinfo failed) (code 1)"}
