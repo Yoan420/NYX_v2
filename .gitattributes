@@ -6,3 +6,17 @@ production/SOURCE_MANIFEST.json text eol=lf
 nyx_runtime/** text eol=lf
 production/reporting/** text eol=lf
 production/REPORTING_MANIFEST.json text eol=lf
+
+# Octets CRLF historiques exigés par les reçus de refit (y compris git archive).
+production/runtime/chronos2_hourly/nyx_annual_feature_projection.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/nyx_annual_operational_context.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/nyx_annual_saturn_archive.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/nyx_annual_wind_source.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/nyx_lagged_exchange_features.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/nyx_live_hybrid.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/nyx_local_extra_features.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/nyx_local_price_features.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/solar_cwe_sources.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/solar_wind_scarcity_regime.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/chronos2_hourly/solar_wind_sources.py -text -eol whitespace=cr-at-eol,-blank-at-eof
+production/runtime/materialize_saturn_kalman_weather.py -text -eol whitespace=cr-at-eol,-blank-at-eof

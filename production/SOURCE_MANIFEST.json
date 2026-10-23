@@ -12,7 +12,7 @@
       "chronos2_hourly.nyx_daily_refit.produce_refit_horizon",
       "chronos2_hourly.nyx_saved_horizon_reporting_sources.collect_horizon_reporting_sources"
     ],
-    "overlay": "nyx_runtime.engine.activate_runtime ajoute production/runtime au chemin Python et annual_extension au chronos2_hourly.__path__. Les noms historiques des objets sérialisés et les octets scientifiques sont préservés.",
+    "overlay": "nyx_runtime.engine.activate_runtime ajoute production/runtime au chemin Python et annual_extension au chronos2_hourly.__path__. Les noms historiques et la logique scientifique sont conservés ; seules les fins de ligne de 12 sources reproduisent les octets CRLF des reçus de refit.",
     "excluded_modules": [
       "chronos2_exogenous",
       "chronos2_exogenous.activation_contract",
@@ -94,12 +94,22 @@
       "chronos2_hourly/solar_wind_sources.py",
       "materialize_saturn_kalman_weather.py"
     ],
-    "source_unchanged": true,
-    "validation": "95 fichiers source/configuration vérifiés identiques aux objets Git d'origine (89 Python analysés syntaxiquement, 6 configurations). Imports de capture vérifiés ; tests de fenêtres/DST, verrou et persistance avec fournisseurs simulés. Ces contrôles et les tests sur fixtures ne constituent pas une prévision complète avec les sources, poids et données privés.",
+    "source_unchanged": false,
+    "validation": "83 fichiers identiques aux objets Git d’origine ; 12 fichiers Python restaurés exclusivement de LF vers CRLF, avec AST identique et SHA-256 exact du contrat de refit. Les contrôles SHA restent stricts. Aucun reçu privé modifié ; aucun calcul complet avec Saturn démontré.",
     "capture_entrypoints": [
       "run_nyx_annual_daily_capture.capture_daily",
       "run_nyx_annual_daily_capture.verify_daily"
-    ]
+    ],
+    "source_semantics_unchanged": true,
+    "line_ending_provenance": {
+      "state_commit": "8f7a076ad0f6383f09f5b0015ea639d8c7dbc309",
+      "state_receipt": "runs/nyx_daily_refit_states/6b57cece9a3ce6ca0360beb14df1b10d4db4ee6f7959848ec9cb645dfc15559d/20261022T060000Z_77e97038eaf5/receipt.json",
+      "state_receipt_sha256": "507d1ee1494d339607fd9224cbfaeeaf2622c76e8dc6bec7b10b7f2e06305db1",
+      "contract_field": "canonical_feature_code_sha256",
+      "files": 12,
+      "transformation": "LF -> CRLF only; Git stores exact CRLF bytes with -text -eol",
+      "state_receipts_modified": false
+    }
   },
   "source_files": [
     {
@@ -312,11 +322,14 @@
     {
       "source": "chronos2_hourly/nyx_annual_feature_projection.py",
       "destination": "runtime/chronos2_hourly/nyx_annual_feature_projection.py",
-      "bytes": 2679,
-      "sha256": "5006d3cfe4504d8b6f25bd9bd2e158a2eaaf56366fa275036522873ed99e5be3",
+      "bytes": 2741,
+      "sha256": "4273402f07621ae7f1359a39d3444995d46fdd845289930dd87d3292f93e6e54",
       "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:26",
       "fingerprint_required": true,
-      "active_call_path": true
+      "active_call_path": true,
+      "git_source_sha256": "5006d3cfe4504d8b6f25bd9bd2e158a2eaaf56366fa275036522873ed99e5be3",
+      "git_source_bytes": 2679,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_annual_jao_history.py",
@@ -357,11 +370,14 @@
     {
       "source": "chronos2_hourly/nyx_annual_operational_context.py",
       "destination": "runtime/chronos2_hourly/nyx_annual_operational_context.py",
-      "bytes": 4952,
-      "sha256": "c29372122793c41fc0cfbf29bda8ce282ce7458986eafb8ca0493ac7dbe7f63b",
+      "bytes": 5081,
+      "sha256": "eb2f173c52481c129c59ae6b3ad410f1437ce531e9de5b2ed78ee0d6abf06e80",
       "reason": "eager:chronos2_hourly.nyx_annual_live_preflight:19",
       "fingerprint_required": true,
-      "active_call_path": true
+      "active_call_path": true,
+      "git_source_sha256": "c29372122793c41fc0cfbf29bda8ce282ce7458986eafb8ca0493ac7dbe7f63b",
+      "git_source_bytes": 4952,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_annual_prior90_cpu.py",
@@ -393,11 +409,14 @@
     {
       "source": "chronos2_hourly/nyx_annual_saturn_archive.py",
       "destination": "runtime/chronos2_hourly/nyx_annual_saturn_archive.py",
-      "bytes": 7713,
-      "sha256": "fdf92a3e754d00bd00886355baa49de72cff028095deef49057f05669d7a9d1a",
+      "bytes": 7865,
+      "sha256": "9a3e3cc847c9deb998803487599d12b7b4e84efb5b128ff0c6d3c434398ba56b",
       "reason": "dependance_de_fichier_par_empreinte",
       "fingerprint_required": true,
-      "active_call_path": false
+      "active_call_path": false,
+      "git_source_sha256": "fdf92a3e754d00bd00886355baa49de72cff028095deef49057f05669d7a9d1a",
+      "git_source_bytes": 7713,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_annual_saturn_source.py",
@@ -420,11 +439,14 @@
     {
       "source": "chronos2_hourly/nyx_annual_wind_source.py",
       "destination": "runtime/chronos2_hourly/nyx_annual_wind_source.py",
-      "bytes": 6651,
-      "sha256": "61d37f8c75ac4737a764bb593fbeb177090926c559287f15b7e2bb5bbfc8d9b8",
+      "bytes": 6765,
+      "sha256": "f4597f01d55078757025e4d2e1140da642c0684c2b88c1b6cf1c98fe3d087e6c",
       "reason": "dependance_de_fichier_par_empreinte",
       "fingerprint_required": true,
-      "active_call_path": false
+      "active_call_path": false,
+      "git_source_sha256": "61d37f8c75ac4737a764bb593fbeb177090926c559287f15b7e2bb5bbfc8d9b8",
+      "git_source_bytes": 6651,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_forecast_profile_features.py",
@@ -456,11 +478,14 @@
     {
       "source": "chronos2_hourly/nyx_lagged_exchange_features.py",
       "destination": "runtime/chronos2_hourly/nyx_lagged_exchange_features.py",
-      "bytes": 11854,
-      "sha256": "bf9cfa724104bf2cafe1d9bf2c32ea07b8cf62bdcd6c8ea24c6668a33b58afa5",
+      "bytes": 12051,
+      "sha256": "d7a187e0fa78db4eafcd3da27d63ca5ef255ce4305297bba2812da4515c127ae",
       "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:25",
       "fingerprint_required": true,
-      "active_call_path": true
+      "active_call_path": true,
+      "git_source_sha256": "bf9cfa724104bf2cafe1d9bf2c32ea07b8cf62bdcd6c8ea24c6668a33b58afa5",
+      "git_source_bytes": 11854,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_live_baseline.py",
@@ -474,20 +499,26 @@
     {
       "source": "chronos2_hourly/nyx_live_hybrid.py",
       "destination": "runtime/chronos2_hourly/nyx_live_hybrid.py",
-      "bytes": 31018,
-      "sha256": "5ef12917868042f51460cdc6e184306b3a50dcad5156d7983beb79ef4e43936b",
+      "bytes": 31546,
+      "sha256": "9bf88719b8aca0738cb2277b0eee13152134b57561fe4f408f1b59dc50ec6c59",
       "reason": "eager:chronos2_hourly.nyx_daily_two_day_baseline:25",
       "fingerprint_required": true,
-      "active_call_path": true
+      "active_call_path": true,
+      "git_source_sha256": "5ef12917868042f51460cdc6e184306b3a50dcad5156d7983beb79ef4e43936b",
+      "git_source_bytes": 31018,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_local_extra_features.py",
       "destination": "runtime/chronos2_hourly/nyx_local_extra_features.py",
-      "bytes": 10846,
-      "sha256": "95c506a4d54124371ed5d1d89b523dda9ab0bde9db5b3392b388ae42bb08d999",
+      "bytes": 11027,
+      "sha256": "55015c2d36af307a40bb8e9bc03550c13c9bbb6867e39a5cbd69a7155e2af6f8",
       "reason": "chronos2_hourly.nyx_saved_horizon_inference._produce_horizon:404",
       "fingerprint_required": true,
-      "active_call_path": true
+      "active_call_path": true,
+      "git_source_sha256": "95c506a4d54124371ed5d1d89b523dda9ab0bde9db5b3392b388ae42bb08d999",
+      "git_source_bytes": 10846,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_local_io.py",
@@ -501,11 +532,14 @@
     {
       "source": "chronos2_hourly/nyx_local_price_features.py",
       "destination": "runtime/chronos2_hourly/nyx_local_price_features.py",
-      "bytes": 19230,
-      "sha256": "82c479db05098a2a50616a45a420d81b01e331913fa04a0af8d88e4e4bed3275",
+      "bytes": 19573,
+      "sha256": "0ace0871b64cf09f7aed9edcc5e6c03fb684aa47b9bd7265384faee96f563916",
       "reason": "eager:chronos2_hourly.nyx_annual_cpu_bundle_builder:27",
       "fingerprint_required": true,
-      "active_call_path": true
+      "active_call_path": true,
+      "git_source_sha256": "82c479db05098a2a50616a45a420d81b01e331913fa04a0af8d88e4e4bed3275",
+      "git_source_bytes": 19230,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/nyx_local_squared_price_model.py",
@@ -573,11 +607,14 @@
     {
       "source": "chronos2_hourly/solar_cwe_sources.py",
       "destination": "runtime/chronos2_hourly/solar_cwe_sources.py",
-      "bytes": 10282,
-      "sha256": "2ad7ec10f222693e010c1e760159ee407bd4303ba0c8727462b7737465781456",
+      "bytes": 10466,
+      "sha256": "a7d175769cdb0d50209d9f8477cd280972537394fd655a1cf115a92c60b05f04",
       "reason": "dependance_de_fichier_par_empreinte",
       "fingerprint_required": true,
-      "active_call_path": false
+      "active_call_path": false,
+      "git_source_sha256": "2ad7ec10f222693e010c1e760159ee407bd4303ba0c8727462b7737465781456",
+      "git_source_bytes": 10282,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/solar_wind_forecast.py",
@@ -618,20 +655,26 @@
     {
       "source": "chronos2_hourly/solar_wind_scarcity_regime.py",
       "destination": "runtime/chronos2_hourly/solar_wind_scarcity_regime.py",
-      "bytes": 24339,
-      "sha256": "4987d7d72ab295a5fb5449927fa1aa8c6a39ada90e0fd5f13bf006070e156215",
+      "bytes": 24762,
+      "sha256": "9d6eff7ca3ef621c41fb70089f9330ebaccf412332c924471b5f3769ba47ebaa",
       "reason": "eager:chronos2_hourly.nyx_live_hybrid:23",
       "fingerprint_required": true,
-      "active_call_path": true
+      "active_call_path": true,
+      "git_source_sha256": "4987d7d72ab295a5fb5449927fa1aa8c6a39ada90e0fd5f13bf006070e156215",
+      "git_source_bytes": 24339,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/solar_wind_sources.py",
       "destination": "runtime/chronos2_hourly/solar_wind_sources.py",
-      "bytes": 33593,
-      "sha256": "95ab77d6930fc827df907c5dde0a2441f5bcbeb95e0ea19cefd0f9d80e1c6829",
+      "bytes": 34117,
+      "sha256": "4f55c000bb8911a7450f036e85b175171f23148f089dacfdd87ed728d10c7f11",
       "reason": "dependance_de_fichier_par_empreinte",
       "fingerprint_required": true,
-      "active_call_path": false
+      "active_call_path": false,
+      "git_source_sha256": "95ab77d6930fc827df907c5dde0a2441f5bcbeb95e0ea19cefd0f9d80e1c6829",
+      "git_source_bytes": 33593,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "chronos2_hourly/storm_dashboard.py",
@@ -744,11 +787,14 @@
     {
       "source": "materialize_saturn_kalman_weather.py",
       "destination": "runtime/materialize_saturn_kalman_weather.py",
-      "bytes": 30519,
-      "sha256": "fdde7ffce592753ad06d638f0957fe68d6efd43976a5cd0a7bc79c55671ab67a",
+      "bytes": 31339,
+      "sha256": "d202e3d9e9ba2d11085e67c33ea5a361eaec05d776d5b822b4d0bd7fd826fdb2",
       "reason": "dependance_de_fichier_par_empreinte",
       "fingerprint_required": true,
-      "active_call_path": false
+      "active_call_path": false,
+      "git_source_sha256": "fdde7ffce592753ad06d638f0957fe68d6efd43976a5cd0a7bc79c55671ab67a",
+      "git_source_bytes": 30519,
+      "line_endings": "CRLF; exact working-copy bytes bound by the refit state receipt"
     },
     {
       "source": "run_nyx_annual_auction_prices_source.py",

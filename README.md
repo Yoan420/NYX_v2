@@ -1,40 +1,104 @@
 # NYX — prévisions quotidiennes J+1 et J+2
 
-NYX calcule sur **CPU** les prix horaires de l'électricité pour **FR, DE, BE et
-NL** et produit des CSV, Parquet et rapports HTML consultables hors ligne.
-Une commande `forecast` calcule les deux jours et les quatre pays. L'Espagne
-n'est pas un pays de sortie ; ses covariables nécessaires sont conservées.
-Les anciennes applications et campagnes expérimentales sont retirées.
+Une commande calcule sur **CPU** les prix horaires d’électricité pour **FR, DE,
+BE et NL**, sur les deux prochains jours, puis produit les CSV, Parquet et
+rapports HTML. L’Espagne fournit certaines covariables, sans être un pays de sortie.
+Ce README décrit le parcours quotidien et le rôle de chaque fichier conservé.
 
-La recette conserve **`qualified_for_production: false`** : le nettoyage du
-projet n'est pas une nouvelle qualification scientifique. Avant utilisation
-sur un nouveau poste, obtenir un snapshot privé compatible, l'accès Saturn et
-vérifier un premier calcul complet. Les tests sans fournisseurs ne prouvent pas
-qu'une prévision réelle a été produite.
+**J est le jour d’émission à Paris.** J+1 et J+2 partagent la coupure **J à
+08:00 `Europe/Paris`**, même si le calcul commence plus tard. Les deux journées
+civiles conservent leurs heures physiques, y compris les deux occurrences de
+02:00 en automne. Le CSV commun contient normalement **192 lignes**, ou 188/196
+avec un changement d’heure. Exemple : après le 23 octobre 2026 à 08:00 Paris,
+les livraisons sont les 24 et 25 octobre, origine `2026-10-23T06:00:00Z`, **196 lignes**.
+Avant 08:00, la commande par défaut refuse une origine encore future.
 
-## Dates et coupure
+## Commandes quotidiennes
 
-**J est le jour d'émission à Paris.** J+1 et J+2 sont les deux jours civils
-suivants. Ils utilisent **la même coupure J à 08:00 `Europe/Paris`**, même si le
-calcul commence plus tard. Le 22 octobre 2026 après 08:00 Paris, `forecast`
-vise les 23 et 24 octobre, avec origine `2026-10-22T06:00:00Z`. J+2 ne reçoit
-pas une nouvelle coupure à J+1.
+Après l’installation et la préparation du snapshot ci-dessous, depuis la racine
+du dépôt, utiliser le même Python et la même configuration :
 
-Les heures sont stockées en UTC et étiquetées en heure locale avec leur
-décalage. Les journées de 23 ou 25 heures conservent toutes leurs heures
-physiques, y compris les deux occurrences de 02:00 en automne. Le CSV commun
-contient normalement 192 lignes ; 188 ou 196 si la période inclut un changement
-d'heure. Les observations futures restent absentes : les retards de prix J+2
-ne sont pas complétés avec des observations J+1 encore inconnues.
+```powershell
+# Vers 07:00 Paris : captures publiques pour la livraison de demain
+.\.venv\Scripts\python.exe -m nyx_runtime capture --config config.local.json
 
-## Installation et accès
+# Après 08:00 Paris : contrôle local, puis les DEUX horizons et les QUATRE pays
+.\.venv\Scripts\python.exe -m nyx_runtime preflight --config config.local.json
+.\.venv\Scripts\python.exe -m nyx_runtime forecast --config config.local.json
+```
 
-Utiliser **Python 3.11**, un environnement dédié et les versions épinglées dans
-`requirements.txt`. Les états et modèles sont liés aux versions scientifiques.
-Ne pas remplacer les pins par « les dernières versions ». Les poids Chronos
-restent en `torch.float32` sur CPU ; aucun GPU ni service cloud n'est requis.
+`preflight` doit annoncer `ready: true`. Il ne contacte aucun fournisseur et ne
+charge aucun estimateur, mais peut restaurer les copies locales des états.
+Il contrôle la continuité CPU ; le cache de refit est vérifié pendant le calcul.
+`forecast` refait les contrôles, collecte, réentraîne et publie. Consommer un
+résultat seulement si `status.json.state == "COMPLETE"`, via `latest.json`.
 
-Depuis la racine du dépôt, dans PowerShell :
+La fenêtre de capture est **01:15–08:00 Paris, 08:00 exclu**. La commande réunit
+JAO, hydro et échanges ; les scripts internes ne sont pas à lancer un par un.
+Sans capture JAO admissible, le calcul quotidien peut continuer avec des variables
+JAO `NaN` et `extra_jao__available = 0`. Une capture existante valide reste utilisée ;
+une capture tardive est exclue, une capture corrompue bloque. Cela peut changer
+les prévisions ; l’impact sur leur précision n’est pas établi ici. Cette tolérance
+ne remplace pas les reçus et historiques JAO obligatoires du seed initial.
+Une erreur de collecte donne un code non nul sans effacer les autres captures.
+
+Pour planifier, prévoir une tâche à 07:00 et une après 08:00, par exemple 08:15,
+selon **Europe/Paris**, avec les chemins absolus de Python/configuration, le dépôt
+comme dossier de démarrage et les accès du compte opérationnel. Un seul écrivain
+est autorisé par copie du runtime.
+
+## Arbre d’exécution
+
+```text
+python -m nyx_runtime
+├── export-input → snapshot.py                         PRÉPARATION INITIALE
+│   └── Copie vérifiée : seed + poids + états + captures existants
+├── capture → capture.py → run_nyx_annual_daily_capture.py
+│   └── JAO + hydro + échanges, sans modèle, avant 08:00
+├── plan → planning.py                                 VÉRIFICATION DES DATES
+├── preflight → settings/planning → pipeline/preflight
+│   └── Snapshot, code, versions, seed, poids et continuité des états
+├── forecast → pipeline.py → forecast.py
+│   └── annual_extension/nyx_daily_refit.py
+│       ├── nyx_saved_horizon_inference.py
+│       │   ├── nyx_daily_state_cache.py               Historique compatible
+│       │   ├── nyx_saved_horizon_sources.py           Sources à la coupure commune
+│       │   ├── nyx_daily_two_day_baseline.py          Chronos + résiduel + Kalman
+│       │   └── Variables futures + inférence intermédiaire du seed, écartée
+│       ├── nyx_daily_refit_history.py                 Historique et matrices
+│       ├── nyx_daily_refit_reference.py               12 HGB + 2 paires Test2/prior90
+│       └── nyx_daily_refit_experts.py                 Prix et probabilités négatives
+│   ├── Validation des grilles, valeurs, horizons et reçus des modèles
+│   ├── nyx_saved_horizon_reporting_sources.py          Comparateurs facultatifs
+│   ├── forecast.py                                   CSV natifs + CSV commun
+│   ├── detail_reports.py                             4 détails pays + CSV/Parquet
+│   ├── reporting.py                                  3 vues CWE
+│   └── Audit complet → status COMPLETE → latest.json
+└── reports → reporting.py                             RENDU SEUL
+    └── 3 vues CWE depuis predictions.csv → latest_reports.json
+```
+
+Les variables de source et les interactions alimentent le socle ; les matrices
+des experts utilisent ensuite **ses quantiles**. Chronos-2 reste gelé sur CPU en
+`torch.float32`. Les correcteurs et références sont ajustés selon la recette,
+puis les trois experts prix et quatre recettes de probabilité négative sont
+réentraînés à chaque nouvelle prévision. Les **sept tentatives** finales ne
+signifient pas toujours sept nouveaux modèles : les recettes négatives conservent
+leurs règles de calibration et de repli. Un échec du refit ne publie pas
+l’inférence intermédiaire du seed. Les états peuvent être enregistrés pendant
+le calcul ; `latest.json` n’avance qu’après réussite de tous les rapports.
+
+## Installation et configuration
+
+Utiliser **Python 3.11** et les versions exactes de `requirements.txt`. Les états
+sont liés au code, aux configurations et aux versions scientifiques ; ne pas
+modifier les pins ou reçus pour contourner un contrôle.
+
+Sous Windows, installer le dépôt dans un chemin court, par exemple
+`C:\NYX\code`, avec `C:\NYX\snapshot` pour les entrées et `C:\NYX\results`
+pour les sorties. Les chemins imbriqués des états peuvent dépasser la limite
+Windows de 260 caractères dans un dossier de travail trop profond. Exécuter
+les commandes suivantes depuis le dossier du code.
 
 ```powershell
 py -3.11 -m venv .venv
@@ -42,477 +106,444 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m pip install C:\paquets-internes\tshistory_lite-0.5-py3-none-any.whl
 Copy-Item config.example.json config.local.json
-```
-
-Le chemin du wheel est un exemple : utiliser le client privé approuvé
-**`tshistory_lite==0.5`** fourni par l'équipe. Il n'est pas distribué ici. Si un
-pin manque sur votre miroir, obtenir le paquet de l'environnement opérationnel
-auprès de l'équipe ; ne pas modifier les versions ou reçus pour passer les
-contrôles. Sous Linux, utiliser `python3.11 -m venv .venv`, puis
-`.venv/bin/python`. Le transfert d'un seed ne prouve pas sa compatibilité avec
-un nouvel OS.
-
-Le compte d'exécution doit disposer du réseau et de l'authentification Saturn
-de l'entreprise. L'installation du client seul ne fournit pas ces accès. Les
-secrets restent dans le mécanisme d'authentification approuvé du client privé,
-jamais dans le dépôt. Définir aussi l'identifiant d'auteur de l'opérateur :
-
-```powershell
 $env:SATURN_AUTHOR = 'VOTRE_IDENTIFIANT_PROFESSIONNEL'
 ```
 
-Ce champ n'est pas un mot de passe. Le précontrôle exige une valeur explicite
-pour éviter de reprendre l'identifiant historique des YAML scellés. Ne pas
-modifier ces YAML : ils participent à l'identité des états. Les scripts de
-calcul résolvent leurs ressources depuis le dépôt, sans chemin de poste codé
-en dur. Pour un proxy JAO, `capture --ca-bundle C:\certificats\entreprise.pem`
-utilise les certificats approuvés ; ne pas désactiver TLS.
+Le chemin du wheel est un exemple : obtenir le client privé approuvé
+**`tshistory_lite==0.5`** auprès de l’équipe. Son installation ne donne pas l’accès
+au réseau Saturn. Configurer l’authentification de l’entreprise dans le mécanisme
+prévu par ce client, hors Git. `SATURN_AUTHOR` est l’identifiant d’attribution,
+pas un mot de passe ; il doit être explicite. Garder les YAML scientifiques
+inchangés. Retirer toute variable héritée `NYX_ANNUAL_OPERATIONAL_CONTEXT`.
 
-### Configuration locale
+Sous Linux, utiliser `python3.11 -m venv .venv`, puis `.venv/bin/python` ; un
+transfert de seed ne prouve pas sa compatibilité avec un autre OS. Aucun GPU ou
+service cloud n’est requis. Pour un proxy JAO, fournir les certificats approuvés
+avec `capture --ca-bundle C:\certificats\entreprise.pem`, sans désactiver TLS.
 
 Exemple de `config.local.json` :
 
 ```json
 {
-  "input_root": "C:/NYX-private/snapshot",
-  "output_root": "C:/NYX-results",
+  "input_root": "C:/NYX/snapshot",
+  "output_root": "C:/NYX/results",
   "collect_reporting_sources": true
 }
 ```
 
-Les chemins JSON sont absolus ou relatifs à ce fichier. Les arguments
-`--input-root`/`--output-root` priment et sont relatifs au dossier courant.
-Sans configuration, les valeurs sont `snapshot/` et `output/` à la racine du
-dépôt. Entrées et sorties doivent être distinctes, non imbriquées et hors de
-`production/`. Les clés inconnues sont refusées.
+Les chemins du JSON sont absolus ou relatifs au fichier. Les options CLI
+`--input-root`/`--output-root` priment et sont relatives au dossier courant.
+Sans configuration : `snapshot/` et `output/` à la racine du dépôt. Les deux
+racines doivent être distinctes, non imbriquées et hors de `production/`.
+`collect_reporting_sources: false` désactive uniquement les comparaisons des
+rapports ; la prévision nécessite toujours Saturn. Les clés inconnues sont refusées.
 
-`collect_reporting_sources: false` désactive seulement les comparaisons des
-rapports ; le calcul nécessite toujours Saturn. Ne pas hériter de
-`NYX_ANNUAL_OPERATIONAL_CONTEXT` d'un ancien lanceur « anytime » : la chaîne
-quotidienne refuse cette surcharge de la coupure.
+## Préparation initiale : seed, poids et états
 
-## Préparation initiale du seed et des modèles
-
-Obtenir **le seed annuel complet et ses états compatibles** depuis
-l'installation opérationnelle. Un dossier de prix ou les poids Chronos seuls
-ne suffisent pas. Les données, modèles entraînés, captures et résultats privés
-sont exclus de Git. Le snapshot attendu est :
+Le **seed** est le résultat annuel complet qui fournit les modèles initiaux,
+matrices, historiques et preuves de provenance. Obtenir un ensemble compatible
+auprès de l’installation opérationnelle ; les seuls prix, poids Chronos ou états
+quotidiens ne suffisent pas. Le snapshot privé attendu contient :
 
 ```text
-snapshot.json                 Inventaire SHA-256 de tous les fichiers
-seed_bundle/                  Matrices, baseline_history, baseline_audits,
-                              source_artifacts et source_receipts scellés
-seed_output/receipt.json       Reçu annuel REPORTS_COMPLETE, sans labels futurs
-seed_output/models/           3 experts prix + 4 modèles de probabilité négative
+snapshot.json                  Inventaire SHA-256, protocole nyx_aws_input_snapshot_v1
+seed_bundle/                   Matrices, historiques, audits et sources scellés
+seed_output/receipt.json        REPORTS_COMPLETE ; future_labels_used = false
+seed_output/models/             3 experts prix + 4 modèles négatifs du seed
 huggingface/hub/models--amazon--chronos-2/snapshots/<revision>/
-                              Poids et configuration Chronos liés au seed
-state/runs/nyx_daily_cpu_states/       Historiques quotidiens compatibles
-state/runs/nyx_daily_refit_states/     États du réentraînement
-state/data/pit/nyx_annual_*/           Captures JAO, hydro et échanges
+                               Configuration et poids locaux liés au seed
+state/runs/nyx_daily_cpu_states/ Historiques CPU compatibles
+state/runs/nyx_daily_refit_states/ Historiques de refit compatibles
+state/data/pit/nyx_annual_*/     Captures publiques disponibles
 ```
 
-La révision imposée d'`amazon/chronos-2` est
-`29ec3766d36d6f73f0696f85560a422f50e8498c`. Le calcul utilise uniquement son cache
-local vérifié. Les neuf groupes de reçus requis sont `saturn`, `auction_prices`,
-`fuel`, `thermal_capacity`, `jao_initial`, `public_hydro`, `lagged_exchange`,
-`nyx_quantiles` et `scarcity_confirmed_pair`.
+Révision imposée d’`amazon/chronos-2` :
+`29ec3766d36d6f73f0696f85560a422f50e8498c` ; aucun téléchargement implicite au calcul.
+Neuf groupes de reçus sont requis : `saturn`, `auction_prices`, `fuel`,
+`thermal_capacity`, `jao_initial`, `public_hydro`, `lagged_exchange`,
+`nyx_quantiles`, `scarcity_confirmed_pair`.
 
-Pour exporter depuis le poste équipé, arrêter ses calculs concurrents puis
-remplacer les chemins d'exemple par ceux du **même seed** :
+Sur le poste équipé, arrêter les calculs concurrents et exporter les chemins
+correspondant **au même seed** vers une destination nouvelle :
 
 ```powershell
-.\.venv\Scripts\python.exe -m nyx_runtime export-input --seed-bundle C:\NYX-source\runs\nyx_annual_anytime\SEED\bundle --seed-output C:\NYX-source\runs\nyx_annual_anytime_reports\SEED --runtime-root C:\NYX-source --hf-hub-cache C:\cache-modeles\huggingface\hub --destination C:\NYX-private\snapshot
+.\.venv\Scripts\python.exe -m nyx_runtime export-input --seed-bundle C:\NYX-source\runs\nyx_annual_anytime\SEED\bundle --seed-output C:\NYX-source\runs\nyx_annual_anytime_reports\SEED --runtime-root C:\NYX-source --hf-hub-cache C:\cache-modeles\huggingface\hub --destination C:\NYX\snapshot
 ```
 
-La destination doit être nouvelle et distincte des sources. L'export vérifie
-les empreintes, refuse les états en cours de modification et ne réécrit aucun
-reçu. Les exports existants au format `nyx_aws_input_snapshot_v1` restent
-acceptés ; le nom historique du protocole n'impose pas AWS.
+L’export copie les octets, vérifie les empreintes et refuse les états modifiés
+pendant la copie ; il ne réécrit aucun reçu. Le nom historique du protocole
+`nyx_aws_input_snapshot_v1` n’impose pas AWS. La continuation est limitée à
+**sept jours manquants** ; au-delà, récupérer un état compatible plus récent.
+La fabrication et la qualification d’un nouveau seed restent une préparation
+séparée, dont le code est disponible dans l’historique Git.
 
-Les états évitent de rejouer toute la préparation annuelle. La reconstruction
-est limitée à **sept jours manquants**. Sans état récent compatible, récupérer
-un nouvel export auprès de l'installation opérationnelle. Ne pas modifier les
-dates ou empreintes des reçus. La fabrication initiale d'un nouveau seed et sa
-qualification ne sont pas des opérations quotidiennes ; leur code reste dans
-l'historique Git. Cette version fournit le contrat d'entrée et l'export vérifié.
+### Récupérer les états ajoutés sur main
 
-## Commandes quotidiennes
-
-Utiliser le même environnement, le même dépôt et la même configuration :
-
-1. **Vers 07:00 Paris**, capturer les sources publiques :
-
-   ```powershell
-   .\.venv\Scripts\python.exe -m nyx_runtime capture --config config.local.json
-   ```
-
-   Fenêtre autorisée : **01:15–08:00 Paris, 08:00 exclu**. La commande vise
-   demain. Une source en échec n'efface pas les captures réussies des autres,
-   mais produit un code non nul. Une capture tardive ne recrée pas une
-   information qui aurait été disponible avant la coupure.
-
-2. **Après 08:00 Paris**, contrôler puis calculer les deux horizons :
-
-   ```powershell
-   .\.venv\Scripts\python.exe -m nyx_runtime preflight --config config.local.json
-   .\.venv\Scripts\python.exe -m nyx_runtime forecast --config config.local.json
-   ```
-
-   `preflight` doit annoncer `ready: true`, code 0. Il ne contacte aucun
-   fournisseur et ne charge aucun estimateur ; il peut initialiser les copies
-   locales des états. `forecast` refait le contrôle puis collecte et calcule.
-   Le succès exige les quatre pays, les deux jours et tous les rapports.
-
-Pour automatiser, prévoir deux tâches locales à 07:00 et après 08:00 (par
-exemple 08:15), selon **Europe/Paris**, pas à heure UTC fixe. Fournir au
-planificateur les chemins absolus de Python et du JSON, le dépôt comme dossier
-de démarrage, l'environnement et les accès du compte opérationnel. Le verrou
-autorise un seul écrivain par copie du runtime.
-
-Afficher le plan sans modèles ni fournisseurs :
+Le commit **`8f7a076ad0f6383f09f5b0015ea639d8c7dbc309`** ajoute des états CPU et de
+refit, sans changer le code scientifique. La branche nettoyée conserve leur
+accès dans l’historique et les exclut de son arbre de code. Depuis le dépôt,
+choisir une archive et un dossier de destination nouveaux dans un répertoire
+privé existant :
 
 ```powershell
-.\.venv\Scripts\python.exe -m nyx_runtime plan
-.\.venv\Scripts\python.exe -m nyx_runtime plan --first-day 2026-10-22 --as-of 2026-10-21T08:00:00+02:00
+git archive --format=zip --output=C:/NYX/nyx-states.zip 8f7a076ad0f6383f09f5b0015ea639d8c7dbc309 runs/nyx_daily_cpu_states runs/nyx_daily_refit_states
+Expand-Archive -LiteralPath C:\NYX\nyx-states.zip -DestinationPath C:\NYX\states-20261023
 ```
 
-`--first-day` désigne J+1, jamais J. `--as-of` doit être exactement 08:00 Paris
-du jour précédent, avec décalage explicite. Ces options existent aussi pour
-`preflight` et `forecast`. Un calcul historique exige ses vintages et états
-adéquats ; changer la date ne fabrique pas ces entrées.
+L’archive contient seulement les deux arbres d’états, **pas les captures
+publiques ni le seed**. Pour `export-input`, préférer le runtime opérationnel
+complet avec ses captures. Si le dossier extrait sert de `--runtime-root`, y
+restaurer aussi les archives d’origine sous `data/pit/nyx_annual_hydro_captures`,
+`data/pit/nyx_annual_exchange_captures` et `data/pit/nyx_annual_jao_initial_live`,
+puis fournir le seed complet correspondant et les poids. Une capture nouvelle
+ne recrée pas la disponibilité d’hier. Changer de snapshot remplace les copies
+locales : les arbres absents du nouvel export y sont supprimés.
 
-Vérifier une capture archivée sans contacter les fournisseurs :
+Ces états seuls ne sont pas un snapshot. Garder leurs reçus intacts ;
+`preflight` vérifie la continuité CPU, puis `forecast` vérifie les états de refit
+contre les contrats du seed et du runtime.
 
-```powershell
-.\.venv\Scripts\python.exe -m nyx_runtime capture --config config.local.json --verify-only --delivery-day 2026-10-23
-```
+## Arborescence commentée du dépôt
 
-## Pipeline complet
+Utiliser uniquement les sous-commandes `python -m nyx_runtime`. Les fichiers
+internes ci-dessous fournissent des fonctions, constantes ou classes à cette
+chaîne ; ils ne sont pas autant de programmes à lancer quotidiennement. Les
+noms historiques (`candidate`, `ablation`, `dashboard`…) restent pour les imports,
+modèles sérialisés et empreintes contractuelles, sans réactiver ces expériences.
+Chaque fichier conservé est indiqué avec son rôle.
 
-1. **Entrée** : `cli` résout la configuration ; `planning` fige les dates,
-   heures physiques et coupure. Le verrou, le snapshot et les manifestes
-   contrôlent l'identité des fichiers, du code et des états.
-2. **Données** : Saturn fournit EPEX, profils de consommation/production,
-   météo, nucléaire, combustibles et thermique selon les règles de vintages.
-   JAO, hydro public et échanges proviennent des captures horodatées locales.
-   La commande `capture` ne charge aucun modèle.
-3. **Variables** : alignement UTC, calendrier, retards de prix, profils,
-   hydro, capacité thermique, échanges et interactions. L'ordre des variables
-   est fixé dans `config/nyx_annual_cpu_ordered_features.json`. Les règles de
-   récupération des profils/cibles historiques restent dans les reçus.
-4. **Socle** : poids Chronos-2 gelés, correcteur résiduel, interactions et
-   Kalman de la recette. Prolongement borné de l'historique avec états vérifiés.
-   Les observations devenues disponibles sont relues depuis EPEX, jamais
-   reprises comme labels depuis une ancienne prévision.
-5. **Refit quotidien obligatoire** : 12 références HGB, 2 paires Test2,
-   prior90, trois experts prix CatBoost et quatre recettes de probabilité de
-   prix négatif avec calibration historique. L'inférence intermédiaire du seed
-   est écartée ; un échec du refit ne permet pas de publier ce résultat ancien.
-6. **Prévisions** : validation des grilles complètes, origine commune,
-   valeurs finies, probabilités dans [0,1] et quantiles ordonnés. Les sorties
-   natives sont conservées sans transformation.
-7. **Sorties** : CSV commun, comparaisons facultatives séparées, puis rapports.
-   L'enveloppe affichée vaut `min(q10, prix final)` / `max(q90, prix final)` ;
-   son niveau nominal 80 % **n'est pas calibré pour l'expert final**.
-   `latest.json` avance seulement après succès de toutes les étapes.
-
-### Données et disponibilités
-
-| Source | Règle opérationnelle |
-| --- | --- |
-| EPEX via Saturn | Seule référence des prix d'entraînement et retards. Aucun remplacement ENTSO-E ni remplissage des observations requises. Une absence bloquante arrête le calcul. |
-| Profils Saturn, météo, nucléaire, combustibles, thermique | Réseau privé et vintages admissibles à la coupure. Politiques historiques de récupération conservées dans les reçus. |
-| JAO initial | Capture immuable publiée et reçue avant la coupure. |
-| Hydro public et échanges retardés | Captures locales avec délais causaux. Seules les absences autorisées par la recette restent NaN avec leurs indicateurs. |
-| Sources publiques J+2 | Parfois non publiées à J 08:00. Pas de substitution rétrospective ; conserver les indicateurs d'absence de la recette. |
-| Storm/Observed des rapports | Comparaisons facultatives et séparées du modèle. Une panne les laisse indisponibles et auditables. Elles ne servent ni à entraîner ni à prévoir. |
-
-## Sorties
-
-Chaque prévision crée un dossier unique sous `output_root` :
+<details>
+<summary>Afficher tous les fichiers et leur rôle dans le pipeline</summary>
 
 ```text
-<run_id>/
-  status.json                 COMPLETE, BLOCKED, FAILED, INTERRUPTED ou RUNNING
-  predictions.csv             4 pays × les heures physiques des deux jours
-  native_forecasts/{FR,DE,BE,NL}.csv
-  live_result.json             Chemins, compteurs et empreintes
-  live_audit.json              Audits modèle/sources et limites des intervalles
-  forecast_extension/          Reçus, matrices et artefacts du refit
-  reports/
-    CWE_Model_Storm_<J+1>.html
-    CWE_Model_Storm_<J+2>.html
-    CWE_Model_Storm_J1_J2_<J+1>.html
-    forecast_<pays>_<J+1>_nyx_annual_cpu.html
-    forecast_<pays>_<J+1>_nyx_annual_interval.csv
-    forecast_<pays>_<J+1>_nyx_annual_interval.parquet
-    report_audit.json
-    index.html
-latest.json                   Dernier forecast entièrement réussi
-captures/<capture_id>.json     Résultat de chaque capture/vérification publique
+NYX_v2/
+├── nyx_runtime/  # Interface des commandes quotidiennes
+│   ├── templates/
+│   │   └── report.html  # Gabarit HTML des vues CWE
+│   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   ├── __main__.py  # Entrée python -m nyx_runtime
+│   ├── capture.py  # Capture publique avant 08:00 ou vérification des archives
+│   ├── cli.py  # Sous-commandes et arguments de l’opérateur
+│   ├── detail_reports.py  # Quatre détails pays, CSV/Parquet, index et audit final
+│   ├── engine.py  # Contrats communs, empreintes, imports dynamiques, masquage des secrets
+│   ├── forecast.py  # Refit deux jours, validation et export des prévisions
+│   ├── pipeline.py  # Coordination, statuts et publication du dernier succès
+│   ├── planning.py  # Origine commune, dates J+1/J+2 et heures DST
+│   ├── preflight.py  # Versions, seed, poids et continuité des états, sans fournisseur
+│   ├── reporting.py  # Trois vues CWE depuis le CSV commun
+│   ├── runtime.py  # Manifestes, verrou, copies sûres des états, écritures atomiques
+│   ├── settings.py  # Chemins et options de config.local.json
+│   └── snapshot.py  # Export initial et contrôle de l’inventaire privé
+├── production/  # Implémentation conservée et manifestes d’intégrité
+│   ├── reporting/  # Rendus détaillés d’origine
+│   │   ├── nyx_prod_templates/  # Gabarits et calculs des détails pays
+│   │   │   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   │   │   ├── common.py  # Types des données de reporting
+│   │   │   ├── forecast_explanation.py  # Explications descriptives des variables/prévisions
+│   │   │   ├── hourly_comparison.py  # Graphiques et tableaux horaires comparatifs
+│   │   │   ├── metrics.py  # Mesures historiques affichées dans les rapports
+│   │   │   └── report.py  # HTML détaillé, graphiques et tableaux pays
+│   │   └── report_detail_adapter.py  # Sépare prévision finale et statistiques du socle
+│   ├── runtime/  # Noyau scientifique appelé par la CLI
+│   │   ├── annual_extension/  # Dix modules exposés dynamiquement sous chronos2_hourly
+│   │   │   ├── nyx_daily_refit.py  # Coordonne le refit quotidien et scelle ses résultats
+│   │   │   ├── nyx_daily_refit_experts.py  # Trois experts prix et quatre recettes de probabilité négative
+│   │   │   ├── nyx_daily_refit_history.py  # Historique d’entraînement et état de refit
+│   │   │   ├── nyx_daily_refit_reference.py  # 12 HGB, deux paires Test2 et sélection prior90
+│   │   │   ├── nyx_daily_state_cache.py  # Historiques CPU liés au seed, code, versions et configuration
+│   │   │   ├── nyx_daily_two_day_baseline.py  # Chronos + résiduel + Kalman ; continuation bornée
+│   │   │   ├── nyx_saved_horizon_inference.py  # Socle, variables futures et inférence intermédiaire du seed
+│   │   │   ├── nyx_saved_horizon_reporting_sources.py  # Comparateurs EPEX/Storm réservés aux rapports
+│   │   │   ├── nyx_saved_horizon_resume.py  # Validation/reprise interne d’artefacts scellés
+│   │   │   └── nyx_saved_horizon_sources.py  # Sources J+1/J+2 à la même coupure
+│   │   ├── chronos2_hourly/  # Variables, socle, références et experts
+│   │   │   ├── models/  # Classes nécessaires aux dépendances/états
+│   │   │   │   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   │   │   │   ├── base.py  # Interface commune des estimateurs
+│   │   │   │   ├── blended_residual_corrector.py  # Combinaison déterministe des correcteurs ajustés
+│   │   │   │   ├── calibration.py  # Calibration causale par médiane glissante
+│   │   │   │   ├── catboost_hourly.py  # Classe CatBoost requise par les dépendances/états
+│   │   │   │   ├── ensemble.py  # Utilitaires d’ensemble requis par les dépendances/états
+│   │   │   │   ├── lear.py  # Classe LEAR requise par les dépendances/états
+│   │   │   │   └── residual_corrector.py  # Correction résiduelle des quantiles
+│   │   │   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   │   │   ├── chronos_adapter.py  # Adaptation des sorties Chronos aux heures de livraison
+│   │   │   ├── features.py  # Primitives de variables causales alignées en UTC
+│   │   │   ├── historical_price_replay.py  # Primitives du rejeu et checkpoints historiques
+│   │   │   ├── hourly_contract.py  # Contrat horaire, fuseaux et jours de 23/24/25 heures
+│   │   │   ├── jao_flowbased.py  # Client JAO, normalisation et variables flow-based
+│   │   │   ├── kalman_covariates.py  # Contrats et construction des covariables Kalman
+│   │   │   ├── kalman_residual.py  # Correction résiduelle Kalman causale
+│   │   │   ├── nuclear_cwe_forecast.py  # Protocoles nucléaires CWE réutilisés par le socle
+│   │   │   ├── nuclear_forecast.py  # Primitives nucléaires réutilisées par le socle
+│   │   │   ├── nyx_annual_cpu_baseline.py  # Chargement Chronos CPU gelé et historique du socle
+│   │   │   ├── nyx_annual_cpu_bundle_builder.py  # Construction et scellement des matrices de variables
+│   │   │   ├── nyx_annual_cpu_live.py  # Validation du bundle et composition/exécution des modèles
+│   │   │   ├── nyx_annual_epex_prices.py  # Prix EPEX seuls ; aucune observation imputée
+│   │   │   ├── nyx_annual_equal_ensemble.py  # Ensemble de référence à poids égaux
+│   │   │   ├── nyx_annual_feature_projection.py  # Projection dans l’ordre contractuel des variables
+│   │   │   ├── nyx_annual_jao_history.py  # Historique JAO de préparation du seed
+│   │   │   ├── nyx_annual_jao_source.py  # Preuves et vérification des captures JAO prospectives
+│   │   │   ├── nyx_annual_live_preflight.py  # Validation des sources, matrices et historiques
+│   │   │   ├── nyx_annual_nyx_quantiles_gate.py  # Contrat des quantiles et de l’historique du socle
+│   │   │   ├── nyx_annual_operational_context.py  # Contexte temporaire de coupure du calcul scientifique
+│   │   │   ├── nyx_annual_prior90_cpu.py  # Sélection fondée sur les 90 jours antérieurs
+│   │   │   ├── nyx_annual_public_history.py  # Historiques publics de préparation du seed
+│   │   │   ├── nyx_annual_reference_pair.py  # Paires confirmées et signaux de référence
+│   │   │   ├── nyx_annual_saturn_archive.py  # Récupération historique NL encadrée
+│   │   │   ├── nyx_annual_saturn_source.py  # Profils/vintages Saturn et leurs reçus
+│   │   │   ├── nyx_annual_test2_cpu.py  # Primitives d’ajustement Test2 sur CPU
+│   │   │   ├── nyx_annual_wind_source.py  # Règles auditées de récupération éolienne
+│   │   │   ├── nyx_forecast_profile_features.py  # Formes des profils de livraison
+│   │   │   ├── nyx_fr_hydro_lagged_features.py  # Hydro retardée et disponibilité
+│   │   │   ├── nyx_historical_hgb_reference.py  # Primitives d’ajustement des références HGB
+│   │   │   ├── nyx_lagged_exchange_features.py  # Échanges retardés et disponibilité
+│   │   │   ├── nyx_live_baseline.py  # Configuration et fabrique du correcteur résiduel
+│   │   │   ├── nyx_live_hybrid.py  # Règles et variables des paires NYX/Test2
+│   │   │   ├── nyx_local_extra_features.py  # Variables des prévisions et combustibles admissibles
+│   │   │   ├── nyx_local_io.py  # Publication immuable et écritures atomiques
+│   │   │   ├── nyx_local_price_features.py  # Retards de prix et disponibilité des observations
+│   │   │   ├── nyx_local_squared_price_model.py  # Expert prix CatBoost individuel
+│   │   │   ├── nyx_negative_probability_cpu.py  # Probabilités négatives, calibration et replis prévus
+│   │   │   ├── nyx_pooled_calendar.py  # Calendriers nationaux des modèles mutualisés
+│   │   │   ├── nyx_pooled_cpu_price_model.py  # Experts prix CatBoost mutualisés
+│   │   │   ├── nyx_thermal_capacity_features.py  # Capacités thermiques et disponibilité
+│   │   │   ├── process_lock.py  # Verrous de processus du noyau
+│   │   │   ├── reporting_observations.py  # Observations EPEX pour les rapports
+│   │   │   ├── solar_cwe_sources.py  # Catalogue des sources solaires CWE
+│   │   │   ├── solar_wind_forecast.py  # Recette du socle solaire/éolien et réglages Kalman
+│   │   │   ├── solar_wind_interaction_features.py  # Interactions physiques des profils
+│   │   │   ├── solar_wind_scarcity_ablation.py  # Constantes de variables réutilisées par Test2
+│   │   │   ├── solar_wind_scarcity_hybrid.py  # Sélection des quantiles selon le régime
+│   │   │   ├── solar_wind_scarcity_regime.py  # Distributions des régimes de rareté
+│   │   │   ├── solar_wind_sources.py  # Sources de production solaire/éolienne
+│   │   │   └── storm_dashboard.py  # Comparateur Storm ; aucun tableau de bord lancé
+│   │   ├── chronos2_modular/  # Acquisition partagée et adaptation Chronos
+│   │   │   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   │   │   ├── common.py  # Types pays/séries, YAML et reproductibilité
+│   │   │   ├── data.py  # Lecture des séries et vintages
+│   │   │   ├── exogenous_extensions.py  # Enrichissement causal des variables externes
+│   │   │   ├── forecasting.py  # Chargement et adaptation des entrées/sorties Chronos
+│   │   │   └── saturn.py  # Client Saturn et normalisation des séries
+│   │   ├── config/  # Configurations scientifiques contractuelles
+│   │   │   ├── kalman_operational.yaml  # Paramètres et covariables Kalman
+│   │   │   └── nyx_annual_cpu_ordered_features.json  # Ordre exact des variables par recette
+│   │   ├── experiment_console/  # Seul le masquage des secrets est conservé
+│   │   │   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   │   │   └── security.py  # Masquage des secrets ; ancienne console retirée
+│   │   ├── marginal_cost_expert/  # Seul le catalogue thermique est réutilisé
+│   │   │   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   │   │   └── sources.py  # Catalogue Pmax réutilisé ; expert de recherche non exécuté
+│   │   ├── chronos2_hourly_be_residual_candidate_v1.yaml  # Configuration pays de la recette CPU conservée
+│   │   ├── chronos2_hourly_de_residual_candidate_v1.yaml  # Configuration pays de la recette CPU conservée
+│   │   ├── chronos2_hourly_fr_residual_v1.yaml  # Configuration pays de la recette CPU conservée
+│   │   ├── chronos2_hourly_nl_residual_candidate_v1.yaml  # Configuration pays de la recette CPU conservée
+│   │   ├── materialize_jao_core_flowbased.py  # Matérialisation des domaines JAO flow-based
+│   │   ├── materialize_saturn_kalman_fuel.py  # Combustibles et coûts marginaux admissibles à la coupure
+│   │   ├── materialize_saturn_kalman_weather.py  # Contrats et acquisition des covariables météo/Kalman
+│   │   ├── run_nyx_annual_auction_prices_source.py  # Configuration et source de prix EPEX des quatre pays
+│   │   ├── run_nyx_annual_daily_capture.py  # Orchestre JAO, hydro et échanges ; vérifie les captures
+│   │   ├── run_nyx_annual_exchange_source.py  # Capture, vérification et variables d’échanges
+│   │   ├── run_nyx_annual_hydro_source.py  # Capture, vérification et variables hydro publiques
+│   │   ├── run_nyx_annual_jao_source.py  # Fonctions de collecte et d’assemblage JAO
+│   │   └── run_nyx_annual_thermal_source.py  # Treize séries Pmax et disponibilité thermique
+│   ├── REPORTING_MANIFEST.json  # Provenance/empreintes des rendus historiques
+│   └── SOURCE_MANIFEST.json  # Provenance/empreintes des sources et configurations
+├── tests/  # Contrats, causalité, états, DST et sorties
+│   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
+│   ├── conftest.py  # Prépare les imports de test
+│   ├── report_helpers.py  # Fixtures des rapports
+│   ├── test_capture.py  # Fenêtre Paris, archives et échecs indépendants des collectes
+│   ├── test_detail_reports.py  # Détails pays, probabilités et parité des exports CSV/Parquet
+│   ├── test_hourly_contract.py  # Jours de 23/24/25 heures et agrégation quart-horaire
+│   ├── test_hourly_features.py  # Retards et statistiques causales ; aucun prix futur utilisé
+│   ├── test_kalman_covariates.py  # Groupes de covariables et couverture historique Kalman
+│   ├── test_kalman_residual.py  # Correction Kalman causale, sélection et quantiles ordonnés
+│   ├── test_nyx_annual_cpu_baseline.py  # Poids Chronos, identité du socle et prévision sans label futur
+│   ├── test_nyx_annual_live_preflight.py  # Schémas, reçus et cohérence des indicateurs de disponibilité
+│   ├── test_nyx_annual_nyx_quantiles_gate.py  # Origines exactes, quantiles et provenance du socle CPU
+│   ├── test_nyx_annual_profile_feature_audit.py  # Traçabilité des profils sans modification des variables
+│   ├── test_operational_configuration.py  # Auteur explicite et rejet des surcharges de coupure
+│   ├── test_production_live.py  # Origine J+1/J+2, refit complet et publication validée
+│   ├── test_production_reports.py  # Parité CSV/HTML, grille complète et reprise des vues CWE
+│   ├── test_run_nyx_annual_auction_prices_source.py  # Prix EPEX complets, coupure et reçus immuables
+│   ├── test_runtime_cli.py  # Commandes, dates et dernier succès après tous les rapports
+│   ├── test_runtime_contract.py  # Manifestes et refus des imports d’une autre installation
+│   ├── test_runtime_settings.py  # Chemins portables, types et priorité des arguments
+│   ├── test_runtime_snapshot.py  # Export exact, inventaire et refus des entrées redirigées
+│   ├── test_runtime_state_safety.py  # Copies d’états sûres, jonctions et verrous
+│   ├── test_target_dst_regression.py  # Normalisation UTC et transitions DST sur plusieurs années
+│   └── test_versions.py  # Python 3.11, pins exacts et client Saturn privé
+├── .gitattributes  # Fins de ligne stables pour les empreintes
+├── .gitignore  # Exclusion des secrets, données, états et sorties
+├── config.example.json  # Exemple des chemins privés et options de reporting
+├── LICENSE  # Licence MIT
+├── pytest.ini  # Découverte des tests
+├── README.md  # Guide unique : exploitation, pipeline et fichiers
+├── requirements-dev.txt  # Runtime et pytest
+└── requirements.txt  # Versions exactes du runtime CPU
+
 ```
 
-Les trois fichiers `forecast_<pays>...` existent pour `fr`, `de`, `be`, `nl` et
-couvrent les deux jours. Les détails distinguent la prévision finale des
-statistiques historiques du socle CPU, qui ne démontrent pas la performance
-hors échantillon des experts finaux.
+</details>
 
-| Champs du CSV commun | Sens |
+Les poids, données, secrets, caches et sorties ne sont pas suivis dans cet
+arbre. Les états évolutifs sont écrits sous `production/runtime/runs/`, les
+captures sous `production/runtime/data/`, tous ignorés par Git. Sauvegarder ces
+dossiers avec les résultats. Un même snapshot conserve ces états récents ; un
+changement de snapshot réinitialise leurs copies. Ne pas modifier un snapshot
+en place ni déplacer un run dont les reçus contiennent des chemins absolus.
+
+## Sources et règles de disponibilité
+
+| Source | Règle conservée |
+| --- | --- |
+| EPEX via Saturn | Seule référence des labels et retards de prix ; aucun remplacement ENTSO-E ni observation imputée. Une donnée requise absente bloque. |
+| Profils Saturn, météo, nucléaire, combustibles | Vintages admissibles à la coupure commune et récupération historique décrite dans les reçus. Les observations devenues disponibles sont relues, jamais remplacées par d’anciennes prévisions. |
+| Thermique | Capacités Pmax et indicateurs de disponibilité selon la recette. |
+| JAO initial | Capture immuable publiée/reçue avant la coupure ; sinon variables absentes et disponibilité à zéro. Une archive présente doit être valide. |
+| Hydro public et échanges | Captures locales avec leurs délais causaux ; seules les absences prévues restent NaN avec indicateurs. |
+| Sources publiques J+2 | Souvent non publiées à J 08:00 ; aucune collecte tardive ne reconstitue une disponibilité passée. |
+| EPEX/Storm des rapports | Comparateurs facultatifs collectés après l’inférence, séparés de l’entraînement et des prévisions. |
+
+Les futurs labels restent absents. En particulier, les retards J+2 n’utilisent
+pas les prix réalisés de J+1 encore inconnus à l’origine commune.
+
+## Sorties et lecture du résultat
+
+```text
+<output_root>/
+├── latest.json                         Dernier forecast entièrement réussi
+├── latest_reports.json                 Dernier rendu seul, s’il a été demandé
+├── captures/<capture_id>.json           Diagnostic de capture/vérification
+└── <run_id>/
+    ├── status.json                     COMPLETE requis avant consommation
+    ├── predictions.csv                 Les deux jours et les quatre pays
+    ├── native_forecasts/{FR,DE,BE,NL}.csv
+    ├── live_result.json                Chemins, compteurs, empreintes ; CSV_COMPLETE
+    ├── live_audit.json                 Audits modèle/sources/intervalles
+    ├── forecast_extension/             Sources, matrices, modèles et reçus du refit
+    └── reports/
+        ├── CWE_Model_Storm_<J+1>.html
+        ├── CWE_Model_Storm_<J+2>.html
+        ├── CWE_Model_Storm_J1_J2_<J+1>.html
+        ├── forecast_<pays>_<J+1>_nyx_annual_cpu.html          × 4
+        ├── forecast_<pays>_<J+1>_nyx_annual_interval.csv     × 4
+        ├── forecast_<pays>_<J+1>_nyx_annual_interval.parquet × 4
+        ├── report_audit.json + render_audit.json
+        └── index.html                 Liens vers les sept rapports
+```
+
+`<pays>` vaut `fr`, `de`, `be`, `nl` ; chaque détail couvre les deux jours.
+Les graphiques historiques décrivent **le socle CPU**, pas une mesure hors
+échantillon des experts finaux fraîchement ajustés.
+
+| Champs de predictions.csv | Sens |
 | --- | --- |
 | `delivery_day`, `zone` | Jour civil et pays. |
-| `delivery_start_utc`, `delivery_start_local` | Début de l'heure physique avec décalage. |
+| `delivery_start_utc`, `delivery_start_local` | Début de l’heure physique, avec décalage explicite. |
 | `forecast_origin_utc`, `horizon_day` | Coupure commune, horizon 1 ou 2. |
-| `prediction_eur_mwh` | Prix final EUR/MWh, sans arrondi de calcul. |
-| `lower_bound_eur_mwh`, `upper_bound_eur_mwh` | Enveloppe indicative autour du prix final. |
-| `interval_method`, `nominal_interval_level`, `interval_calibrated` | `baseline_envelope_uncalibrated`, 0.8, false. |
+| `prediction_eur_mwh` | Prix final EUR/MWh. |
+| `lower_bound_eur_mwh`, `upper_bound_eur_mwh` | `min(q10 du socle, prix final)` / `max(q90 du socle, prix final)`. |
+| `interval_method`, `nominal_interval_level`, `interval_calibrated` | `baseline_envelope_uncalibrated`, 0.8, false : enveloppe indicative, **non calibrée pour l’expert final**. |
 | `storm_eur_mwh`, `observed_eur_mwh` | Comparaisons facultatives ; vide = indisponible. |
-| `source_html_sha256`, `source_generated_at_utc`, `source_html_name` | Provenance conservée dans le contrat ; vide pour une prévision native. |
+| `source_html_sha256`, `source_generated_at_utc`, `source_html_name` | Champs de provenance conservés, vides pour une prévision native. |
 
-Les CSV natifs contiennent notamment `price_eur_mwh`, `p_negative`,
+Les CSV natifs conservent notamment `price_eur_mwh`, `p_negative`,
 `p_negative_raw`, `reference_eur_mwh`, `nyx__q10/q50/q90`. Les sorties intervalle
 ajoutent `interval_lower_eur_mwh`, `interval_upper_eur_mwh` et leur méthode.
+Les probabilités négatives ne figurent pas dans le CSV commun.
 
-Recréer **les trois vues CWE** depuis le CSV commun, sans modèle ni réseau :
+Commandes auxiliaires :
 
 ```powershell
-.\.venv\Scripts\python.exe -m nyx_runtime reports --csv C:\NYX-results\RUN_ID\predictions.csv --output-root C:\NYX-results
+# Plan seulement, sans fournisseur ni modèle
+.\.venv\Scripts\python.exe -m nyx_runtime plan
+
+# Exemple historique : --first-day désigne J+1, avec sa coupure J à 08:00 Paris
+.\.venv\Scripts\python.exe -m nyx_runtime plan --first-day 2026-10-23 --as-of 2026-10-22T08:00:00+02:00
+
+# Vérifier une capture archivée, sans contacter les fournisseurs
+.\.venv\Scripts\python.exe -m nyx_runtime capture --config config.local.json --verify-only --delivery-day 2026-10-23
+
+# Recréer seulement les trois vues CWE, sans modèle ni réseau
+.\.venv\Scripts\python.exe -m nyx_runtime reports --csv C:\NYX\results\RUN_ID\predictions.csv --output-root C:\NYX\results
 ```
 
-Cette commande publie `latest_reports.json`, jamais `latest.json`, et ne
-prétend pas calculer de nouvelles prévisions. Le CSV commun ne contient pas
-les historiques/covariables nécessaires aux quatre détails pays.
-
-Les états évolutifs restent sous `production/runtime/runs/`, les captures sous
-`production/runtime/data/`, tous ignorés par Git. Sauvegarder ces dossiers avec
-les résultats. Le même snapshot conserve les états récents ; changer de snapshot
-réinitialise ces copies depuis le nouvel export. Ne jamais modifier le snapshot
-en place. Les états ne remplacent pas les reçus des sorties.
+Les options `--first-day`/`--as-of` existent aussi pour `preflight` et `forecast` ;
+un calcul historique exige les vintages et états adaptés. `reports` ne recrée
+pas les quatre détails pays, qui nécessitent aussi les historiques/covariables.
+Il publie `latest_reports.json` et ne modifie pas `latest.json`.
 
 ## Dépannage
 
 | Symptôme | Action |
 | --- | --- |
-| Snapshot/dossier absent | Vérifier `input_root`, `snapshot.json` et obtenir/exporter le seed complet. |
-| Empreinte différente / source modifiée | Récupérer le fichier original. Ne pas réécrire le manifeste ou le reçu pour passer le contrôle. |
-| Module/version absent ou incompatible | Installer les pins dans le bon Python et le client privé approuvé ; vérifier l'exécutable du planificateur. |
-| Auteur absent / accès Saturn refusé | Définir `SATURN_AUTHOR`, configurer authentification et réseau. Le précontrôle local ne teste pas le serveur. |
-| Coupure non atteinte / mauvais UTC | Exécuter après 08:00 Paris ; laisser les dates par défaut ou fournir le décalage saisonnier correct. |
-| Capture hors fenêtre | Reprendre le lendemain avant 08:00. Ne pas antidater. Vérifier si les absences autorisées suffisent ou si le calcul bloque. |
-| État incompatible / plus de 7 jours à reconstruire | Obtenir un export récent compatible avec recette et bibliothèques. Ne pas changer les dates de l'état. |
-| EPEX/profils manquants à la coupure | Lire les reçus et faire corriger l'amont. Aucun remplissage avec des observations futures. |
-| Verrou actif | Attendre le calcul. Après arrêt brutal, vérifier que le processus indiqué est terminé avant de retirer `production/runtime/runs/.nyx_cloud.lock` (nom historique). |
-| Échec de modèle/rendu | Lire `status.json` et les reçus ; le dernier succès reste accessible. Relancer crée un nouveau run et réutilise seulement les états vérifiés. |
-| Storm/Observed absents | Lire `live_audit.json`. `--skip-reporting-sources` désactive explicitement leur collecte, sans changer le modèle. |
+| Snapshot ou seed incomplet | Vérifier `input_root` et récupérer le bundle, ses reçus, modèles et poids liés ; les états seuls ne suffisent pas. |
+| Chemin introuvable/trop long sous Windows | Utiliser des racines courtes, par exemple `C:\NYX\code`, `C:\NYX\snapshot`, `C:\NYX\results`, avant l’installation et le premier calcul. |
+| Empreinte différente | Récupérer les octets d’origine, sans réécrire le manifeste ou les reçus. |
+| Module/version incompatible | Installer les pins et le client privé dans le Python du planificateur. |
+| Auteur absent / Saturn inaccessible | Définir `SATURN_AUTHOR` et vérifier le réseau/authentification d’entreprise. `preflight` ne teste pas le serveur. |
+| Coupure non atteinte | Attendre 08:00 Paris ; respecter le décalage saisonnier avec `--as-of`. |
+| Capture manquante/tardive | Ne pas antidater. Consulter les absences déclarées ; le calcul peut accepter celles prévues par la recette. Une archive corrompue reste bloquante. |
+| État incompatible / plus de sept jours à reconstruire | Obtenir un export récent compatible avec le seed, le code et les bibliothèques. |
+| EPEX ou profil requis absent | Lire le reçu et faire corriger la source ; aucun remplissage avec des observations futures. |
+| Verrou actif | Attendre. Après arrêt brutal, confirmer l’arrêt du processus avant de retirer `production/runtime/runs/.nyx_cloud.lock` (nom historique). |
+| Modèle ou rendu en échec | Lire `status.json` et les reçus ; relancer crée un nouveau run. Le dernier succès reste accessible. |
+| Comparateurs absents | Lire `live_audit.json` ; `--skip-reporting-sources` désactive leur collecte sans modifier le modèle. |
+| Tests : accès refusé à `pytest-of-...` | Ajouter `--basetemp` avec un dossier temporaire court, nouveau et réservé à cet essai. Pytest efface ce dossier ; ne jamais désigner un répertoire contenant des données. |
 
 Codes retour : **0** succès, **2** blocage/échec traité, **130** interruption
-clavier. Un CSV isolé n'est pas une preuve de succès. Consommer le dossier de
-`latest.json` et vérifier `status.json.state == "COMPLETE"`.
-
-## Arborescence
-
-```text
-README.md                     Guide unique
-config.example.json           Chemins et option de reporting
-requirements.txt              Versions du runtime CPU
-requirements-dev.txt          Runtime + pytest
-nyx_runtime/                  Entrée → données → modèle → prévisions → sorties
-  templates/report.html       Présentation CWE
-production/
-  SOURCE_MANIFEST.json        Provenance et empreintes du noyau
-  REPORTING_MANIFEST.json     Provenance et empreintes des rendus historiques
-  runtime/                   Sources scientifiques et configurations
-  reporting/                 Rendus détaillés de l'équipe
-tests/                       Contrats, causalité, DST, états et sorties
-LICENSE                       Licence MIT
-.gitignore, .gitattributes    Exclusion des données privées, fins de ligne stables
-pytest.ini                    Découverte des tests
-```
-
-Les noms historiques du noyau sont conservés pour les modèles sérialisés,
-imports dynamiques et empreintes des états. Certains fichiers contiennent aussi
-des fonctions historiques : ils restent entiers lorsque leur empreinte est
-contractuelle. Ils ne constituent pas des lanceurs alternatifs. Utiliser les
-sous-commandes `python -m nyx_runtime`.
+clavier. Un CSV isolé ou `live_result.json` ne prouve pas la réussite complète.
 
 ## Provenance et validation
 
-Sélection depuis `main` au commit
-`b0fa97f4d690c52a73d5716c16b152b0124c3882`, confrontée au paquet partagé le
-22 octobre, au lanceur deux jours récupéré localement et dans les échanges
-des 14–15 octobre, et aux corrections présentes dans `main`. Les sources
-privées servent de preuves et ne sont pas distribuées ici.
-
-L'ancien `NuclearKalman.ps1` et la chaîne annuelle « anytime » ne décrivent pas
-le refit J+1/J+2 retenu. La première réorganisation omettait les captures
-publiques et les quatre détails pays : ils sont restaurés. Les correctifs EPEX
-et des audits scellés sont déjà implémentés. Les propositions AWS et expériences
-de modèles sont exclues de l'exécution quotidienne. Le statut non qualifié et
-les limites des intervalles sont conservés, sans transformer une suggestion en
-correctif validé.
+Les 95 fichiers scientifiques/configurations proviennent de `main`
+`b0fa97f4d690c52a73d5716c16b152b0124c3882` : **83 sont identiques octet pour octet**
+aux objets Git ; **12 ont uniquement leurs fins de ligne LF restaurées en CRLF**
+pour retrouver les empreintes exactes enregistrées dans les états opérationnels.
+Leur structure Python est identique. `.gitattributes` conserve ces octets dans
+les checkouts et archives ; `SOURCE_MANIFEST.json` garde les empreintes Git
+d’origine et la provenance de la restauration. Les sept modules de rendu
+historiques restent inchangés. Les imports dynamiques et les empreintes des
+états expliquent les noms/fichiers conservés. Les notebooks,
+campagnes, anciennes interfaces et guides redondants ont été retirés de l’arbre
+courant ; l’historique Git n’est pas réécrit.
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-Les tests portent sur imports/ressources, manifestes, horizons, coupure, DST,
-causalité, captures, refit, états, rapports et dernier succès. Les tests simulés
-ne remplacent pas l'accès réel aux fournisseurs.
+Vérifications effectuées le 23 octobre 2026 : **209 tests réussis, quatre ignorés**
+dans l’environnement Python 3.11 dédié, après restauration des fins de ligne.
+Les quatre tests de vrais liens symboliques sont empêchés par les privilèges
+Windows. Un dossier temporaire neuf a résolu l’accès refusé au répertoire pytest
+partagé, sans changer ses permissions. Les 89 modules scientifiques s’importent
+et 21 ressources actives se résolvent. Les **25 paquets publics ont leurs versions
+exactes**, avec `pip check` réussi ; les anciens écarts certifi/tzdata sont résolus.
+L’archive ZIP conserve les 95 empreintes scientifiques/configurations, y compris
+les 12 fichiers CRLF, ainsi que les sept modules de rendu historiques.
 
-Contrôles exécutés le 22 octobre 2026 :
+Le rendu d’une prévision réelle existante de 192 lignes conserve exactement prix,
+bornes, comparaisons et dates entre HTML d’origine, CSV et nouvelles vues CWE.
+Les détails pays, états, causalité, captures et transitions DST ont aussi des
+contrôles locaux ; ces tests ne prouvent pas l’accès aux fournisseurs.
 
-| Contrôle | Résultat |
-| --- | --- |
-| Suite complète, Python 3.11.15 et bibliothèques scientifiques CPU de l'installation existante | **209 réussis, 4 ignorés**. Les quatre fixtures de liens symboliques sont refusées par les privilèges Windows ; ce comportement n'est pas compté comme vérifié. |
-| Sources scientifiques/configurations comparées à `main` | **95 fichiers identiques octet pour octet**, plus 7 modules de rendu historiques préservés. |
-| Imports et ressources | **89 modules scientifiques importés**, 21 ressources actives résolues ; aucun modèle chargé, aucun fournisseur contacté. |
-| Rapport réel J+1/J+2 existant | **192 lignes** comparées entre HTML original, CSV et trois nouveaux HTML : prix, bornes, comparaisons, dates et horizons exactement conservés. Aucune nouvelle prévision calculée. |
-| Détails pays sur données synthétiques | Valeurs tracées, probabilités, intervalles, heures DST, CSV/Parquet et reçus vérifiés pour les quatre pays. |
-| Commandes `preflight` et `forecast` | Blocage attendu, code 2 : snapshot de production absent. Le client privé `tshistory_lite` manque également. |
+Pour les états ajoutés par `8f7a076`, **29 reçus et 364 empreintes d’artefacts**
+ont été vérifiés. Le code, les configurations et les versions correspondent aux
+**16 états CPU et 12 des 13 états de refit** ; le plus ancien état de refit du
+15 octobre utilise une autre version et reste exclu. Les chargeurs natifs des
+états récents passent pour l’origine du 23 octobre et la livraison du 24 octobre,
+avec l’historique CPU jusqu’au 23 octobre et sans utiliser ses labels en cache.
+Cela ne constitue pas la validation d’un seed complet ni d’une prévision.
 
-Le contrôle strict relève aussi `certifi 2026.7.22` au lieu de `2026.10.19` et
-`tzdata 2026.4` au lieu de `2026.5` sur cet environnement existant. Ces deux
-écarts restent à corriger dans l'environnement d'exploitation ; les tests
-réussis ne les transforment pas en versions approuvées.
+La recherche dans `main` retrouve **978 des 15 556 entrées scellées du seed** ;
+**14 578 restent manquantes**. La récupération privée antérieure fournit le reçu
+et trois modèles prix, mais pas les quatre modèles négatifs. Les poids Chronos
+épinglés existent dans le cache local. Le seed complet, le client Saturn privé
+et l’accès au réseau d’entreprise restent nécessaires pour terminer l’essai réel.
 
-**Limite de livraison :** aucun calcul complet avec seed privé de production et
-Saturn n'a été démontré sur ce poste. Une comparaison numérique complète des
-prévisions avant/après reste à effectuer avec les mêmes entrées, états et
-bibliothèques. Les sources scientifiques sont conservées sans changement de
-calcul. Les données privées et anciens résultats ont été retirés de l'arbre
-courant ; l'historique Git existant n'a pas été réécrit.
-
-## Référence des modules
-
-Chaque fichier opérationnel/scientifique est répertorié ci-dessous, par dossier.
-Les `__init__.py` maintiennent les espaces de noms historiques. Dans `tests/`,
-chaque `test_*.py` contrôle le composant de son nom ; `conftest.py` prépare les
-imports et `report_helpers.py` fournit les fixtures de reporting.
-
-<!-- MODULE_CATALOG -->
-
-### Interface quotidienne : `nyx_runtime/`
-
-| Fichier | Rôle |
-| --- | --- |
-| `__init__.py`, `__main__.py`, `cli.py` | Paquet, entrée `python -m` et sous-commandes documentées. |
-| `settings.py`, `planning.py` | Configuration portable ; dates, coupure et grilles horaires physiques. |
-| `runtime.py`, `snapshot.py` | Manifestes de code ; export, contrôle et installation du snapshot privé. |
-| `preflight.py` | Contrôles locaux des dépendances, ressources et contrats avant calcul. |
-| `capture.py` | Commande de capture/vérification publique, verrou et compte rendu. |
-| `pipeline.py`, `engine.py` | Coordination du run, statuts, verrou et publication du dernier succès ; adaptation des entrées/sorties communes. |
-| `forecast.py` | Appel du refit deux jours, validation des prévisions et écriture des résultats/audits. |
-| `reporting.py`, `templates/report.html` | Trois rapports CWE depuis le CSV commun, avec graphiques embarqués. |
-| `detail_reports.py` | Quatre détails pays, enveloppe historique conservée, exports CSV/Parquet, index et vérification du jeu complet de rapports. |
-
-### Collecteurs et configurations : `production/runtime/`
-
-Ces scripts sont appelés par le runtime ou ses modules scientifiques. Les
-commandes directes de leurs anciens lanceurs ne sont pas nécessaires au
-collaborateur qui utilise les commandes quotidiennes ci-dessus.
-
-| Fichier | Rôle |
-| --- | --- |
-| `run_nyx_annual_daily_capture.py` | Orchestre la capture précoce de JAO, de l'hydro et des échanges pour demain ; vérifie aussi les archives. |
-| `run_nyx_annual_jao_source.py`, `materialize_jao_core_flowbased.py` | Capture JAO et assemblage de son historique causal. |
-| `run_nyx_annual_hydro_source.py`, `run_nyx_annual_exchange_source.py` | Captures publiques horodatées et assemblage des variables retardées. |
-| `run_nyx_annual_auction_prices_source.py` | Prix EPEX réalisés des quatre pays, identité de source et publication contrôlée. |
-| `run_nyx_annual_thermal_source.py` | Treize séries de capacité thermique Pmax et leurs indicateurs de disponibilité. |
-| `materialize_saturn_kalman_fuel.py`, `materialize_saturn_kalman_weather.py` | Acquisition causale des combustibles, charges résiduelles et variables météo du socle Kalman. |
-| `chronos2_hourly_fr_residual_v1.yaml`, `chronos2_hourly_de_residual_candidate_v1.yaml`, `chronos2_hourly_be_residual_candidate_v1.yaml`, `chronos2_hourly_nl_residual_candidate_v1.yaml` | Quatre configurations pays utilisées par la recette ; le suffixe historique `candidate` n'indique pas une expérience à lancer. |
-| `config/kalman_operational.yaml` | Paramètres et covariables de la correction Kalman. |
-| `config/nyx_annual_cpu_ordered_features.json` | Ordre contractuel des variables de chaque recette annuelle. |
-
-### Refit deux jours : `production/runtime/annual_extension/`
-
-Le runtime expose ces dix fichiers sous l'espace de noms historique
-`chronos2_hourly` pour conserver les imports et l'identité des états.
-
-| Fichier | Rôle |
-| --- | --- |
-| `nyx_daily_refit.py` | Orchestre le refit, ses reprises et les reçus du calcul final. |
-| `nyx_daily_refit_history.py`, `nyx_daily_state_cache.py` | Prépare l'historique disponible à la coupure ; charge/publie les états immuables avec reçus. |
-| `nyx_daily_two_day_baseline.py` | Prolonge le seed avec les prévisions Chronos, résiduelles et Kalman sur deux jours. |
-| `nyx_daily_refit_reference.py` | Réentraîne HGB/Test2 et applique la sélection prior90 strictement antérieure. |
-| `nyx_daily_refit_experts.py` | Réentraîne les trois experts prix et quatre recettes de probabilité négative, puis calibre. |
-| `nyx_saved_horizon_sources.py` | Réunit les sources des deux jours avec une origine commune. |
-| `nyx_saved_horizon_inference.py` | Assemble les variables et contrats des deux jours ; l'inférence du seed sert à la préparation, le résultat publié vient du refit. |
-| `nyx_saved_horizon_reporting_sources.py` | Comparateurs EPEX/Storm réservés aux rapports, isolés des entrées des modèles. |
-| `nyx_saved_horizon_resume.py` | Vérification et reprise d'un calcul scellé par les fonctions historiques ; aucun contournement du refit quotidien n'est exposé par la CLI. |
-
-### Contrats et modèles : `production/runtime/chronos2_hourly/`
-
-Les modules aux noms `nuclear`, `solar_wind`, `ablation` ou `live` ci-dessous
-fournissent encore des fonctions, constantes ou classes importées par la
-recette. Leurs noms et docstrings historiques ne définissent pas de nouvelles
-étapes quotidiennes ni des variantes à choisir.
-
-| Fichier | Rôle conservé |
-| --- | --- |
-| `__init__.py`, `hourly_contract.py`, `features.py` | Espace de noms, cible horaire/DST et variables causales alignées en UTC. |
-| `chronos_adapter.py`, `historical_price_replay.py` | Adaptation des sorties Chronos aux heures de livraison et primitives de rejeu historique avec checkpoints. |
-| `kalman_covariates.py`, `kalman_residual.py` | Contrats des covariables et correction résiduelle Kalman causale. |
-| `nuclear_forecast.py`, `nuclear_cwe_forecast.py` | Fonctions et protocoles nucléaires réutilisés par la chaîne résiduelle/solaire-éolienne. |
-| `solar_cwe_sources.py`, `solar_wind_sources.py` | Descriptions et acquisition des séries de production solaire/éolienne. |
-| `solar_wind_forecast.py`, `nyx_live_baseline.py` | Recette du socle solaire/éolien, configuration Kalman et fabrique du correcteur résiduel. |
-| `solar_wind_interaction_features.py`, `nyx_live_hybrid.py` | Interactions physiques et règles des paires NYX/Test2. |
-| `solar_wind_scarcity_regime.py`, `solar_wind_scarcity_hybrid.py`, `solar_wind_scarcity_ablation.py` | Distributions de rareté, sélection des quantiles et constantes des variables utilisées par Test2. |
-| `nyx_annual_cpu_baseline.py` | Chargement CPU du Chronos gelé, prédictions du socle et validation de son historique. |
-| `nyx_annual_cpu_bundle_builder.py`, `nyx_annual_feature_projection.py` | Construction, projection dans l'ordre contractuel et scellement des matrices. |
-| `nyx_annual_cpu_live.py` | Chargement/validation du bundle, composition du prix et fonctions d'exécution des modèles. |
-| `nyx_annual_live_preflight.py`, `nyx_annual_nyx_quantiles_gate.py` | Contrôles structurels des variables, sources, historiques et quantiles du socle. |
-| `nyx_annual_operational_context.py` | Contexte de coupure explicite et temporaire pendant le calcul. |
-| `nyx_annual_epex_prices.py`, `nyx_annual_saturn_source.py` | Source de prix EPEX unique et captures Saturn admissibles à la coupure, avec reçus. |
-| `nyx_annual_saturn_archive.py`, `nyx_annual_wind_source.py` | Récupérations historiques NL strictement encadrées et substitutions éoliennes auditées. |
-| `jao_flowbased.py`, `nyx_annual_jao_source.py` | Client JAO, normalisation, variables flow-based et preuves des captures prospectives. |
-| `nyx_annual_jao_history.py`, `nyx_annual_public_history.py` | Validation/assemblage des historiques de préparation JAO et publics, distincts des preuves de capture quotidienne. |
-| `nyx_historical_hgb_reference.py`, `nyx_annual_test2_cpu.py` | Ajustement des références HGB et Test2 appelé par le refit quotidien. |
-| `nyx_annual_equal_ensemble.py`, `nyx_annual_reference_pair.py`, `nyx_annual_prior90_cpu.py` | Ensemble de référence, paires confirmées et politique de rareté fondée sur les jours antérieurs. |
-| `nyx_local_price_features.py`, `nyx_local_extra_features.py` | Retards de prix et variables complémentaires issues des prévisions/combustibles admissibles. |
-| `nyx_forecast_profile_features.py`, `nyx_pooled_calendar.py` | Formes des profils de livraison et calendriers nationaux des modèles mutualisés. |
-| `nyx_fr_hydro_lagged_features.py`, `nyx_lagged_exchange_features.py`, `nyx_thermal_capacity_features.py` | Variables hydro/échanges retardés et capacités thermiques avec indicateurs d'absence. |
-| `nyx_local_squared_price_model.py`, `nyx_pooled_cpu_price_model.py` | Experts prix CatBoost individuels et mutualisés. |
-| `nyx_negative_probability_cpu.py` | Ajustement CPU des recettes de probabilité de prix négatif et fonctions de calibration/évaluation utilisées. |
-| `nyx_local_io.py`, `process_lock.py` | Écritures atomiques, publication immuable et verrous de processus. |
-| `reporting_observations.py`, `storm_dashboard.py` | Références EPEX et comparateur Storm pour les rapports ; aucun tableau de bord interactif n'est lancé. |
-
-Sous-dossier `production/runtime/chronos2_hourly/models/` :
-
-| Fichier | Rôle conservé |
-| --- | --- |
-| `__init__.py`, `base.py` | Classes exportées et contrats communs des estimateurs. |
-| `residual_corrector.py`, `blended_residual_corrector.py` | Correction des quantiles et combinaison déterministe de correcteurs ajustés. |
-| `calibration.py` | Calibration causale par médiane glissante. |
-| `catboost_hourly.py`, `lear.py`, `ensemble.py` | Classes et utilitaires historiques de modèles horaires, chargés par les dépendances/états ; aucune campagne d'entraînement alternative dans la CLI. |
-
-### Acquisition partagée : `production/runtime/chronos2_modular/`
-
-| Fichier | Rôle |
-| --- | --- |
-| `__init__.py`, `common.py` | Types des séries/pays, lecture YAML, reproductibilité et réglages du modèle. |
-| `data.py`, `exogenous_extensions.py` | Lecture des séries/vintages, régularisation et enrichissement causal des variables. |
-| `forecasting.py` | Chargement Chronos et adaptation de ses entrées/sorties. |
-| `saturn.py` | Client Saturn, normalisation des séries et archives de vintages. |
-
-Deux petits espaces de noms historiques restent nécessaires :
-
-| Dossier et fichiers | Rôle conservé |
-| --- | --- |
-| `production/runtime/experiment_console/__init__.py`, `production/runtime/experiment_console/security.py` | Fonctions de masquage des secrets dans les métadonnées et journaux. La console a été retirée. |
-| `production/runtime/marginal_cost_expert/__init__.py`, `production/runtime/marginal_cost_expert/sources.py` | Catalogue Pmax, coupures et conversion des séries utilisés par le collecteur thermique. L'expert de recherche n'est pas exécuté. |
-
-### Détails pays : `production/reporting/`
-
-Ces sept fichiers conservent les rendus de l'équipe. Le manifeste séparé
-`production/REPORTING_MANIFEST.json` contrôle leurs empreintes ;
-`production/SOURCE_MANIFEST.json` couvre le noyau scientifique et ses
-configurations.
-
-| Fichier | Rôle |
-| --- | --- |
-| `report_detail_adapter.py` | Adapte les résultats annuels/deux jours aux détails pays et distingue les statistiques du socle de la prévision finale. |
-| `nyx_prod_templates/__init__.py`, `nyx_prod_templates/common.py` | Espace de noms et types de données partagés par les rendus. |
-| `nyx_prod_templates/report.py` | Assemblage HTML, graphiques, tableaux et styles. |
-| `nyx_prod_templates/metrics.py` | Mesures historiques et couverture disponibles dans les rapports. |
-| `nyx_prod_templates/hourly_comparison.py` | Comparaisons horaires et tableaux associés. |
-| `nyx_prod_templates/forecast_explanation.py` | Présentation descriptive des variables et de la prévision. |
+La recette conserve **`qualified_for_production: false`**. Aucun nouveau calcul
+complet avec le seed privé et Saturn n’a été démontré sur ce poste ; la comparaison
+numérique avant/après à entrées, états et bibliothèques identiques reste à faire.
