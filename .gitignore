@@ -1,58 +1,52 @@
+# Environnements et caches Python
+.venv*/
+venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.venv/
-.venv-annual/
-venv/
+
+# Données de travail et résultats ; le snapshot initial est versionné ci-dessous
+/data/
+/runs/
+/models/
+/snapshots/
+/output/
+/outputs/
+production/runtime/data/
+production/runtime/runs/
+*.parquet
+*.joblib
+*.pkl
+*.cbm
+*.safetensors
+*.bin
+*.pt
+*.csv
+*.csv.gz
+*.html
+!nyx_runtime/templates/report.html
+*.log
 .cache/
 huggingface/
-models/
-!chronos2_hourly/models/
-!chronos2_hourly/models/*.py
-# data/
-# runs/
-.parquet
-.csv
-.csv.gz
-.html
+
+# Entrées initiales immuables livrées avec le dépôt
+!/snapshot/
+!/snapshot/**
+
+# Configuration et paquets privés
+config.local.json
+*.local.json
+requirements_private.txt
+*.whl
+.env
+.env.*
+
+# Fichiers de poste
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-*.backup
-*.bak
-# !data/
-# !data/**
-
-# Immutable daily source captures stay on the host and are never committed.
-data/pit/nyx_annual_exchange_captures/
-data/pit/nyx_annual_jao_initial_live/
-data/pit/nyx_annual_saturn/
-data/pit/nyx_annual_hydro_captures/
-data/pit/nyx_annual_cpu_live_fuel/
-data/pit/nyx_annual_thermal/
-data/pit/nyx_annual_jao_history/
-data/pit/nyx_annual_public_history/
-
-# Ignorer tout dans runs, sauf ces deux dossiers
-/runs/*
-!/runs/nyx_daily_refit_states/
-!/runs/nyx_daily_refit_states/**
-!/runs/nyx_daily_cpu_states/
-!/runs/nyx_daily_cpu_states/**
-!/runs/nyx_annual_anytime/
-!/runs/nyx_annual_anytime/**
-!/runs/nyx_annual_anytime_reports/
-!/runs/nyx_annual_anytime_reports/**
-
-
-# Local runs, generated reports and desktop shortcuts are rebuilt on each host.
-tmp/
-deliverables/
-output/
-research/
-.codex_presentation*/
 *.lnk
 

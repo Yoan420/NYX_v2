@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CWE · NYX &amp; Storm · $title</title>
+  <style>
+    body {
+      margin: 0;
+      background: #171d21;
+      color: #e7e9ea;
+      font: 15px Arial, sans-serif;
+    }
+    main { max-width: 1500px; margin: auto; padding: 26px; }
+    h1 { font-size: 27px; }
+    .date { color: #e6ad58; }
+    .note, small { color: #adb6bb; line-height: 1.6; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    article {
+      border: 1px solid #384148;
+      border-radius: 10px;
+      padding: 16px;
+      background: #20272c;
+    }
+    article p { display: flex; justify-content: space-between; }
+    button {
+      background: #273137;
+      color: #ddd;
+      border: 1px solid #657078;
+      padding: 9px 20px;
+      margin: 8px 4px 12px 0;
+      cursor: pointer;
+    }
+    button.active { color: #e6ad58; border-color: #e6ad58; }
+    [hidden] { display: none !important; }
+    .scroll { overflow: auto; max-height: 680px; }
+    table { border-collapse: collapse; width: 100%; white-space: nowrap; }
+    th, td { padding: 8px; border-bottom: 1px solid #384148; text-align: right; }
+    th:first-child { text-align: left; }
+    thead { position: sticky; top: 0; background: #242c31; }
+    footer { padding-top: 28px; color: #97a2a9; font-size: 12px; }
+    @media (max-width: 800px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      main { padding: 12px; }
+    }
+  </style>
+  <!-- Trusted local Plotly bundle, embedded for offline viewing. -->
+  <script>$plotly_script</script>
+</head>
+<body>
+  <main>
+    <h1>
+      CWE Day-Ahead · Daily Models Performance
+      <span class="date">$title</span>
+    </h1>
+    <p class="note">
+      NYX · delivery $title · original information cutoff $forecast_origin.
+      EPEX observations and Storm are report-only comparators.
+      Recreated from the exported CSV; no model or new prediction was computed.
+    </p>
+
+    <h2>Daily Snapshot</h2>
+    <section class="cards">$summary_cards</section>
+
+    <h2>Hourly Forecasts per Zone</h2>
+    <nav>
+      <button class="active" data-tab="graph">GRAPH</button>
+      <button data-tab="table">TABLE</button>
+      <button data-tab="info">INFO</button>
+    </nav>
+    <section id="graph">
+      <div id="forecast-chart"></div>
+    </section>
+    <section id="table" hidden>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Zone</th>
+              <th>Hour</th>
+              <th>Observed (EPEX)</th>
+              <th>Storm</th>
+              <th>NYX</th>
+              <th>Lower bound</th>
+              <th>Upper bound</th>
+              <th>Storm error</th>
+              <th>NYX error</th>
+            </tr>
+          </thead>
+          <tbody>$hourly_rows</tbody>
+        </table>
+      </div>
+    </section>
+    <section id="info" hidden>
+      <h3>NYX, Storm and observed prices</h3>
+      <p>
+        The NYX line is a point forecast. The orange band is an indicative
+        prediction envelope derived from the reference distribution and widened
+        to contain the final price. Its nominal level is 80%; coverage is not calibrated for the final forecast.
+        The bounds are not calibrated NYX quantiles.
+      </p>
+      <p>
+        Errors are forecast − observed. Daily means require every physical hour
+        of the delivery day. Missing values remain missing. Local delivery times
+        distinguish repeated daylight-saving hours by their timezone.
+      </p>
+      <p>This report reproduces CSV values; it does not refit NYX or refresh observations.</p>
+    </section>
+    <footer>
+      NYX · Storm · Observed — CWE day-ahead<br>
+      Generated $generated_at · standalone HTML
+    </footer>
+  </main>
+  <!-- Values come from the validated CSV; closing script tokens are escaped. -->
+  <script id="chart-data" type="application/json">$figure_json</script>
+  <script>
+    const figure = JSON.parse(document.getElementById('chart-data').textContent);
+    Plotly.newPlot('forecast-chart', figure.data, figure.layout, {
+      responsive: true,
+      displaylogo: false
+    });
+    document.querySelectorAll('[data-tab]').forEach(button => {
+      button.onclick = () => {
+        document.querySelectorAll('[data-tab]').forEach(tab => {
+          tab.classList.toggle('active', tab === button);
+        });
+        ['graph', 'table', 'info'].forEach(id => {
+          document.getElementById(id).hidden = id !== button.dataset.tab;
+        });
+        if (button.dataset.tab === 'graph') {
+          Plotly.Plots.resize('forecast-chart');
+        }
+      };
+    });
+  </script>
+</body>
+</html>

@@ -71,7 +71,7 @@ def test_collect_rejects_early_or_missing_price_hour(monkeypatch: pytest.MonkeyP
     _, cutoff, _ = _capture(monkeypatch, missing_zone="BE")
     with pytest.raises(ValueError, match="cutoff has not occurred"):
         source.collect(object(), DAY, now_utc=cutoff - pd.Timedelta(seconds=1))
-    with pytest.raises(ValueError, match="BE: 1 auction price hours missing"):
+    with pytest.raises(ValueError, match="BE: EPEX-only .* has 1 missing/nonfinite hourly prices"):
         source.collect(object(), DAY, now_utc=cutoff)
 
 
