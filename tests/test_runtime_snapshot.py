@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -35,6 +36,14 @@ class SnapshotTests(unittest.TestCase):
                        destination=self.destination)
         options.update(overrides)
         return create_snapshot(**options)
+
+    def seed_inventory(self, files):
+        """Write a real-shaped original receipt, retaining its CRLF bytes."""
+        receipt = json.dumps({"input_sha256": {
+            name: hashlib.sha256(contents).hexdigest() for name, contents in files.items()
+        }}, indent=2).replace("\n", "\r\n").encode("utf-8") + b"\r\n"
+        (self.output / "receipt.json").write_bytes(receipt)
+        return receipt
 
     def make_symlink(self, link, target, *, directory=False):
         try:
@@ -146,6 +155,151 @@ class SnapshotTests(unittest.TestCase):
         (state / ".daily_state.lock").write_text('{"hostname":"other-host"}')
         with self.assertRaisesRegex(ValueError, "stop the NYX run"):
             self.export()
+
+    def test_restores_only_receipt_proven_json_in_destination(self):
+        originals = {
+            "audits/weather.json": b'{\r\n  "source": "weather",\r\n  "rows": 48\r\n}\r\n',
+            "captures/receipt.json": b'{\r\n  "complete": true\r\n}\r\n',
+            "unchanged.json": b'{"existing": "CRLF"}\r\n',
+            "features.parquet": b"unchanged binary\x00\xff\n",
+        }
+        for name, original in originals.items():
+            path = self.bundle / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(original.replace(b"\r\n", b"\n") if "/" in name else original)
+        receipt = self.seed_inventory(originals)
+        source_before = {path.relative_to(self.bundle): path.read_bytes()
+                         for path in self.bundle.rglob("*") if path.is_file()}
+        document = self.export(restore_git_newlines=True)
+        self.assertEqual(validate_snapshot(self.destination), document)
+        self.assertEqual((self.output / "receipt.json").read_bytes(), receipt)
+        self.assertEqual((self.destination / "seed_output/receipt.json").read_bytes(), receipt)
+        self.assertEqual({path.relative_to(self.bundle): path.read_bytes()
+                          for path in self.bundle.rglob("*") if path.is_file()}, source_before)
+        expected_restorations = []
+        for name, original in originals.items():
+            self.assertEqual((self.destination / "seed_bundle" / name).read_bytes(), original)
+            if "/" in name:
+                expected_restorations.append({
+                    "path": "seed_bundle/" + name,
+                    "source_sha256": hashlib.sha256(source_before[Path(name)]).hexdigest(),
+                    "restored_sha256": hashlib.sha256(original).hexdigest(),
+                })
+        self.assertEqual(document["git_newline_restorations"], expected_restorations)
+        self.assertFalse(document["receipts_rewritten"])
+        self.assertEqual(document["receipts_rewritten_scope"], ["seed_output/receipt.json", "state/"])
+        for entry in expected_restorations:
+            self.assertEqual(document["files"][entry["path"]], entry["restored_sha256"])
+
+    def test_git_newline_recovery_is_opt_in(self):
+        original = b'{\r\n  "value": 1\r\n}\r\n'
+        raw = original.replace(b"\r\n", b"\n")
+        (self.bundle / "audit.json").write_bytes(raw)
+        self.seed_inventory({"audit.json": original})
+        document = self.export()
+        self.assertEqual((self.destination / "seed_bundle/audit.json").read_bytes(), raw)
+        self.assertEqual(document["git_newline_restorations"], [])
+
+    def test_recovery_checks_every_required_input_before_creating_destination(self):
+        original = b'{\r\n  "value": 1\r\n}\r\n'
+        (self.bundle / "audit.json").write_bytes(original.replace(b"\r\n", b"\n"))
+        for name, value, pattern in (("damaged.json", b'{"value":2}\n', "cannot be restored"),
+                                     ("missing.json", None, "missing")):
+            with self.subTest(name=name):
+                if value is not None:
+                    (self.bundle / name).write_bytes(value)
+                receipt = self.seed_inventory({"audit.json": original, name: original})
+                with self.assertRaisesRegex(ValueError, pattern):
+                    self.export(restore_git_newlines=True)
+                self.assertFalse(self.destination.exists())
+                self.assertEqual((self.output / "receipt.json").read_bytes(), receipt)
+                self.assertEqual((self.bundle / "audit.json").read_bytes(), original.replace(b"\r\n", b"\n"))
+
+    def test_recovery_rejects_non_json_or_invalid_json_even_if_newlines_match(self):
+        for name, raw in (("model.cbm", b'{"value":1}\n'),
+                          ("invalid.json", b"\xff\n"),
+                          ("invalid.json", b"not JSON\n"),
+                          ("invalid.json", b'{"value":NaN}\n')):
+            with self.subTest(name=name, raw=raw):
+                (self.bundle / name).write_bytes(raw)
+                self.seed_inventory({name: raw.replace(b"\n", b"\r\n")})
+                with self.assertRaisesRegex(ValueError, "JSON"):
+                    self.export(restore_git_newlines=True)
+                self.assertFalse(self.destination.exists())
+
+    def test_recovery_rejects_unsafe_receipt_paths_and_hashes(self):
+        for name in ("../outside.json", "/outside.json", "C:/outside.json", "x\\outside.json",
+                     "x//outside.json", "./outside.json", "x/../outside.json", "x:stream.json",
+                     "NUL.json", "x./outside.json", "x /outside.json", "x\x00.json"):
+            with self.subTest(name=name):
+                self.seed_inventory({name: b"{}\r\n"})
+                with self.assertRaisesRegex(ValueError, "portable seed receipt"):
+                    self.export(restore_git_newlines=True)
+                self.assertFalse(self.destination.exists())
+        for digest in ("0" * 63, "G" * 64, "A" * 64, None):
+            with self.subTest(digest=digest):
+                (self.output / "receipt.json").write_text(json.dumps({"input_sha256": {"audit.json": digest}}))
+                with self.assertRaisesRegex(ValueError, "portable seed receipt"):
+                    self.export(restore_git_newlines=True)
+                self.assertFalse(self.destination.exists())
+
+    def test_recovery_requires_receipt_inventory_and_rejects_duplicate_paths(self):
+        for receipt in (None, {}, {"input_sha256": {}}, {"input_sha256": []},
+                        {"input_sha256": {"audit.json": "0" * 64, "AUDIT.json": "0" * 64}}):
+            with self.subTest(receipt=receipt):
+                if receipt is not None:
+                    (self.output / "receipt.json").write_text(json.dumps(receipt))
+                with self.assertRaises(ValueError):
+                    self.export(restore_git_newlines=True)
+                self.assertFalse(self.destination.exists())
+        (self.output / "receipt.json").write_text('{"input_sha256":{},"input_sha256":{}}')
+        with self.assertRaisesRegex(ValueError, "Duplicate key"):
+            self.export(restore_git_newlines=True)
+
+    def test_recovery_still_rejects_source_changes_during_export(self):
+        from nyx_runtime import snapshot
+        original = b'{"value":1}\r\n'
+        source = self.bundle / "audit.json"
+        source.write_bytes(original.replace(b"\r\n", b"\n"))
+        self.seed_inventory({"audit.json": original})
+        copy = snapshot.shutil.copyfile
+
+        def change_source(current, destination):
+            result = copy(current, destination)
+            if Path(current) == source:
+                source.write_bytes(b'{"value":2}\n')
+            return result
+
+        with patch.object(snapshot.shutil, "copyfile", side_effect=change_source):
+            with self.assertRaisesRegex(ValueError, "Source changed"):
+                self.export(restore_git_newlines=True)
+        self.assertFalse(self.destination.exists())
+
+    def test_export_cli_forwards_explicit_recovery_flag(self):
+        from nyx_runtime.cli import main
+        args = ["export-input", "--seed-bundle", str(self.bundle), "--seed-output", str(self.output),
+                "--runtime-root", str(self.runtime), "--hf-hub-cache", str(self.hub),
+                "--destination", str(self.destination)]
+        with patch("nyx_runtime.snapshot.create_snapshot", return_value={}) as export, patch("builtins.print"):
+            self.assertEqual(main(args), 0)
+            self.assertFalse(export.call_args.kwargs["restore_git_newlines"])
+            self.assertEqual(main(args + ["--restore-git-newlines"]), 0)
+            self.assertTrue(export.call_args.kwargs["restore_git_newlines"])
+
+    def test_rejects_directory_junctions_at_root_or_inside_bundle(self):
+        nested = self.bundle / "redirected"
+        nested.mkdir()
+        original = Path.lstat
+        for redirected in (self.bundle, nested):
+            def reparse_stat(path):
+                info = original(path)
+                return (SimpleNamespace(st_mode=info.st_mode, st_reparse_tag=0xA0000003)
+                        if path == redirected else info)
+
+            with self.subTest(path=redirected), patch.object(Path, "lstat", new=reparse_stat):
+                with self.assertRaisesRegex(ValueError, "junction"):
+                    self.export()
+                self.assertFalse(self.destination.exists())
 
 
 if __name__ == "__main__":

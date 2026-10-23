@@ -33,6 +33,8 @@ def parser() -> argparse.ArgumentParser:
     export = commands.add_parser("export-input", help="Copier les seeds, poids et états du poste d'origine.")
     for flag in ("seed-bundle", "seed-output", "runtime-root", "hf-hub-cache", "destination"):
         export.add_argument("--" + flag, type=Path, required=True)
+    export.add_argument("--restore-git-newlines", action="store_true",
+                        help="Restaurer les fins de ligne JSON seulement si le SHA-256 du reçu seed correspond exactement.")
 
     capture = commands.add_parser("capture", help="Capturer les sources publiques avant 08 h à Paris.")
     capture.add_argument("--config", type=Path)
@@ -59,6 +61,7 @@ def main(argv: list[str] | None = None) -> int:
                 seed_bundle=args.seed_bundle, seed_output=args.seed_output,
                 runtime_root=args.runtime_root, hf_hub_cache=args.hf_hub_cache,
                 destination=args.destination,
+                restore_git_newlines=args.restore_git_newlines,
             )
             print(json.dumps(report, ensure_ascii=False, indent=2, default=str))
             return 0

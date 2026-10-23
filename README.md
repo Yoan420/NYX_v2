@@ -109,10 +109,14 @@ Copy-Item config.example.json config.local.json
 $env:SATURN_AUTHOR = 'VOTRE_IDENTIFIANT_PROFESSIONNEL'
 ```
 
-Le chemin du wheel est un exemple : obtenir le client privé approuvé
-**`tshistory_lite==0.5`** auprès de l’équipe. Son installation ne donne pas l’accès
-au réseau Saturn. Configurer l’authentification de l’entreprise dans le mécanisme
-prévu par ce client, hors Git. `SATURN_AUTHOR` est l’identifiant d’attribution,
+Le chemin du wheel est un exemple. Réutiliser le client privé approuvé
+**`tshistory_lite==0.5`** déjà disponible dans l’équipe ; vérifier qu’il est installé
+dans **le Python choisi pour NYX**, avec
+`.\.venv\Scripts\python.exe -m pip show tshistory_lite`. S’il manque dans cet
+environnement, y installer le wheel approuvé. Son installation ne donne pas
+l’accès au réseau Saturn : le poste et le compte doivent disposer de l’accès
+d’entreprise. Configurer l’authentification dans le mécanisme prévu par ce client,
+hors Git. `SATURN_AUTHOR` est l’identifiant d’attribution,
 pas un mot de passe ; il doit être explicite. Garder les YAML scientifiques
 inchangés. Retirer toute variable héritée `NYX_ANNUAL_OPERATIONAL_CONTEXT`.
 
@@ -141,9 +145,10 @@ rapports ; la prévision nécessite toujours Saturn. Les clés inconnues sont re
 ## Préparation initiale : seed, poids et états
 
 Le **seed** est le résultat annuel complet qui fournit les modèles initiaux,
-matrices, historiques et preuves de provenance. Obtenir un ensemble compatible
-auprès de l’installation opérationnelle ; les seuls prix, poids Chronos ou états
-quotidiens ne suffisent pas. Le snapshot privé attendu contient :
+matrices, historiques et preuves de provenance. Le seed du 13 octobre et ses
+états sont récupérables depuis le commit indiqué ci-dessous, ou depuis
+l’installation opérationnelle. Les seuls prix, poids Chronos ou états quotidiens
+ne suffisent pas. Le snapshot privé attendu contient :
 
 ```text
 snapshot.json                  Inventaire SHA-256, protocole nyx_aws_input_snapshot_v1
@@ -163,45 +168,69 @@ Neuf groupes de reçus sont requis : `saturn`, `auction_prices`, `fuel`,
 `thermal_capacity`, `jao_initial`, `public_hydro`, `lagged_exchange`,
 `nyx_quantiles`, `scarcity_confirmed_pair`.
 
-Sur le poste équipé, arrêter les calculs concurrents et exporter les chemins
-correspondant **au même seed** vers une destination nouvelle :
+### Récupérer le seed et les états publiés sur main
+
+Le commit **`f8b9cae815f8fbcb3d5e2702fa9b9c51defeb28f`** contient le bundle,
+les sept modèles et les états, sans changement du code scientifique. La branche
+nettoyée conserve cet historique mais exclut ces données de son arbre de code.
+Les commandes suivantes exigent un **clone Git avec cet historique**, pas un
+simple ZIP du code. Depuis un clone normal, `git fetch origin` récupère les objets
+manquants. Avec un ZIP du code, obtenir séparément l’archive d’artefacts créée
+ci-dessous ou un snapshot exporté par un collègue.
+
+Depuis le dépôt, avec `C:\NYX` existant, choisir une archive et un dossier de
+destination nouveaux. Cette sélection extrait le seed, son reçu, ses modèles
+et les deux arbres d’états ; elle laisse de côté caches, journaux et anciens HTML.
 
 ```powershell
-.\.venv\Scripts\python.exe -m nyx_runtime export-input --seed-bundle C:\NYX-source\runs\nyx_annual_anytime\SEED\bundle --seed-output C:\NYX-source\runs\nyx_annual_anytime_reports\SEED --runtime-root C:\NYX-source --hf-hub-cache C:\cache-modeles\huggingface\hub --destination C:\NYX\snapshot
+$seedId = '2026-10-13_20261012T073755Z_5322a197f771'
+git archive --format=zip --output=C:/NYX/nyx-assets-f8b9cae8.zip f8b9cae815f8fbcb3d5e2702fa9b9c51defeb28f "runs/nyx_annual_anytime/$seedId/bundle" "runs/nyx_annual_anytime_reports/$seedId/receipt.json" "runs/nyx_annual_anytime_reports/$seedId/models" runs/nyx_daily_cpu_states runs/nyx_daily_refit_states
+Expand-Archive -LiteralPath C:\NYX\nyx-assets-f8b9cae8.zip -DestinationPath C:\NYX\assets
 ```
 
-L’export copie les octets, vérifie les empreintes et refuse les états modifiés
-pendant la copie ; il ne réécrit aucun reçu. Le nom historique du protocole
-`nyx_aws_input_snapshot_v1` n’impose pas AWS. La continuation est limitée à
+Préserver aussi les captures publiques disponibles sur le poste opérationnel,
+sous `data/pit/nyx_annual_hydro_captures`, `data/pit/nyx_annual_exchange_captures`
+et `data/pit/nyx_annual_jao_initial_live` du `runtime-root` choisi. Ces trois arbres
+ne sont pas dans l’archive ci-dessus. Préférer ce runtime opérationnel complet ;
+si `C:\NYX\assets` sert de runtime, y copier les archives d’origine disponibles
+aux mêmes chemins. Une capture nouvelle ne recrée pas la disponibilité d’hier.
+Changer de snapshot remplace les copies locales : les arbres absents du nouvel
+export y sont supprimés.
+
+Sur le poste équipé, arrêter les calculs concurrents puis exporter **le même
+seed** et ses états vers une destination nouvelle. Exemple avec les artefacts
+extraits et le cache Hugging Face habituel ; adapter `$hfCache` si nécessaire :
+
+```powershell
+$seedId = '2026-10-13_20261012T073755Z_5322a197f771'
+$hfCache = Join-Path $env:USERPROFILE '.cache\huggingface\hub'
+.\.venv\Scripts\python.exe -m nyx_runtime export-input --seed-bundle "C:\NYX\assets\runs\nyx_annual_anytime\$seedId\bundle" --seed-output "C:\NYX\assets\runs\nyx_annual_anytime_reports\$seedId" --runtime-root C:\NYX\assets --hf-hub-cache $hfCache --destination C:\NYX\snapshot --restore-git-newlines
+```
+
+Le cache doit déjà contenir la révision Chronos imposée. Pour ce seed extrait de
+Git, `--restore-git-newlines` est nécessaire : Git a normalisé les fins de ligne
+de **329 fichiers JSON**. L’option restaure uniquement les copies de destination
+dont les octets obtenus correspondent **exactement au SHA-256 du reçu original** ;
+elle enregistre les empreintes avant/après et refuse tout autre écart. Ces copies
+incluent les reçus sources `auction_prices.json` et `thermal_capacity.json` ; leur
+contenu JSON reste identique. Tous les fichiers du dossier source restent intacts,
+ainsi que le reçu `seed_output/receipt.json` et les reçus des états copiés.
+Depuis un export opérationnel aux empreintes déjà correctes, cette option n’est
+pas nécessaire.
+
+L’export vérifie aussi les copies et refuse les états modifiés pendant la copie.
+Le nom historique `nyx_aws_input_snapshot_v1` n’impose pas AWS.
+`preflight` vérifie ensuite la continuité CPU ; `forecast` vérifie les états de
+refit contre les contrats du seed et du runtime. La continuation est limitée à
 **sept jours manquants** ; au-delà, récupérer un état compatible plus récent.
 La fabrication et la qualification d’un nouveau seed restent une préparation
 séparée, dont le code est disponible dans l’historique Git.
 
-### Récupérer les états ajoutés sur main
-
-Le commit **`8f7a076ad0f6383f09f5b0015ea639d8c7dbc309`** ajoute des états CPU et de
-refit, sans changer le code scientifique. La branche nettoyée conserve leur
-accès dans l’historique et les exclut de son arbre de code. Depuis le dépôt,
-choisir une archive et un dossier de destination nouveaux dans un répertoire
-privé existant :
-
-```powershell
-git archive --format=zip --output=C:/NYX/nyx-states.zip 8f7a076ad0f6383f09f5b0015ea639d8c7dbc309 runs/nyx_daily_cpu_states runs/nyx_daily_refit_states
-Expand-Archive -LiteralPath C:\NYX\nyx-states.zip -DestinationPath C:\NYX\states-20261023
-```
-
-L’archive contient seulement les deux arbres d’états, **pas les captures
-publiques ni le seed**. Pour `export-input`, préférer le runtime opérationnel
-complet avec ses captures. Si le dossier extrait sert de `--runtime-root`, y
-restaurer aussi les archives d’origine sous `data/pit/nyx_annual_hydro_captures`,
-`data/pit/nyx_annual_exchange_captures` et `data/pit/nyx_annual_jao_initial_live`,
-puis fournir le seed complet correspondant et les poids. Une capture nouvelle
-ne recrée pas la disponibilité d’hier. Changer de snapshot remplace les copies
-locales : les arbres absents du nouvel export y sont supprimés.
-
-Ces états seuls ne sont pas un snapshot. Garder leurs reçus intacts ;
-`preflight` vérifie la continuité CPU, puis `forecast` vérifie les états de refit
-contre les contrats du seed et du runtime.
+Le seed conservé déclare une **préparation historique** : certaines captures
+JAO, hydro et échanges ont été récupérées après sa coupure du 12 octobre.
+Ses reçus enregistrent cette limite et ne certifient pas leur disponibilité
+avant cette coupure. Les conserver tels quels ; cela n’autorise ni l’antidatage
+des nouvelles captures ni une qualification rétrospective de cette prévision.
 
 ## Arborescence commentée du dépôt
 
@@ -233,7 +262,7 @@ NYX_v2/
 │   ├── reporting.py  # Trois vues CWE depuis le CSV commun
 │   ├── runtime.py  # Manifestes, verrou, copies sûres des états, écritures atomiques
 │   ├── settings.py  # Chemins et options de config.local.json
-│   └── snapshot.py  # Export initial et contrôle de l’inventaire privé
+│   └── snapshot.py  # Export, contrôle des empreintes et restauration explicite des fins de ligne Git
 ├── production/  # Implémentation conservée et manifestes d’intégrité
 │   ├── reporting/  # Rendus détaillés d’origine
 │   │   ├── nyx_prod_templates/  # Gabarits et calculs des détails pays
@@ -515,8 +544,9 @@ courant ; l’historique Git n’est pas réécrit.
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-Vérifications effectuées le 23 octobre 2026 : **209 tests réussis, quatre ignorés**
-dans l’environnement Python 3.11 dédié, après restauration des fins de ligne.
+Vérifications effectuées le 23 octobre 2026 : **218 tests réussis, quatre ignorés**
+dans l’environnement Python 3.11 dédié, après ajout de la restauration explicite
+des fins de ligne Git.
 Les quatre tests de vrais liens symboliques sont empêchés par les privilèges
 Windows. Un dossier temporaire neuf a résolu l’accès refusé au répertoire pytest
 partagé, sans changer ses permissions. Les 89 modules scientifiques s’importent
@@ -533,16 +563,37 @@ contrôles locaux ; ces tests ne prouvent pas l’accès aux fournisseurs.
 Pour les états ajoutés par `8f7a076`, **29 reçus et 364 empreintes d’artefacts**
 ont été vérifiés. Le code, les configurations et les versions correspondent aux
 **16 états CPU et 12 des 13 états de refit** ; le plus ancien état de refit du
-15 octobre utilise une autre version et reste exclu. Les chargeurs natifs des
+15 octobre utilise une autre version et reste exclu. Les contrats ont ensuite
+été reconstruits depuis le seed publié dans `f8b9cae8` : les chargeurs natifs des
 états récents passent pour l’origine du 23 octobre et la livraison du 24 octobre,
 avec l’historique CPU jusqu’au 23 octobre et sans utiliser ses labels en cache.
-Cela ne constitue pas la validation d’un seed complet ni d’une prévision.
 
-La recherche dans `main` retrouve **978 des 15 556 entrées scellées du seed** ;
-**14 578 restent manquantes**. La récupération privée antérieure fournit le reçu
-et trois modèles prix, mais pas les quatre modèles négatifs. Les poids Chronos
-épinglés existent dans le cache local. Le seed complet, le client Saturn privé
-et l’accès au réseau d’entreprise restent nécessaires pour terminer l’essai réel.
+Le commit `f8b9cae8` fournit désormais **les 15 556 entrées scellées**, le reçu
+complet et **les sept modèles du seed**. **15 227 entrées** correspondent
+directement aux empreintes originales ; les **329 JSON restants** retrouvent
+exactement leur empreinte par restauration LF vers CRLF, avec un contenu JSON
+identique. Les 19 fichiers de transformation et le schéma correspondent aussi
+au manifeste de matérialisation. Les poids Chronos épinglés du cache local
+correspondent aux empreintes du seed.
+
+L’export réel avec `--restore-git-newlines` a réussi : **15 960 fichiers**, dont
+les 329 restaurations tracées, avec le reçu principal et les états inchangés.
+Le contrôle natif du seed valide ses 15 556 entrées, ses sept modèles et ses
+neuf groupes de sources. Les **30 contrôles du bundle historique passent dans
+son contexte de préparation d’origine**, sans changer ses reçus. Les trois
+déclarations de sources publiques restent refusées en mode historique strict,
+conformément à la limite de disponibilité expliquée plus haut.
+Les sept modèles CatBoost se chargent avec les schémas de variables et nombres
+d’arbres attendus, sans modification de leurs fichiers ni calcul de prévision.
+Les commandes réelles `preflight` et `forecast` ne signalent plus de blocage du
+seed ; elles retournent le code 2 pour les deux prérequis locaux absents :
+`SATURN_AUTHOR` et `tshistory_lite==0.5`. Les contrôles des poids et de la continuité,
+conditionnés par le client dans la CLI, ont été exécutés séparément avec les
+fonctions natives et les artefacts réels, sans client de substitution.
+
+Sur le poste de vérification, le client Saturn privé, `SATURN_AUTHOR` et l’accès
+au réseau d’entreprise restent indisponibles. Les collègues déjà équipés doivent
+utiliser leur client approuvé dans l’environnement Python choisi pour ce dépôt.
 
 La recette conserve **`qualified_for_production: false`**. Aucun nouveau calcul
 complet avec le seed privé et Saturn n’a été démontré sur ce poste ; la comparaison
