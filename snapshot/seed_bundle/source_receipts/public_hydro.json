@@ -1,0 +1,42 @@
+{
+  "protocol": "nyx_annual_cpu_live_source_receipt_v1",
+  "source_group": "public_hydro",
+  "delivery_day": "2026-10-13",
+  "state": "COMPLETE",
+  "history_policy": "current_fit_snapshot_v1",
+  "asof_state_utc": "2026-10-12T07:38:05.372322+00:00",
+  "training_snapshot_max_retrieved_at_utc": "2026-10-12T07:51:02.189857+00:00",
+  "asof_cutoff_verified": false,
+  "training_window_complete": true,
+  "delivery_snapshot_pre_cutoff_verified": false,
+  "origin_snapshot_capture_verified": false,
+  "training_hours": 8760,
+  "target_hours": 24,
+  "missing_training_hours_by_feature": {
+    "extra_hydro_fr_ror_gw_lag48h": 31,
+    "extra_hydro_fr_ror_gw_mean24h_lag48h": 100,
+    "extra_hydro_fr_ror_gw_mean168h_lag48h": 532,
+    "extra_hydro_fr_ror_gw_trend24h_minus168h_lag48h": 532,
+    "extra_hydro_fr_hydro_water_reservoir_gw_lag48h": 31,
+    "extra_hydro_fr_hydro_water_reservoir_gw_mean24h_lag48h": 100,
+    "extra_hydro_fr_hydro_pumped_storage_gw_lag48h": 31,
+    "extra_hydro_fr_hydro_pumped_storage_gw_mean24h_lag48h": 100
+  },
+  "provider_first_publication_timestamp_verified": false,
+  "provider_revision_vintage_verified": false,
+  "availability_basis": "Training and delivery use observations at their recorded actual retrieval",
+  "artifact_sha256": {
+    "source_artifacts/public_hydro/features.parquet": "14d4967c0336a88ebd899a99d3615bddbe067653690531aef462ec13c81570c5",
+    "source_artifacts/public_hydro/history_captures.zip": "37e9db62dd4db16e2d0f686998d3ceb7997af4d5a1e7c5a4c20932a3b9f3bd75",
+    "source_artifacts/public_hydro/history_manifest.json": "157df252a529c7e1030f72c015b13025aea7781689ab0c16a620e5f6e4160cab"
+  },
+  "collector_code_sha256": "5b69895708ee73324c5b1402cc5900acc7a949175b8563b243117e91f8d72f0c",
+  "feature_code_sha256": "a81baa8c88d1ff5fda255e628c780dc965b10999776a631e131f3baf3a8418ec",
+  "operational_snapshot": {
+    "protocol": "nyx_annual_operational_snapshot_v1",
+    "delivery_day": "2026-10-13",
+    "requested_at_utc": "2026-10-12T07:37:55.512108+00:00",
+    "asof_utc": "2026-10-12T06:00:00+00:00",
+    "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"
+  }
+}

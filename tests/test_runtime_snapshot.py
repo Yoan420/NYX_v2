@@ -124,6 +124,29 @@ class SnapshotTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "new, empty directory"):
             validate_snapshot(self.destination)
 
+    def test_lfs_pointer_blocks_runtime_preparation_with_download_instruction(self):
+        from nyx_runtime.pipeline import _prepare_runtime
+        from nyx_runtime.settings import RunSettings
+
+        document = self.export()
+        name = f"huggingface/hub/{MODEL_DIRECTORY}/snapshots/{CHRONOS_REVISION}/model.safetensors"
+        artifact = self.destination / name
+        settings = RunSettings(self.destination, self.root / "results")
+        for newline in (b"\n", b"\r\n"):
+            pointer = newline.join((b"version https://git-lfs.github.com/spec/v1",
+                                    b"oid sha256:" + document["files"][name].encode("ascii"),
+                                    b"size 13", b""))
+            artifact.write_bytes(pointer)
+            with self.subTest(newline=newline), \
+                    patch("nyx_runtime.pipeline.runtime.verify_runtime") as verify, \
+                    patch("nyx_runtime.pipeline.runtime.copy_state") as copy:
+                with self.assertRaisesRegex(ValueError, r"Git LFS.*model\.safetensors.*git lfs pull"):
+                    _prepare_runtime(settings)
+                verify.assert_not_called()
+                copy.assert_not_called()
+                self.assertEqual(artifact.read_bytes(), pointer)
+                self.assertFalse(settings.output_root.exists())
+
     def test_rejects_traversal_in_manifest(self):
         self.export()
         path = self.destination / "snapshot.json"

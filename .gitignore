@@ -7,11 +7,10 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 
-# Données, modèles et résultats : séparés du code
+# Données de travail et résultats ; le snapshot initial est versionné ci-dessous
 /data/
 /runs/
 /models/
-/snapshot/
 /snapshots/
 /output/
 /outputs/
@@ -31,6 +30,10 @@ production/runtime/runs/
 *.log
 .cache/
 huggingface/
+
+# Entrées initiales immuables livrées avec le dépôt
+!/snapshot/
+!/snapshot/**
 
 # Configuration et paquets privés
 config.local.json

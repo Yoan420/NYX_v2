@@ -271,6 +271,12 @@ def validate_snapshot(root: Path) -> dict[str, Any]:
         raise ValueError("Snapshot file inventory differs; export to a new, empty directory")
     for name, expected in files.items():
         if observed[name] != expected:
+            with inventory[name][0].open("rb") as handle:
+                header = handle.read(128)
+            if header.startswith((b"version https://git-lfs.github.com/spec/v1\n",
+                                  b"version https://git-lfs.github.com/spec/v1\r\n")):
+                raise ValueError(f"Objet Git LFS non téléchargé : {name}. "
+                                 "Installer Git LFS puis exécuter git lfs pull.")
             raise ValueError(f"Snapshot artifact checksum differs: {name}")
     required = ("seed_bundle/", "seed_output/",
                 f"huggingface/hub/{MODEL_DIRECTORY}/snapshots/{CHRONOS_REVISION}/")

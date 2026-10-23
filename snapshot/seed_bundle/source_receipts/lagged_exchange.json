@@ -1,0 +1,39 @@
+{
+  "protocol": "nyx_annual_cpu_live_source_receipt_v1",
+  "source_group": "lagged_exchange",
+  "delivery_day": "2026-10-13",
+  "state": "COMPLETE",
+  "history_policy": "current_fit_snapshot_v1",
+  "asof_state_utc": "2026-10-12T07:38:03.080615+00:00",
+  "training_snapshot_max_retrieved_at_utc": "2026-10-12T07:53:43.963117+00:00",
+  "asof_cutoff_verified": false,
+  "training_window_complete": true,
+  "delivery_snapshot_pre_cutoff_verified": false,
+  "origin_snapshot_capture_verified": false,
+  "training_hours": 8760,
+  "target_hours": 24,
+  "missing_training_hours_by_feature": {
+    "exchange__de_physical_fr_gw_lag48h": 0,
+    "exchange__de_physical_nl_gw_lag48h": 0,
+    "exchange__de_physical_be_gw_lag48h": 0,
+    "exchange__de_physical_net_gw_lag48h": 0,
+    "exchange__fr_commercial_net_gw_lag48h": 0
+  },
+  "provider_first_publication_timestamp_verified": false,
+  "provider_revision_vintage_verified": false,
+  "availability_basis": "Training and delivery use observations at their recorded actual retrieval",
+  "artifact_sha256": {
+    "source_artifacts/lagged_exchange/features.parquet": "987424b0674c654565b63c335dd6f676d779cedfeafd4f89d579eda549e38f52",
+    "source_artifacts/lagged_exchange/history_captures.zip": "7e8035f98756542d2bf3ac9ad143cb7622ef4748ac50ad160cf74ca02e45b55d",
+    "source_artifacts/lagged_exchange/history_manifest.json": "3324894bd89bff23b9fcd644658c11cd53da0b692271c54bdfa4718cefbd3792"
+  },
+  "collector_code_sha256": "5b69895708ee73324c5b1402cc5900acc7a949175b8563b243117e91f8d72f0c",
+  "feature_code_sha256": "d7a187e0fa78db4eafcd3da27d63ca5ef255ce4305297bba2812da4515c127ae",
+  "operational_snapshot": {
+    "protocol": "nyx_annual_operational_snapshot_v1",
+    "delivery_day": "2026-10-13",
+    "requested_at_utc": "2026-10-12T07:37:55.512108+00:00",
+    "asof_utc": "2026-10-12T06:00:00+00:00",
+    "nominal_cutoff_utc": "2026-10-12T06:00:00+00:00"
+  }
+}
