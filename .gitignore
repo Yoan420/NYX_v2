@@ -11,8 +11,8 @@ huggingface/
 models/
 !chronos2_hourly/models/
 !chronos2_hourly/models/*.py
-data/
-runs/
+# data/
+# runs/
 .parquet
 .csv
 .csv.gz
@@ -23,8 +23,8 @@ runs/
 Thumbs.db
 *.backup
 *.bak
-!data/
-!data/**
+# !data/
+# !data/**
 
 # Immutable daily source captures stay on the host and are never committed.
 data/pit/nyx_annual_exchange_captures/
@@ -35,6 +35,14 @@ data/pit/nyx_annual_cpu_live_fuel/
 data/pit/nyx_annual_thermal/
 data/pit/nyx_annual_jao_history/
 data/pit/nyx_annual_public_history/
+
+# Ignorer tout dans runs, sauf ces deux dossiers
+/runs/*
+!/runs/nyx_daily_refit_states/
+!/runs/nyx_daily_refit_states/**
+!/runs/nyx_daily_cpu_states/
+!/runs/nyx_daily_cpu_states/**
+
 
 # Local runs, generated reports and desktop shortcuts are rebuilt on each host.
 tmp/

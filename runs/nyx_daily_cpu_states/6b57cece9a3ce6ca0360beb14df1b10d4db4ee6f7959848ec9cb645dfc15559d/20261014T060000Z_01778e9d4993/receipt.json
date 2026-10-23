@@ -1,0 +1,644 @@
+{
+  "protocol": "nyx_daily_cpu_carry_state_v1",
+  "state": "COMPLETE",
+  "contract": {
+    "protocol": "nyx_daily_cpu_carry_state_v1",
+    "seed_report_receipt_sha256": "6b57cece9a3ce6ca0360beb14df1b10d4db4ee6f7959848ec9cb645dfc15559d",
+    "seed_baseline_receipt_sha256": "33cfad9f15c0a6798e46c3d8a87ca0785a95fdc7897145308523b2cfc2b73781",
+    "chronos_model_sha256": "042b42f1e078e8fcacccbd4e04470d684af2a07a5cf018c6d8898cc3704f1388",
+    "price_policy": "epex_only_v1",
+    "price_series": {
+      "FR": "power.price.fr.euromwh.h.obs.epex",
+      "DE": "power.price.de.euromwh.h.obs.epex",
+      "BE": "power.price.be.euromwh.h.obs.epex",
+      "NL": "power.price.nl.euromwh.h.obs.epex"
+    },
+    "cpu_threads": 2,
+    "dependencies": {
+      "chronos2_hourly/nyx_annual_cpu_baseline.py": "5e570b047b817e3ffc5d7261f882aee5b0e6068b911d09f851b7ac73f5e748bb",
+      "chronos2_hourly/nyx_live_baseline.py": "3e0c84f1f8f3416a498eabb61c773a78a3888e36956f58ff2433ac1c2b40abe1",
+      "chronos2_hourly/nyx_live_hybrid.py": "5ef12917868042f51460cdc6e184306b3a50dcad5156d7983beb79ef4e43936b",
+      "chronos2_hourly/nuclear_forecast.py": "04d64754ba13a08ca5e1f6a22695a4a43ab934f4b01d13991269f4ad98ac54c4",
+      "chronos2_hourly/kalman_residual.py": "c6d54bf1eeac8e0f571c16417f99d1637a6474a061c46980d02aa45b26ca1c1d",
+      "chronos2_hourly/models/residual_corrector.py": "5c47036f2ac621215038b8b6451f8fa85d1de486fb356447cc2b90c3ce4a19f9",
+      "chronos2_hourly/solar_wind_interaction_features.py": "372690a39c7a2088fe475a4e104200215edd43a33c2d7f8f189b0a1c4e547471",
+      "chronos2_hourly/solar_wind_scarcity_regime.py": "4987d7d72ab295a5fb5449927fa1aa8c6a39ada90e0fd5f13bf006070e156215",
+      "chronos2_hourly/kalman_covariates.py": "8fec18c28bfdfd52492236cf12f251e4354bbe394f4bcaac48ec8d5a0aa3eed1",
+      "chronos2_hourly/features.py": "03f94db2083c6c0ee06e5477921edfd25785cc3344b976a6714958a8de7bbe9e",
+      "chronos2_hourly/nyx_local_io.py": "f7479cb5738ac797a49b95fdc4078acae9fb48d673052ee5497102d890ab557d"
+    },
+    "configuration_sha256": {
+      "FR": {
+        "chronos2_hourly_fr_residual_v1.yaml": "f1127f26bcdd8f5c62dd714fa319c024068327fa1284b3d183fa7872bdeaeea2",
+        "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+      },
+      "DE": {
+        "chronos2_hourly_de_residual_candidate_v1.yaml": "2f44805b4f2e36a17070bc0aae9c6e48a3320828811a0c0a0ca2820dd79ec15d",
+        "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+      },
+      "BE": {
+        "chronos2_hourly_be_residual_candidate_v1.yaml": "b67ea624a2438cc61231adc8c6d6b442780a4674c5eebd87c974fadf971c8b3a",
+        "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+      },
+      "NL": {
+        "chronos2_hourly_nl_residual_candidate_v1.yaml": "7ac94e36849bd441c6dee87ee9b1dd4eba644301b1ffc1ed79ce884b20e9c6fe",
+        "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+      }
+    },
+    "runtime": {
+      "torch": "2.11.0+cpu",
+      "chronos-forecasting": "2.3.1",
+      "numpy": "2.4.6",
+      "pandas": "2.3.3",
+      "catboost": "1.2.10",
+      "pykalman": "0.11.2",
+      "scipy": "1.17.1",
+      "holidays": "0.105"
+    },
+    "extension_code_sha256": {
+      "nyx_daily_two_day_baseline.py": "3562de879fe09d8ff66312029ed227ead8e4894e60b6dfafcef1cc5a81fe2c9f",
+      "nyx_saved_horizon_inference.py": "515f99333fffa89ba7f026f3554372f6a1dde98352036e21bc7fbbc60e202090",
+      "nyx_saved_horizon_sources.py": "447910097b2a13782e7e80ecc7e134e4ab4d5084b286e06c2ac90a916eb00536",
+      "nyx_daily_state_cache.py": "6817e40b426a838c4c4955a83110b9629b86c70c6f9e4135567e499ac6c605c7"
+    }
+  },
+  "asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+  "created_at_utc": "2026-10-14T15:52:29.970834+00:00",
+  "artifact_sha256": {
+    "covariates.parquet": "395bb76ba10402898071601d68752cec7628997eade2f34871da99eedbbe54c9",
+    "FR/raw_history.parquet": "4fd689bb7a04c708a60090a9ca639afaea16cf238eb0bf0caabf356e07dbabfe",
+    "FR/residual_history.parquet": "8906819052efbbe3bc433c4f94908ae94d68e4d58179142f3849eac73e05e5eb",
+    "FR/history.parquet": "1088a7ec301d89405a4d0c700fda135fe87f6422024a1a2a272df363e349f723",
+    "DE/raw_history.parquet": "8840b0a360f62c57aa9dcc261c901b2312a41dd521977f64c7773115f53d741a",
+    "DE/residual_history.parquet": "0578ab193c5472df47c8c52c49b49c29d06b6b6cbab2be9cd391d173f52ccaaf",
+    "DE/history.parquet": "dba2f4eea53f2722baccc2b5b86d27903ab504378f3fb3584752696406a2d1f9",
+    "BE/raw_history.parquet": "5b050579b4ab0ce5a0d009982231c15b88e4bdc7b27047abbe8afb70ec6c8aaf",
+    "BE/residual_history.parquet": "421ce52a644e22a553aff010a6c97c77d9601429b84e5b3d103bc66c0b13f1b7",
+    "BE/history.parquet": "119224f561895e20240dfdf8ffb1273e86bb1f3423f2d7f94b350edd4a4216f5",
+    "NL/raw_history.parquet": "1b1907930112c5dd3efa57b921a272c365e689523c052284f59480c55a989307",
+    "NL/residual_history.parquet": "09e06959f9bb38691d6b555b57fc1943aad4df005d975614b36759a5cd427242",
+    "NL/history.parquet": "ba0fb88553c9f0cada7b0a0d4e7dbe14313df5c3d1d71f68ecfe71bbf0007930"
+  },
+  "future_labels_used": false,
+  "cached_actual_values_used_for_training": false,
+  "baseline_audit": {
+    "protocol": "nyx_daily_two_day_baseline_v1",
+    "future_labels_used": false,
+    "annual_835_day_replay_run": false,
+    "annual_expert_models_refitted": false,
+    "bounded_corrector_fit_per_zone": true,
+    "two_day_cutoff_shared": true,
+    "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+    "zones": {
+      "FR": {
+        "bridge": [
+          {
+            "day": "2026-10-14",
+            "generation_source": "new_cutoff_reconstruction_for_training_inputs",
+            "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+            "historical_original_origin_verified": false,
+            "residual": {
+              "generation_source": "one_bounded_365day_corrector_fit",
+              "training_rows": 8760,
+              "training_start_utc": "2025-10-13T22:00:00+00:00",
+              "training_end_utc": "2026-10-13T21:00:00+00:00",
+              "forecast_hours": 24,
+              "future_labels_used": false,
+              "training_days": 365,
+              "training_labels_strictly_before_future": true,
+              "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+              "forecast_origins_rewritten_to_nominal_dates": false,
+              "future_price_features_excluded": true,
+              "saved_inference_interaction_column": "fr_low_wind_solar_stress"
+            },
+            "kalman": {
+              "local_day": "2026-10-14",
+              "hours": 24,
+              "selected_filter": "linear_market",
+              "selected_weight": 0.25,
+              "baseline_trailing_mae": 15.852826513481675,
+              "selected_trailing_mae": 15.703520759121552,
+              "candidate_trailing_mae": {
+                "identity": 15.852826513481675,
+                "linear_bias": 15.84280810251203,
+                "linear_harmonic": 15.843988100555693,
+                "linear_market": 15.703520759121552,
+                "linear_scale": 15.840557771140585,
+                "ukf_scale": 15.84280476775759
+              },
+              "governance_diagnostics": {},
+              "raw_correction_mean": 5.737091238023815,
+              "applied_correction_mean": 1.4342728095059538,
+              "applied_correction_abs_max": 4.51524392734804,
+              "last_observation_used": "2026-10-13",
+              "training_window_start": "2025-10-14",
+              "training_window_end": "2026-10-13",
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "training_window_complete": true,
+              "target_observations_assimilated": 0,
+              "observation_variance": 400.95825074378513,
+              "clipped_raw_shifts": 0
+            }
+          }
+        ],
+        "residual": {
+          "generation_source": "one_bounded_365day_corrector_fit",
+          "training_rows": 8760,
+          "training_start_utc": "2025-10-14T22:00:00+00:00",
+          "training_end_utc": "2026-10-14T21:00:00+00:00",
+          "forecast_hours": 48,
+          "future_labels_used": false,
+          "training_days": 365,
+          "training_labels_strictly_before_future": true,
+          "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+          "forecast_origins_rewritten_to_nominal_dates": false,
+          "future_price_features_excluded": true,
+          "saved_inference_interaction_column": "fr_low_wind_solar_stress"
+        },
+        "kalman": {
+          "daily": [
+            {
+              "local_day": "2026-10-15",
+              "horizon_day": 1,
+              "hours": 24,
+              "selected_filter": "linear_market",
+              "selected_weight": 0.25,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 3.562090140597322
+            },
+            {
+              "local_day": "2026-10-16",
+              "horizon_day": 2,
+              "hours": 24,
+              "selected_filter": "linear_market",
+              "selected_weight": 0.25,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 2.254762655238907
+            }
+          ],
+          "governance_losses": {
+            "identity": 15.775812989079679,
+            "linear_bias": 15.769210157061533,
+            "linear_harmonic": 15.770682098218854,
+            "linear_market": 15.622513792688258,
+            "linear_scale": 15.768153749040351,
+            "ukf_scale": 15.769207931216688
+          },
+          "last_observation_used_utc": "2026-10-14T21:00:00+00:00",
+          "training_window_days": 365,
+          "future_labels_used": false
+        },
+        "configuration_sha256": {
+          "chronos2_hourly_fr_residual_v1.yaml": "f1127f26bcdd8f5c62dd714fa319c024068327fa1284b3d183fa7872bdeaeea2",
+          "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+        },
+        "chronos_model_sha256": "042b42f1e078e8fcacccbd4e04470d684af2a07a5cf018c6d8898cc3704f1388",
+        "interaction": {
+          "protocol_version": "nyx_live_hybrid_v1_interaction_BE_FR_extension",
+          "zone": "FR",
+          "timezone": "Europe/Paris",
+          "feature_column": "fr_low_wind_solar_stress",
+          "formula": "low_wind*low_solar*clip((RL-past_q50)/(past_q90-past_q50),0,1)",
+          "normalization_rule": "complete forecast civil days [D-365,D); first14 days zero warmup",
+          "source_columns_read": [
+            "fr_wind_generation_fcst",
+            "fr_solar_generation_fcst",
+            "fr_residual_load_fcst"
+          ],
+          "source_units": "GW",
+          "prices_or_targets_used": false,
+          "imputation_performed": false,
+          "country_aliasing_performed": false,
+          "pit_publication_evidence_verified": false
+        }
+      },
+      "DE": {
+        "bridge": [
+          {
+            "day": "2026-10-14",
+            "generation_source": "new_cutoff_reconstruction_for_training_inputs",
+            "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+            "historical_original_origin_verified": false,
+            "residual": {
+              "generation_source": "one_bounded_365day_corrector_fit",
+              "training_rows": 8760,
+              "training_start_utc": "2025-10-13T22:00:00+00:00",
+              "training_end_utc": "2026-10-13T21:00:00+00:00",
+              "forecast_hours": 24,
+              "future_labels_used": false,
+              "training_days": 365,
+              "training_labels_strictly_before_future": true,
+              "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+              "forecast_origins_rewritten_to_nominal_dates": false,
+              "future_price_features_excluded": true,
+              "saved_inference_interaction_column": "de_low_wind_solar_stress"
+            },
+            "kalman": {
+              "local_day": "2026-10-14",
+              "hours": 24,
+              "selected_filter": "linear_market",
+              "selected_weight": 0.30000000000000004,
+              "baseline_trailing_mae": 14.541746295549792,
+              "selected_trailing_mae": 14.380040397696247,
+              "candidate_trailing_mae": {
+                "identity": 14.541746295549792,
+                "linear_bias": 14.541746295549792,
+                "linear_harmonic": 14.541746295549792,
+                "linear_market": 14.380040397696247,
+                "linear_scale": 14.541746295549792,
+                "ukf_scale": 14.541746295549792
+              },
+              "governance_diagnostics": {},
+              "raw_correction_mean": 0.30306895212979557,
+              "applied_correction_mean": 0.09092068563893878,
+              "applied_correction_abs_max": 6.000000000000001,
+              "last_observation_used": "2026-10-13",
+              "training_window_start": "2025-10-14",
+              "training_window_end": "2026-10-13",
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "training_window_complete": true,
+              "target_observations_assimilated": 0,
+              "observation_variance": 498.2065665753316,
+              "clipped_raw_shifts": 1
+            }
+          }
+        ],
+        "residual": {
+          "generation_source": "one_bounded_365day_corrector_fit",
+          "training_rows": 8760,
+          "training_start_utc": "2025-10-14T22:00:00+00:00",
+          "training_end_utc": "2026-10-14T21:00:00+00:00",
+          "forecast_hours": 48,
+          "future_labels_used": false,
+          "training_days": 365,
+          "training_labels_strictly_before_future": true,
+          "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+          "forecast_origins_rewritten_to_nominal_dates": false,
+          "future_price_features_excluded": true,
+          "saved_inference_interaction_column": "de_low_wind_solar_stress"
+        },
+        "kalman": {
+          "daily": [
+            {
+              "local_day": "2026-10-15",
+              "horizon_day": 1,
+              "hours": 24,
+              "selected_filter": "linear_market",
+              "selected_weight": 0.30000000000000004,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 4.023761333839036
+            },
+            {
+              "local_day": "2026-10-16",
+              "horizon_day": 2,
+              "hours": 24,
+              "selected_filter": "linear_market",
+              "selected_weight": 0.30000000000000004,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 3.09306975496118
+            }
+          ],
+          "governance_losses": {
+            "identity": 14.67862703778674,
+            "linear_bias": 14.67862703778674,
+            "linear_harmonic": 14.67862703778674,
+            "linear_market": 14.506474450103749,
+            "linear_scale": 14.67862703778674,
+            "ukf_scale": 14.67862703778674
+          },
+          "last_observation_used_utc": "2026-10-14T21:00:00+00:00",
+          "training_window_days": 365,
+          "future_labels_used": false
+        },
+        "configuration_sha256": {
+          "chronos2_hourly_de_residual_candidate_v1.yaml": "2f44805b4f2e36a17070bc0aae9c6e48a3320828811a0c0a0ca2820dd79ec15d",
+          "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+        },
+        "chronos_model_sha256": "042b42f1e078e8fcacccbd4e04470d684af2a07a5cf018c6d8898cc3704f1388",
+        "interaction": {
+          "schema_version": 1,
+          "protocol_version": "solar_wind_interaction_features_v1",
+          "zone": "DE",
+          "timezone": "Europe/Berlin",
+          "rows": 20112,
+          "feature_column": "de_low_wind_solar_stress",
+          "source_columns_read": [
+            "de_wind_generation_fcst",
+            "de_solar_generation_fcst",
+            "de_residual_load_fcst"
+          ],
+          "source_units": "GW",
+          "training_window_days": 365,
+          "minimum_history_days": 14,
+          "generation_scale_quantile": 0.75,
+          "residual_low_quantile": 0.5,
+          "residual_high_quantile": 0.9,
+          "quantile_method": "linear",
+          "formula": "clip(1-W/q75_W,0,1)*clip(1-S/q75_positive_S,0,1)*clip((RL-q50_RL)/(q90_RL-q50_RL),0,1)",
+          "wind_scale_sample": "all historical forecast hours, including genuine zeros",
+          "solar_scale_sample": "strictly positive historical solar forecasts only",
+          "normalization_causality": "complete civil delivery days in [D-365,D); D excluded",
+          "forecast_source_cutoff_contract": "caller must provide forecasts issued by civil D-1 08:00; not verified here",
+          "pit_publication_evidence_verified": false,
+          "source_reads_performed": false,
+          "model_fit_performed": false,
+          "prices_or_targets_used": false,
+          "imputation_performed": false,
+          "warmup_days": 14,
+          "active_days": 824
+        }
+      },
+      "BE": {
+        "bridge": [
+          {
+            "day": "2026-10-14",
+            "generation_source": "new_cutoff_reconstruction_for_training_inputs",
+            "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+            "historical_original_origin_verified": false,
+            "residual": {
+              "generation_source": "one_bounded_365day_corrector_fit",
+              "training_rows": 8760,
+              "training_start_utc": "2025-10-13T22:00:00+00:00",
+              "training_end_utc": "2026-10-13T21:00:00+00:00",
+              "forecast_hours": 24,
+              "future_labels_used": false,
+              "training_days": 365,
+              "training_labels_strictly_before_future": true,
+              "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+              "forecast_origins_rewritten_to_nominal_dates": false,
+              "future_price_features_excluded": true,
+              "saved_inference_interaction_column": "be_low_wind_solar_stress"
+            },
+            "kalman": {
+              "local_day": "2026-10-14",
+              "hours": 24,
+              "selected_filter": "identity",
+              "selected_weight": 0.0,
+              "baseline_trailing_mae": 15.607941168728104,
+              "selected_trailing_mae": 15.607941168728104,
+              "candidate_trailing_mae": {
+                "identity": 15.607941168728104,
+                "linear_bias": 15.607941168728104,
+                "linear_harmonic": 15.607941168728104,
+                "linear_market": 15.607941168728104,
+                "linear_scale": 15.607941168728104,
+                "ukf_scale": 15.607941168728104
+              },
+              "governance_diagnostics": {},
+              "raw_correction_mean": 0.0,
+              "applied_correction_mean": 0.0,
+              "applied_correction_abs_max": 0.0,
+              "last_observation_used": "2026-10-13",
+              "training_window_start": "2025-10-14",
+              "training_window_end": "2026-10-13",
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "training_window_complete": true,
+              "target_observations_assimilated": 0,
+              "observation_variance": 591.8845389810791,
+              "clipped_raw_shifts": 0
+            }
+          }
+        ],
+        "residual": {
+          "generation_source": "one_bounded_365day_corrector_fit",
+          "training_rows": 8760,
+          "training_start_utc": "2025-10-14T22:00:00+00:00",
+          "training_end_utc": "2026-10-14T21:00:00+00:00",
+          "forecast_hours": 48,
+          "future_labels_used": false,
+          "training_days": 365,
+          "training_labels_strictly_before_future": true,
+          "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+          "forecast_origins_rewritten_to_nominal_dates": false,
+          "future_price_features_excluded": true,
+          "saved_inference_interaction_column": "be_low_wind_solar_stress"
+        },
+        "kalman": {
+          "daily": [
+            {
+              "local_day": "2026-10-15",
+              "horizon_day": 1,
+              "hours": 24,
+              "selected_filter": "identity",
+              "selected_weight": 0.0,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 0.0
+            },
+            {
+              "local_day": "2026-10-16",
+              "horizon_day": 2,
+              "hours": 24,
+              "selected_filter": "identity",
+              "selected_weight": 0.0,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 0.0
+            }
+          ],
+          "governance_losses": {
+            "identity": 15.601515606705137,
+            "linear_bias": 15.601515606705137,
+            "linear_harmonic": 15.601515606705137,
+            "linear_market": 15.601307623552056,
+            "linear_scale": 15.601515606705137,
+            "ukf_scale": 15.601515606705137
+          },
+          "last_observation_used_utc": "2026-10-14T21:00:00+00:00",
+          "training_window_days": 365,
+          "future_labels_used": false
+        },
+        "configuration_sha256": {
+          "chronos2_hourly_be_residual_candidate_v1.yaml": "b67ea624a2438cc61231adc8c6d6b442780a4674c5eebd87c974fadf971c8b3a",
+          "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+        },
+        "chronos_model_sha256": "042b42f1e078e8fcacccbd4e04470d684af2a07a5cf018c6d8898cc3704f1388",
+        "interaction": {
+          "protocol_version": "nyx_live_hybrid_v1_interaction_BE_FR_extension",
+          "zone": "BE",
+          "timezone": "Europe/Brussels",
+          "feature_column": "be_low_wind_solar_stress",
+          "formula": "low_wind*low_solar*clip((RL-past_q50)/(past_q90-past_q50),0,1)",
+          "normalization_rule": "complete forecast civil days [D-365,D); first14 days zero warmup",
+          "source_columns_read": [
+            "be_wind_generation_fcst",
+            "be_solar_generation_fcst",
+            "be_residual_load_fcst"
+          ],
+          "source_units": "GW",
+          "prices_or_targets_used": false,
+          "imputation_performed": false,
+          "country_aliasing_performed": false,
+          "pit_publication_evidence_verified": false
+        }
+      },
+      "NL": {
+        "bridge": [
+          {
+            "day": "2026-10-14",
+            "generation_source": "new_cutoff_reconstruction_for_training_inputs",
+            "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+            "historical_original_origin_verified": false,
+            "residual": {
+              "generation_source": "one_bounded_365day_corrector_fit",
+              "training_rows": 8760,
+              "training_start_utc": "2025-10-13T22:00:00+00:00",
+              "training_end_utc": "2026-10-13T21:00:00+00:00",
+              "forecast_hours": 24,
+              "future_labels_used": false,
+              "training_days": 365,
+              "training_labels_strictly_before_future": true,
+              "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+              "forecast_origins_rewritten_to_nominal_dates": false,
+              "future_price_features_excluded": true,
+              "saved_inference_interaction_column": "nl_low_wind_solar_stress"
+            },
+            "kalman": {
+              "local_day": "2026-10-14",
+              "hours": 24,
+              "selected_filter": "identity",
+              "selected_weight": 0.0,
+              "baseline_trailing_mae": 14.914414193463772,
+              "selected_trailing_mae": 14.914414193463772,
+              "candidate_trailing_mae": {
+                "identity": 14.914414193463772,
+                "linear_bias": 14.912623736707797,
+                "linear_harmonic": 14.914414193463772,
+                "linear_market": 14.869466515030904,
+                "linear_scale": 14.913443657850758,
+                "ukf_scale": 14.91262416588471
+              },
+              "governance_diagnostics": {},
+              "raw_correction_mean": 0.0,
+              "applied_correction_mean": 0.0,
+              "applied_correction_abs_max": 0.0,
+              "last_observation_used": "2026-10-13",
+              "training_window_start": "2025-10-14",
+              "training_window_end": "2026-10-13",
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "training_window_complete": true,
+              "target_observations_assimilated": 0,
+              "observation_variance": 526.3590670255498,
+              "clipped_raw_shifts": 0
+            }
+          }
+        ],
+        "residual": {
+          "generation_source": "one_bounded_365day_corrector_fit",
+          "training_rows": 8760,
+          "training_start_utc": "2025-10-14T22:00:00+00:00",
+          "training_end_utc": "2026-10-14T21:00:00+00:00",
+          "forecast_hours": 48,
+          "future_labels_used": false,
+          "training_days": 365,
+          "training_labels_strictly_before_future": true,
+          "source_asof_cutoff_utc": "2026-10-14T06:00:00+00:00",
+          "forecast_origins_rewritten_to_nominal_dates": false,
+          "future_price_features_excluded": true,
+          "saved_inference_interaction_column": "nl_low_wind_solar_stress"
+        },
+        "kalman": {
+          "daily": [
+            {
+              "local_day": "2026-10-15",
+              "horizon_day": 1,
+              "hours": 24,
+              "selected_filter": "identity",
+              "selected_weight": 0.0,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 0.0
+            },
+            {
+              "local_day": "2026-10-16",
+              "horizon_day": 2,
+              "hours": 24,
+              "selected_filter": "identity",
+              "selected_weight": 0.0,
+              "training_window_days": 365,
+              "training_window_hours": 8760,
+              "target_observations_assimilated": 0,
+              "training_end_utc": "2026-10-14T21:00:00+00:00",
+              "applied_correction_abs_max": 0.0
+            }
+          ],
+          "governance_losses": {
+            "identity": 15.061293549224622,
+            "linear_bias": 15.061293549224622,
+            "linear_harmonic": 15.061293549224622,
+            "linear_market": 15.017015599367094,
+            "linear_scale": 15.061293549224622,
+            "ukf_scale": 15.061293549224622
+          },
+          "last_observation_used_utc": "2026-10-14T21:00:00+00:00",
+          "training_window_days": 365,
+          "future_labels_used": false
+        },
+        "configuration_sha256": {
+          "chronos2_hourly_nl_residual_candidate_v1.yaml": "7ac94e36849bd441c6dee87ee9b1dd4eba644301b1ffc1ed79ce884b20e9c6fe",
+          "config\\kalman_operational.yaml": "65c560404caa91a59364e66eee00a672eaca3c9a852457e928c5ae84beaad07d"
+        },
+        "chronos_model_sha256": "042b42f1e078e8fcacccbd4e04470d684af2a07a5cf018c6d8898cc3704f1388",
+        "interaction": {
+          "schema_version": 1,
+          "protocol_version": "solar_wind_interaction_features_v1",
+          "zone": "NL",
+          "timezone": "Europe/Amsterdam",
+          "rows": 20112,
+          "feature_column": "nl_low_wind_solar_stress",
+          "source_columns_read": [
+            "nl_wind_generation_fcst",
+            "nl_solar_generation_fcst",
+            "nl_residual_load_fcst"
+          ],
+          "source_units": "GW",
+          "training_window_days": 365,
+          "minimum_history_days": 14,
+          "generation_scale_quantile": 0.75,
+          "residual_low_quantile": 0.5,
+          "residual_high_quantile": 0.9,
+          "quantile_method": "linear",
+          "formula": "clip(1-W/q75_W,0,1)*clip(1-S/q75_positive_S,0,1)*clip((RL-q50_RL)/(q90_RL-q50_RL),0,1)",
+          "wind_scale_sample": "all historical forecast hours, including genuine zeros",
+          "solar_scale_sample": "strictly positive historical solar forecasts only",
+          "normalization_causality": "complete civil delivery days in [D-365,D); D excluded",
+          "forecast_source_cutoff_contract": "caller must provide forecasts issued by civil D-1 08:00; not verified here",
+          "pit_publication_evidence_verified": false,
+          "source_reads_performed": false,
+          "model_fit_performed": false,
+          "prices_or_targets_used": false,
+          "imputation_performed": false,
+          "warmup_days": 14,
+          "active_days": 824
+        }
+      }
+    },
+    "rolling_carry_state_used": false,
+    "rolling_carry_receipt_sha256": null,
+    "last_retained_prediction_day": "2026-10-13",
+    "cached_labels_used_for_training": false,
+    "historical_metrics_complete_new_full_model_oos": false
+  }
+}
