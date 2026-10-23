@@ -356,7 +356,8 @@ NYX_v2/
 │   │   │   └── saturn.py  # Client Saturn et normalisation des séries
 │   │   ├── config/  # Configurations scientifiques contractuelles
 │   │   │   ├── kalman_operational.yaml  # Paramètres et covariables Kalman
-│   │   │   └── nyx_annual_cpu_ordered_features.json  # Ordre exact des variables par recette
+│   │   │   ├── nyx_annual_cpu_ordered_features.json  # Ordre exact des variables par recette
+│   │   │   └── nyx_historical_hgb_feature_schemas.json  # Ordre des 292/334 variables des 12 références HGB quotidiennes
 │   │   ├── experiment_console/  # Seul le masquage des secrets est conservé
 │   │   │   ├── __init__.py  # Espace de noms ; compatibilité des imports et modèles
 │   │   │   └── security.py  # Masquage des secrets ; ancienne console retirée
@@ -516,6 +517,7 @@ Il publie `latest_reports.json` et ne modifie pas `latest.json`.
 | Coupure non atteinte | Attendre 08:00 Paris ; respecter le décalage saisonnier avec `--as-of`. |
 | Capture manquante/tardive | Ne pas antidater. Consulter les absences déclarées ; le calcul peut accepter celles prévues par la recette. Une archive corrompue reste bloquante. |
 | État incompatible / plus de sept jours à reconstruire | Obtenir un export récent compatible avec le seed, le code et les bibliothèques. |
+| `nyx_historical_hgb_feature_schemas.json` absent | Mettre à jour `cleanup/daily-j1-j2` avec `git pull --ff-only`, puis relancer `preflight`. Ce schéma de référence est livré avec le code et contrôlé avant les entraînements. |
 | EPEX ou profil requis absent | Lire le reçu et faire corriger la source ; aucun remplissage avec des observations futures. |
 | Verrou actif | Attendre. Après arrêt brutal, confirmer l’arrêt du processus avant de retirer `production/runtime/runs/.nyx_cloud.lock` (nom historique). |
 | Modèle ou rendu en échec | Lire `status.json` et les reçus ; relancer crée un nouveau run. Le dernier succès reste accessible. |
@@ -527,8 +529,8 @@ clavier. Un CSV isolé ou `live_result.json` ne prouve pas la réussite complèt
 
 ## Provenance et validation
 
-Les 95 fichiers scientifiques/configurations proviennent de `main`
-`b0fa97f4d690c52a73d5716c16b152b0124c3882` : **83 sont identiques octet pour octet**
+Les 96 fichiers scientifiques/configurations proviennent de `main`
+`b0fa97f4d690c52a73d5716c16b152b0124c3882` : **84 sont identiques octet pour octet**
 aux objets Git ; **12 ont uniquement leurs fins de ligne LF restaurées en CRLF**
 pour retrouver les empreintes exactes enregistrées dans les états opérationnels.
 Leur structure Python est identique. `.gitattributes` conserve ces octets dans
@@ -544,15 +546,15 @@ courant ; l’historique Git n’est pas réécrit.
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-Vérifications effectuées le 23 octobre 2026 : **218 tests réussis, quatre ignorés**
-dans l’environnement Python 3.11 dédié, après ajout de la restauration explicite
-des fins de ligne Git.
+Vérifications effectuées le 23 octobre 2026 : **220 tests réussis, quatre ignorés**
+dans l’environnement Python 3.11 dédié, après restauration du schéma HGB et ajout
+des contrôles de présence et d’intégrité avant entraînement.
 Les quatre tests de vrais liens symboliques sont empêchés par les privilèges
 Windows. Un dossier temporaire neuf a résolu l’accès refusé au répertoire pytest
-partagé, sans changer ses permissions. Les 89 modules scientifiques s’importent
-et 21 ressources actives se résolvent. Les **25 paquets publics ont leurs versions
+partagé, sans changer ses permissions. Les 89 modules scientifiques s’importent ;
+les ressources contrôlées et le schéma HGB se résolvent. Les **25 paquets publics ont leurs versions
 exactes**, avec `pip check` réussi ; les anciens écarts certifi/tzdata sont résolus.
-L’archive ZIP conserve les 95 empreintes scientifiques/configurations, y compris
+L’archive ZIP conserve les 96 empreintes scientifiques/configurations, y compris
 les 12 fichiers CRLF, ainsi que les sept modules de rendu historiques.
 
 Le rendu d’une prévision réelle existante de 192 lignes conserve exactement prix,
@@ -598,3 +600,11 @@ utiliser leur client approuvé dans l’environnement Python choisi pour ce dép
 La recette conserve **`qualified_for_production: false`**. Aucun nouveau calcul
 complet avec le seed privé et Saturn n’a été démontré sur ce poste ; la comparaison
 numérique avant/après à entrées, états et bibliothèques identiques reste à faire.
+
+L’essai du 23 octobre sur le poste professionnel a terminé le socle J+1/J+2
+pour FR, DE, BE et NL, puis a révélé l’omission du schéma HGB avant le refit.
+`nyx_historical_hgb_feature_schemas.json` est maintenant restauré depuis `main`,
+à l’identique : ses colonnes correspondent aux huit matrices de référence du seed.
+Le manifeste d’intégrité et `preflight` le contrôlent avant les entraînements ;
+les tests chargent les douze schémas réellement utilisés. Une nouvelle exécution
+complète sur le poste professionnel reste nécessaire après cette correction.

@@ -6,7 +6,7 @@
     "source_ref": "b0fa97f4d690c52a73d5716c16b152b0124c3882",
     "canonical_python_files": 79,
     "extension_python_files": 10,
-    "config_files": 6,
+    "config_files": 7,
     "method": "Fermeture statique des imports et appels depuis produce_refit_horizon et les comparateurs, complétée par les sources requises par empreinte et la chaîne dynamique capture_daily/verify_daily. Les captures publiques font partie du workflow quotidien avant la coupure.",
     "entrypoints": [
       "chronos2_hourly.nyx_daily_refit.produce_refit_horizon",
@@ -95,7 +95,7 @@
       "materialize_saturn_kalman_weather.py"
     ],
     "source_unchanged": false,
-    "validation": "83 fichiers identiques aux objets Git d’origine ; 12 fichiers Python restaurés exclusivement de LF vers CRLF, avec AST identique et SHA-256 exact du contrat de refit. Les contrôles SHA restent stricts. Aucun reçu privé modifié ; aucun calcul complet avec Saturn démontré.",
+    "validation": "84 fichiers identiques aux objets Git d’origine ; 12 fichiers Python restaurés exclusivement de LF vers CRLF, avec AST identique et SHA-256 exact du contrat de refit. Les contrôles SHA restent stricts. Aucun reçu privé modifié ; aucun calcul complet avec Saturn démontré.",
     "capture_entrypoints": [
       "run_nyx_annual_daily_capture.capture_daily",
       "run_nyx_annual_daily_capture.verify_daily"
@@ -840,6 +840,15 @@
       "reason": "configuration_runtime_et_identite_epinglee",
       "fingerprint_required": true,
       "active_call_path": false
+    },
+    {
+      "source": "config/nyx_historical_hgb_feature_schemas.json",
+      "destination": "runtime/config/nyx_historical_hgb_feature_schemas.json",
+      "bytes": 55075,
+      "sha256": "7611ad84faa26f6643c12005df28f48fac36a7a08fcb1b28bde78243371b9099",
+      "reason": "chronos2_hourly.nyx_daily_refit_reference._prepare -> nyx_historical_hgb_reference.archived_columns; schema read dynamically during daily reference fits.",
+      "fingerprint_required": false,
+      "active_call_path": true
     },
     {
       "source": "config/kalman_operational.yaml",

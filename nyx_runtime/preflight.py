@@ -194,6 +194,7 @@ def inspect_live(config: Mapping[str, Any], first_day: str, cutoff: Any) -> dict
         files = [f"annual_extension/{name}.py" for name in EXTENSIONS]
         files += ["chronos2_hourly/__init__.py", "chronos2_hourly/nyx_annual_live_preflight.py",
                   "chronos2_hourly/nyx_annual_cpu_baseline.py", "config/nyx_annual_cpu_ordered_features.json",
+                  "config/nyx_historical_hgb_feature_schemas.json",
                   "config/kalman_operational.yaml", "run_nyx_annual_auction_prices_source.py",
                   "run_nyx_annual_hydro_source.py", "run_nyx_annual_exchange_source.py"]
         missing = [name for name in files if not (repo / name).is_file()]
